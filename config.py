@@ -104,8 +104,10 @@ directories = Directories(
 rand = Random()
 
 logger = Logger(explanation, logger_config)
+
 evolution = Evolution(
     gen_data_factory=GenDataIncrementer(num_generations),
+
     circuit_factory=FileBasedCircuitFactory(
         sz=population_size,
         logger=logger,
@@ -113,23 +115,30 @@ evolution = Evolution(
         routing_type=routing_type,
         accessed_columns=accessed_columns
     ).create,
+
     reproduce=None,
-    gen_init_populations=GenerateSinglePopulationWrapper(GenerateBitstreamPopulation(
-        sz=population_size,
-        bitstream_sz=bitstream_length,
-        post_construction_strategy=post_construction_strategy,
-        randomization_strategy=randomization_strategy,
-        mutation_prob=mutation_prob,
-        rand=rand
-    ).generate
+
+    gen_init_populations=GenerateSinglePopulationWrapper(
+        GenerateBitstreamPopulation(
+            sz=population_size,
+            bitstream_sz=bitstream_length,
+            post_construction_strategy=post_construction_strategy,
+            randomization_strategy=randomization_strategy,
+            mutation_prob=mutation_prob,
+            rand=rand
+        ).generate
     ).generate,
+
     eval_population_fitness=EvaluateFitness(evaluation).evaluate,
+
     generate_measurements=SimpleGenerateMeasurements(fpga, data_request, num_samples).generate,
+
     hardware=Microcontroller(
         fpga=fpga,
         logger=logger,
         config=mcu_config
     ),
+
     plot_data_recorder=plot_data_recorder
 )
 
