@@ -1,7 +1,7 @@
 from pathlib import Path
 from random import Random
 from BitstreamEvolutionProtocols import FPGA_Compilation_Data, FPGA_Model, Population, GenerateInitialPopulation, GenDataIncrementer
-from TrivialImplementation import TrivialCircuit, TrivialCircuitFactory, TrivialReproduceWithMutation, TrivialGenerateInitialPopulation, FakeMeasuringFitnessTrivialImplemention, TrivialEvolution, TrivialGenerateMeasurements
+from TrivialImplementation import TrivialCircuit, TrivialCircuitFactory, TrivialReproduceWithMutation, TrivialGenerateInitialPopulation, FakeMeasuringFitnessTrivialImplemention, TrivialEvolution, TrivialGenerateMeasurements, TrivialHardware, TrivialEvaluateMeasurements, Trivial_Meas
 from result import Result, Ok, Err # type: ignore
 import pytest # type: ignore
 from pytest_mock import MockerFixture
@@ -16,6 +16,17 @@ def FPGA_compilation_data()->Generator[FPGA_Compilation_Data,None,None]:
     #Do setup
     yield FPGA_Compilation_Data(FPGA_Model.ICE40,"randomID") #get object
     #Do Cleanup
+
+def TrivialCircuits()->Generator[list[TrivialCircuit], None, None]:
+    circuit = [TrivialCircuit(f) for f in range(100)]
+    yield circuit
+
+@pytest.fixture
+def TrivialMeasurements()->Generator[(list[Trivial_Meas], list[TrivialCircuit]), None, None]:
+    measurements:list[Trivial_Meas] = []
+    
+    yield measurements
+
 
 def Generate_Population_From_Iterable(inherent_fitnesses:Iterable[int],
                                       fitnesses_discovered:bool)->Population:
@@ -251,6 +262,7 @@ def test_TrivialEvaluatePopulationFitness():
     raise NotImplementedError("Write Tests for TrivialEvaluatePopulationFitness")
 
 
+def test_TrivialHardware_evaluates_measurements():
 
 
 

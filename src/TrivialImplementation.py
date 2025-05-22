@@ -3,7 +3,9 @@ from BitstreamEvolutionProtocols import Circuit, Individual,FPGA_Compilation_Dat
 from pathlib import Path
 from result import Result, Ok, Err # type: ignore
 import functools as ft
+from typing import Any
 from collections.abc import Iterable
+import asyncio
 
 """
 As discussed in the main meeting (3/28/2025), we are first putting together a trivial implementation of all of the components.
@@ -91,7 +93,7 @@ def TrivialGenerateInitialPopulation(population_size:int,
 
 ## ------------------------------------ Generate Measurements --------------------------------------------
 #This is currently basically the same thing as the abstract measurement class
-class Trivial_Meas(Measurement):
+class Trivial_Meas(Measurement[TrivialCircuit,int]):
     def record_measurement_result(self, result:int):
         return super().record_measurement_result(result)
     # I don't remember why I made Measurement an Abstract Base Class.
@@ -138,6 +140,24 @@ def TrivialEvaluatePopulationFitness(population:Population,measurement_dependant
     # default fitness for all values with no known fitness value discoverd in the above process.
     population.set_fitness_of_unevaluated_individuals(0)
 
+
+
+class TrivialHardware(Hardware):
+    FPGAs = ["FAKE_FPGA1", "FAKE FPGA2"]
+    async def request_measurement(self, measurement: Trivial_Meas)->Trivial_Meas: 
+        measurement.record_FPGA_used(random.choice(self.FPGAs))
+        measurement.record_measurement_result(measurement.circuit.inherent_fitness)
+        return measurement
+
+    def get_available_FPGAs(self)->list[str]: return self.FPGAs 
+
+
+def TrivialEvaluateMeasurements(measurements: Iterable[Measurement], HW: TrivialHardware)->None:
+    tasks = []
+    for meas in measurements:
+        tasks.append(asyncio.create_task(HW.request_measurement(meas)))
+    asyncio.run(asyncio.gather(*tasks))
+        
 
 ## ------------------------------------ Trivial Evolution Object -----------------------------------------
 
