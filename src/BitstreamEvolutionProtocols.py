@@ -97,7 +97,7 @@ class Circuit(Protocol):
     It will if the Individual represents a circuit in its entirety.
     It will not if you are simultaniously evolving multiple sub-sections that need to be combined to make the circuit to be evaluated.
     """
-    def compile(self, fpga: FPGA_Compilation_Data, working_dir:Path) -> Result[Path,Exception]:
+    def compile(self, fpga: FPGA_Compilation_Data) -> Result[None,Exception]:
         """
         This looks at the fpga and compiles the circuit for it if it can. 
         If it can it does all of its work in the working_dir and returns with Ok(Path) for the path to the file/directory containing this data.
@@ -199,7 +199,7 @@ class DataRequest(Enum):
     OSCILLATIONS = auto()
 
 C = TypeVar("C",bound=Circuit) #circuit type used
-M = TypeVar("M", Any) # type of measurement taken
+M = TypeVar("M", bound=Any) # type of measurement taken
 class Measurement(Generic[C,M]):
     "All measurement data, this could even be a class potentially"
     # FPGA_request:str
@@ -207,7 +207,8 @@ class Measurement(Generic[C,M]):
     # circuit:Circuit
     # FPGA_used:Optional[str]
     # result = Result[Any,Exception] 
-    def __init__(self, FPGA_request:str, data_request:DataRequest,circuit_to_measure:C)->None:
+    # argument = Any
+    def __init__(self, FPGA_request:str, data_request:DataRequest,circuit_to_measure:C, num_samples: int)->None:
         """
         TODO::
           Figure out the format for an FPGA Request, potentially also changing the type, and adjust that here.
@@ -218,6 +219,7 @@ class Measurement(Generic[C,M]):
         self.FPGA_used:Optional[str] = None
         self.result: Result[M,Exception] = Err(MeasurementNotTaken("Initialized Measurement option has not yet been measured."))
                       # The Any should be the measurement data, which we may want to standardize at some point
+        self.num_samples = num_samples
     
     def record_FPGA_used(self,FPGA:str)->None:
         self.FPGA_used = FPGA

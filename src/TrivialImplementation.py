@@ -34,8 +34,8 @@ class TrivialCircuit:
     def __init__(self,inherent_fitness:int):
         self.inherent_fitness = inherent_fitness
 
-    def compile(self, fpga: FPGA_Compilation_Data, working_dir:Path) -> Result[Path,Exception]:
-        return Ok("no/compilation/used/../../..")
+    def compile(self, fpga: FPGA_Compilation_Data) -> Result[None,Exception]:
+        return Ok(None)
 
 
 def TrivialCircuitFactory(population: Population) -> dict[Circuit,list[tuple[Population,Individual]]]:
@@ -108,7 +108,8 @@ def TrivialGenerateMeasurements(factory: TrivialCircuitFactory, population: Popu
     for circuit in circuits.keys():
         meas = Trivial_Meas("FPGA_REQUEST_FAKE",
                             data_request=DataRequest.NONE,
-                            circuit_to_measure=circuit)
+                            circuit_to_measure=circuit,
+                            num_samples=1)
         measurement_map[meas] = circuits[circuit] #dependancies are the same
 
     return measurement_map
