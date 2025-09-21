@@ -1,6 +1,6 @@
 #! /bin/python3
 #Genetic Algorithm for Intrinsic Analog Hardware Evolution
-# FOR USE WITH LATTICE iCE40 FPGAs ONLY
+# FOR USE WITH PICOICE (LATTICE iCE40UP5K FPGA) ONLY
 #
 # This code can be used to evolve an analog oscillator
 #
@@ -29,7 +29,7 @@ import sys
 program_name="evolve"
 program_description="""This program evolves a population of FPGA layouts (or simulations of them) acording to a predefined fitness function. 
 All files will presume the main directory of BitStreamEvolution unless absolute path given."""
-program_epilog="""For non-simulations, and Arduino and the Lattice iCE40 FPGA are also needed.
+program_epilog="""For non-simulations, and Arduino and the PicoIce (Lattice iCE40UP5K FPGA) are also needed.
 Exit Status:
 0 - No issues
 1 - Issue while running

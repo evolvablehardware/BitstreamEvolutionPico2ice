@@ -19,10 +19,10 @@ class ascTemplateBuilder:
         blif_file = "workspace/template/template.blif"
         asc_file = "workspace/template/template.asc"
         self.__log_event(4, "Generating blif file for configurable io")
-        os.system("yosys -p 'synth_ice40 -top template -blif " + blif_file +"' "+  verilog_file)
+        os.system("yosys -p 'synth_ice40 -dsp -top template -blif " + blif_file +"' "+  verilog_file)
         self.__log_event(4, "Generated blif file for configurable io")
         self.__log_event(4, "Generating asc file for configurable io")
-        os.system("arachne-pnr -d 1k -o " + asc_file + " -p " + pcf_file + " " + blif_file)
+        os.system("arachne-pnr -d up5k -o " + asc_file + " -p " + pcf_file + " " + blif_file)
         self.__log_event(4, "Generated asc file for configurable io")
 
         self.overwritewrite_io(asc_file, seed_hardware, dest)

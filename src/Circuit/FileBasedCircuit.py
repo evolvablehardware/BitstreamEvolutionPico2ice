@@ -215,7 +215,7 @@ class FileBasedCircuit(Circuit):
 
         .. todo::
             Preexisting todo: Replace magic values with a more generalized solution. 
-            These magic values are indicative of the underlying hardware (ice40kh1k)
+            These magic values are indicative of the underlying hardware (ice40up5k)
 
         Parameters
         ----------
@@ -230,10 +230,10 @@ class FileBasedCircuit(Circuit):
             True if the tile at that position is valid (The Tiles we can modigy)
         """
         # Replace these magic values with a more generalized solution
-        # Magic values are indicative of the underlying hardware (ice40hx1k)
+        # Magic values are indicative of the underlying hardware (ice40up5k)
         # A different model will require different magic values (i.e. ice40hx8k)
-        VALID_TILE_X = range(4, 10)
-        VALID_TILE_Y = range(1, 17)
+        VALID_TILE_X = range(1, 25)
+        VALID_TILE_Y = range(1, 31)
 
         # NOTE x and y are stored as ints to aid the loops that search and identify
         # tiles while scraping the asc files

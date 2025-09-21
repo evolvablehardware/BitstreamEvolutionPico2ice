@@ -115,9 +115,9 @@ tools.
 
 |Target|Actions|
 |------|-------|
-|`all`|Creates the directories for logging data, initializes the default configuration settings installs all the Project Icestorm tools, and creates and writes the udev rules for the Lattice ICE40 USB serial programmer|
+|`all`|Creates the directories for logging data, initializes the default configuration settings installs all the Project Icestorm tools, and creates and writes the udev rules for the PicoIce board|
 |`init`|Creates the directories for logging and initializes the default configuration settings|
-|`udev-rules`|Creates and writes the udev rules for the Lattice ICE40 USB serial programmer|
+|`udev-rules`|Creates and writes the udev rules for the PicoIce board|
 
 #### Targets for building Project Icestorm tools
 These targets are used to individually build the tools
@@ -209,7 +209,7 @@ Where `PATH/TO/SKETCH/` may look something like:
 
 ### Determining the correct device files
 Correctly configuring BitstreamEvolution requires determining the device
-files for the Arduino microcontroller and the Lattice ICE40 FPGA. The
+files for the Arduino microcontroller and the PicoIce (iCE40UP5K FPGA). The
 device file for each will likely have the form `\dev\ttyUSB#` where `#`
 is a number There are two ways to do determine the device file
 associated with a particular device: one uses:
@@ -224,7 +224,7 @@ discern whether a particular device file corresponds to the device you
 are looking for.
 
 Here is an example of using `udevadm` to examine the device file of the
-Lattice ICE40 FPGA:
+PicoIce (Lattice iCE40UP5K FPGA):
 ```bash
 $ udevadm info /dev/ttyUSB0
 P: /devices/pci0000:00/0000:00:15.0/0000:03:00.0/usb3/3-2/3-2:1.0/ttyUSB0/tty/ttyUSB0
@@ -264,7 +264,7 @@ E: TAGS=:systemd:
 E: CURRENT_TAGS=:systemd:
 ```
 References to Lattice in the output confirm that `/dev/ttyUSB0` is the
-device file (in this example) for the Lattice ICE40 FPGA.
+device file (in this example) for the PicoIce board.
 
 This is an example of using `udevadm` to examine the device file for the
 Arduino nano microcontroller. Note that your output may differ depending
@@ -349,7 +349,7 @@ is restricted to members of the groups `dialout` for `ttyUSB0` and
 `plugdev` for `ttyUSB1` and `ttyUSB2`.
 
 BitstreamEvolution requires read/write permission to the device files
-for the Lattice ICE40 FPGA and the Arduino microcontroller. To add
+for the PicoIce board and the Arduino microcontroller. To add
 yourself as a member to appropriate group, you use the command:
 
 ```bash

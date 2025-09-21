@@ -93,7 +93,7 @@ class ToneDiscriminatorFitnessFunction(FitnessFunction):
         """
 
         # Note: operating voltage of the Arduino Nano is 5 V, while that of the FPGA is 3.3 V
-        # According to the ice40 datasheet, 3.6 V is the absolute maximum output voltage of FPGA
+        # According to the ice40up5k datasheet, 3.6 V is the absolute maximum output voltage of FPGA
         # Thus, each ADC reading can range from 0 (0 V) to 737 (3.6 V = 5 V * (737 / 1024))
         
         # There are 2 acceptable cases to produce a perfect fitness of 1:

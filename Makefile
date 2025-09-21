@@ -1,7 +1,7 @@
 SHELL:=/bin/bash
 .DEFAULT_GOAL:=all
 
-LATTICE_FTDI_RULES='ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6010", MODE="0660", GROUP="plugdev", TAG+="uaccess"'
+PICOICE_FTDI_RULES='ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6010", MODE="0660", GROUP="plugdev", TAG+="uaccess"'
 
 .PHONY: all
 all: init icestorm-tools udev-rules
@@ -25,8 +25,8 @@ init:
 
 .PHONY: udev-rules
 udev-rules:
-	echo -e $(LATTICE_FTDI_RULES) > 53-lattice-ftdi.rules
-	sudo mv 53-lattice-ftdi.rules /etc/udev/rules.d/
+	echo -e $(PICOICE_FTDI_RULES) > 53-picoice-ftdi.rules
+	sudo mv 53-picoice-ftdi.rules /etc/udev/rules.d/
 
 .PHONY: icestorm-tools
 icestorm-tools: tools tools/icestorm tools/arachne-pnr tools/yosys

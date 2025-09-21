@@ -864,7 +864,7 @@ class CircuitLegacy:
         """
 
         # Note: operating voltage of the Arduino Nano is 5 V, while that of the FPGA is 3.3 V
-        # According to the ice40 datasheet, 3.6 V is the absolute maximum output voltage of FPGA
+        # According to the ice40up5k datasheet, 3.6 V is the absolute maximum output voltage of FPGA
         # Thus, each ADC reading can range from 0 (0 V) to 737 (3.6 V = 5 V * (737 / 1024))
         
         # There are 2 acceptable cases to produce a perfect fitness of 1:
@@ -1637,7 +1637,7 @@ class CircuitLegacy:
 
         .. todo::
             Preexisting todo: Replace magic values with a more generalized solution. 
-            These magic values are indicative of the underlying hardware (ice40kh1k)
+            These magic values are indicative of the underlying hardware (ice40up5k)
 
         Parameters
         ----------
@@ -1652,7 +1652,7 @@ class CircuitLegacy:
             True if the tile at that position is valid (The Tiles we can modigy)
         """
         # Replace these magic values with a more generalized solution
-        # Magic values are indicative of the underlying hardware (ice40hx1k)
+        # Magic values are indicative of the underlying hardware (ice40up5k)
         # A different model will require different magic values (i.e. ice40hx8k)
         VALID_TILE_X = range(4, 10)
         VALID_TILE_Y = range(1, 17)
