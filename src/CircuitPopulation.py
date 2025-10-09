@@ -116,7 +116,8 @@ class CircuitPopulation:
         if(config.get_routing_type == "NEWSE"):
             num_rows = 2
         num_cols = len(config.get_accessed_columns())
-        self.__population_bistream_sum = np.zeros(16*6*num_rows*num_cols)
+        # 660 logic tiles - no tiles for x=6 or x=19
+        self.__population_bistream_sum = np.zeros(660*num_rows*num_cols)
 
         # Set the selection type here since the selection type should
         # not change during a run. This way we don't have to branch each
