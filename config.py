@@ -141,4 +141,5 @@ evolution = Evolution(
 
     plot_data_recorder=plot_data_recorder
 )
+evolution.run()
 
