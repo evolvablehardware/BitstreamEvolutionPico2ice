@@ -1,6 +1,6 @@
 from pathlib import Path
 from random import Random
-from BitstreamEvolutionProtocols import FPGA_Compilation_Data, FPGA_Model, Population, GenerateInitialPopulation, GenDataIncrementer
+from BitstreamEvolutionProtocols import FPGA_Compilation_Data, FPGA_Model, Population, GenerateInitialPopulation, GenDataIncrementer, DataRequest
 from TrivialImplementation import TrivialCircuit, TrivialCircuitFactory, TrivialReproduceWithMutation, TrivialGenerateInitialPopulation, FakeMeasuringFitnessTrivialImplemention, TrivialEvolution, TrivialGenerateMeasurements, TrivialHardware, TrivialEvaluateMeasurements, Trivial_Meas
 from result import Result, Ok, Err # type: ignore
 import pytest # type: ignore
@@ -22,10 +22,11 @@ def TrivialCircuits()->Generator[list[TrivialCircuit], None, None]:
     yield circuit
 
 @pytest.fixture
-def TrivialMeasurements()->Generator[(list[Trivial_Meas], list[TrivialCircuit]), None, None]:
-    measurements:list[Trivial_Meas] = []
+def TrivialMeasurements()->Generator[tuple[list[Trivial_Meas], list[TrivialCircuit]], None, None]:
+    trivial_circuits:list[TrivialCircuit] = [TrivialCircuit(i) for i in range(10)]
+    measurements:list[Trivial_Meas] = [Trivial_Meas("IGNORE THIS",data_request=DataRequest.NONE,circuit_to_measure=t,num_samples=1) for t in trivial_circuits]
     
-    yield measurements
+    yield (measurements,trivial_circuits)
 
 
 def Generate_Population_From_Iterable(inherent_fitnesses:Iterable[int],
@@ -262,7 +263,19 @@ def test_TrivialEvaluatePopulationFitness():
     raise NotImplementedError("Write Tests for TrivialEvaluatePopulationFitness")
 
 
-def test_TrivialHardware_evaluates_measurements():
+def test_TrivialHardware_evaluates_measurements(TrivialMeasurements:tuple[list[Trivial_Meas], list[TrivialCircuit]]):
+    measurements, circuits = TrivialMeasurements
+    fpgas = ["FPGA 1","FPGA 2"]
+    hw = TrivialHardware(FPGAs=fpgas)
+    TrivialEvaluateMeasurements(measurements=measurements, HW=hw)
+    fpgas_used = [m.FPGA_used for m in measurements]
+    for fpga in fpgas: assert fpga in fpgas_used, "all fpgas available should be used"
+    for fpga in fpgas_used: assert fpga in fpgas, "all fpgas used should be valid"
+    for i in range(len(measurements)): assert measurements[i].circuit == circuits[i], "verify correct circuit is linked"
+    for i in range(len(measurements)): assert measurements[i].result.expect() == circuits[i].inherent_fitness
+
+
+
 
 
 

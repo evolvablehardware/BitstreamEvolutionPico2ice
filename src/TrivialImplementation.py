@@ -144,7 +144,9 @@ def TrivialEvaluatePopulationFitness(population:Population,measurement_dependant
 
 
 class TrivialHardware(Hardware):
-    FPGAs = ["FAKE_FPGA1", "FAKE FPGA2"]
+    def __init__(self,FPGAs:list[str]):
+        self.FPGAs = ["FAKE_FPGA1", "FAKE FPGA2"]
+        
     async def request_measurement(self, measurement: Trivial_Meas)->Trivial_Meas: 
         measurement.record_FPGA_used(random.choice(self.FPGAs))
         measurement.record_measurement_result(measurement.circuit.inherent_fitness)
