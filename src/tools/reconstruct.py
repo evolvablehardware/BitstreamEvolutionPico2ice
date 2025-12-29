@@ -12,14 +12,20 @@ the ASC directory
 Args: generation number to reconstruct
 The code will use the config file for the paths to the ASC directory and generations directory
 But, it will use the config values provided in the generation files for the routing and accessible columns
+
+depricated
+==========
+This program uses code from the pre-refacor code, importing all of the modules commented out below. Thus, this tool is mostly useless in its current state.
+It may make sense to rewrite it or it may not, but this still exists incase that need arises again.
+
 '''
 
 from argparse import ArgumentParser
 import os
-from Circuit.CircuitLegacy import CircuitLegacy
+# from Circuit.CircuitLegacy import CircuitLegacy
 from utilities import wipe_folder
-from Config import Config
-from CircuitPopulation import SEED_HARDWARE_FILEPATH
+#from Config import Config
+#from CircuitPopulation import SEED_HARDWARE_FILEPATH
 
 program_name = "reconstruct"
 program_description = "This program reconstructs a generation using the config's ASC directory and generations directory"
@@ -85,4 +91,5 @@ def run():
     
 #only runs if it is imported directly
 if (__name__ == "__main__"):
-    run()
+    pass
+    #run()
