@@ -17,3 +17,11 @@ Refactored Code
 
 .. toctree::
     BitstreamEvolutionProtocols.rst
+
+==========================
+Documentation of Old Tools
+==========================
+
+.. toctree::
+    tools/pulse_histogram
+    tools/reconstruct

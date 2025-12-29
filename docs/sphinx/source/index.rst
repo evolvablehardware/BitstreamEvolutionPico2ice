@@ -19,7 +19,7 @@ This is the |doc_version| documentation for BitstreamEvolution.
    :maxdepth: 2
 
    dev/index
-   interface/index
+   architecture/index
    code/index
    old_code/index
    BitstreamEvolutionProtocols
