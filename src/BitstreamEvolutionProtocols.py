@@ -175,8 +175,8 @@ class CircuitFactory(Protocol):
         """
         This takes the population of Individuals and constructs the necessary Circuit from it as requested.
         It returns the circuits as keys in a dictionary, where the associated values are 
-            a list of tupples for each Individual used to generate the circuit (or all individuals whose fitness is impacted directly by the circuit's fitness)
-            and includes the population the individual was from, and the individual itself.
+        a list of tupples for each Individual used to generate the circuit (or all individuals whose fitness is impacted directly by the circuit's fitness)
+        and includes the population the individual was from, and the individual itself.
         """
         ...
 
