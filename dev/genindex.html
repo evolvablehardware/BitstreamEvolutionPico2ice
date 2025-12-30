@@ -1,0 +1,880 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; Bitstream Evolution Develop Branch 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="icon" href="https://evolvablehardware.org/images/setup_tutorial_2.jpg"/>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-light" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>
+    <script>document.write(`<img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-dark" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dev/index.html">Development Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture/index.html">Bitstream Evolution’s Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="code/index.html">Refactored Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="code/Circuit/index.html">Circuit</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="code/Circuit/Circuit.html">Circuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code/Circuit/FileBasedCircuit.html">FileBasedCircuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code/Circuit/FullySimCircuit.html">FullySimCircuit.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="code/EvaluateFitness/index.html">Evaluate Fitness</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="code/EvaluateFitness/EvaluateFitness.html">EvaluateFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code/EvaluateFitness/EvalPulseCountFitness.html">EvalPulseCountFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code/EvaluateFitness/EvalVarMaxFitness.html">EvalVarMaxFitness.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="code/GenerateMeasurements/index.html">Generate Measurements</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="code/GenerateMeasurements/GenerateMeasurements.html">GenerateMeasurements.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="code/Hardware/index.html">Hardware</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="code/Hardware/Microcontroller.html">Microcontroller.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="code/Individual/index.html">Individual</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="code/Individual/BitstreamIndividual.html">BitstreamIndividual.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="code/Population/index.html">Population</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="code/Population/PopulationInitialization.html">PopulationInitialization.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="code/BitstreamEvolutionProtocols.html">BitstreamEvolutionProtocols.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/TrivialImplementation.html">TrivialImplementation.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/Directories.html">Directories.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/Evolution.html">Evolution.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/Logger.html">Logger.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/PlotConfig.html">PlotConfig.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/PlotDataRecorder.html">PlotDataRecorder.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/PlotEvolutionLive.html">PlotEvolutionLive.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/utilities.html">utilities.py</a></li>
+</ul>
+</details></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.CircuitFactory.__call__">__call__() (BitstreamEvolutionProtocols.CircuitFactory method)</a>
+</li>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.__compile">__compile() (Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Measurement.__init__">__init__() (BitstreamEvolutionProtocols.Measurement method)</a>
+
+      <ul>
+        <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population.__init__">(BitstreamEvolutionProtocols.Population method)</a>
+</li>
+        <li><a href="code/Evolution.html#Evolution.Evolution.__init__">(Evolution.Evolution method)</a>
+</li>
+        <li><a href="code/TrivialImplementation.html#TrivialImplementation.TrivialEvolution.__init__">(TrivialImplementation.TrivialEvolution method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.__log_event">__log_event() (Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+      <li><a href="code/Circuit/Circuit.html#Circuit.Circuit.Circuit.__repr__">__repr__() (Circuit.Circuit.Circuit method)</a>
+</li>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.__run_at_each_modifiable">__run_at_each_modifiable() (Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.__tile_is_included">__tile_is_included() (Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    BitstreamEvolutionProtocols
+
+      <ul>
+        <li><a href="code/BitstreamEvolutionProtocols.html#module-BitstreamEvolutionProtocols">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Circuit">Circuit (class in BitstreamEvolutionProtocols)</a>
+
+      <ul>
+        <li><a href="code/Circuit/Circuit.html#Circuit.Circuit.Circuit">(class in Circuit.Circuit)</a>
+</li>
+      </ul></li>
+      <li>
+    Circuit.Circuit
+
+      <ul>
+        <li><a href="code/Circuit/Circuit.html#module-Circuit.Circuit">module</a>
+</li>
+      </ul></li>
+      <li>
+    Circuit.FileBasedCircuit
+
+      <ul>
+        <li><a href="code/Circuit/FileBasedCircuit.html#module-Circuit.FileBasedCircuit">module</a>
+</li>
+      </ul></li>
+      <li>
+    Circuit.FullySimCircuit
+
+      <ul>
+        <li><a href="code/Circuit/FullySimCircuit.html#module-Circuit.FullySimCircuit">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.CircuitFactory">CircuitFactory (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Circuit.compile">compile() (BitstreamEvolutionProtocols.Circuit method)</a>
+
+      <ul>
+        <li><a href="code/Circuit/Circuit.html#Circuit.Circuit.Circuit.compile">(Circuit.Circuit.Circuit method)</a>
+</li>
+        <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.compile">(Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/Circuit/Circuit.html#Circuit.Circuit.Circuit.copy_from">copy_from() (Circuit.Circuit.Circuit method)</a>
+
+      <ul>
+        <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.copy_from">(Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+        <li><a href="code/Circuit/FullySimCircuit.html#Circuit.FullySimCircuit.FullySimCircuit.copy_from">(Circuit.FullySimCircuit.FullySimCircuit method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/Circuit/FullySimCircuit.html#Circuit.FullySimCircuit.FullySimCircuit.crossover">crossover() (Circuit.FullySimCircuit.FullySimCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.DataRequest">DataRequest (class in BitstreamEvolutionProtocols)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    Directories
+
+      <ul>
+        <li><a href="code/Directories.html#module-Directories">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/EvaluateFitness/EvaluateFitness.html#EvaluateFitness.EvaluateFitness.EvaluateFitness">EvaluateFitness (class in EvaluateFitness.EvaluateFitness)</a>
+</li>
+      <li>
+    EvaluateFitness.EvalPulseCountFitness
+
+      <ul>
+        <li><a href="code/EvaluateFitness/EvalPulseCountFitness.html#module-EvaluateFitness.EvalPulseCountFitness">module</a>
+</li>
+      </ul></li>
+      <li>
+    EvaluateFitness.EvaluateFitness
+
+      <ul>
+        <li><a href="code/EvaluateFitness/EvaluateFitness.html#module-EvaluateFitness.EvaluateFitness">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    EvaluateFitness.EvalVarMaxFitness
+
+      <ul>
+        <li><a href="code/EvaluateFitness/EvalVarMaxFitness.html#module-EvaluateFitness.EvalVarMaxFitness">module</a>
+</li>
+      </ul></li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.EvaluatePopulationFitness">EvaluatePopulationFitness (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li>
+    Evolution
+
+      <ul>
+        <li><a href="code/Evolution.html#module-Evolution">module</a>
+</li>
+      </ul></li>
+      <li><a href="code/Evolution.html#Evolution.Evolution">Evolution (class in Evolution)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.FakeHardwareTrivialEvaluateMeasurements">FakeHardwareTrivialEvaluateMeasurements() (in module TrivialImplementation)</a>
+</li>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.FakeMeasuringFitnessTrivialImplemention">FakeMeasuringFitnessTrivialImplemention() (in module TrivialImplementation)</a>
+</li>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit">FileBasedCircuit (class in Circuit.FileBasedCircuit)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Fitness">Fitness (class in BitstreamEvolutionProtocols)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/EvaluateFitness/EvaluateFitness.html#EvaluateFitness.EvaluateFitness.FitnessEvaluator">FitnessEvaluator (class in EvaluateFitness.EvaluateFitness)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.FPGA_Compilation_Data">FPGA_Compilation_Data (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.FPGA_Model">FPGA_Model (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li><a href="code/Circuit/FullySimCircuit.html#Circuit.FullySimCircuit.FullySimCircuit">FullySimCircuit (class in Circuit.FullySimCircuit)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.GenData">GenData (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.GenDataFactory">GenDataFactory (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.GenerateInitialPopulation">GenerateInitialPopulation (class in BitstreamEvolutionProtocols)</a>
+
+      <ul>
+        <li><a href="code/Population/PopulationInitialization.html#Population.PopulationInitialization.GenerateInitialPopulation">(class in Population.PopulationInitialization)</a>
+</li>
+      </ul></li>
+      <li><a href="code/Population/PopulationInitialization.html#Population.PopulationInitialization.GenerateInitialPopulations">GenerateInitialPopulations (class in Population.PopulationInitialization)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.GenerateMeasurements">GenerateMeasurements (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li>
+    GenerateMeasurements.GenerateMeasurements
+
+      <ul>
+        <li><a href="code/GenerateMeasurements/GenerateMeasurements.html#module-GenerateMeasurements.GenerateMeasurements">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/Population/PopulationInitialization.html#Population.PopulationInitialization.GenerateSinglePopulationWrapper">GenerateSinglePopulationWrapper (class in Population.PopulationInitialization)</a>
+</li>
+      <li><a href="code/Circuit/Circuit.html#Circuit.Circuit.Circuit.get_bitstream">get_bitstream() (Circuit.Circuit.Circuit method)</a>
+
+      <ul>
+        <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.get_bitstream">(Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+        <li><a href="code/Circuit/FullySimCircuit.html#Circuit.FullySimCircuit.FullySimCircuit.get_bitstream">(Circuit.FullySimCircuit.FullySimCircuit method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.get_file_attribute">get_file_attribute() (Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.get_file_attribute_st">get_file_attribute_st() (Circuit.FileBasedCircuit.FileBasedCircuit static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Hardware">Hardware (class in BitstreamEvolutionProtocols)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    Hardware.Microcontroller
+
+      <ul>
+        <li><a href="code/Hardware/Microcontroller.html#module-Hardware.Microcontroller">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Individual">Individual (class in BitstreamEvolutionProtocols)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    Individual.BitstreamIndividual
+
+      <ul>
+        <li><a href="code/Individual/BitstreamIndividual.html#module-Individual.BitstreamIndividual">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    Logger
+
+      <ul>
+        <li><a href="code/Logger.html#module-Logger">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/Logger.html#Logger.LoggerConfig">LoggerConfig (class in Logger)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Measurement">Measurement (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.MeasurementError">MeasurementError</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.MeasurementNotTaken">MeasurementNotTaken</a>
+</li>
+      <li><a href="code/Hardware/Microcontroller.html#Hardware.Microcontroller.MicrocontrollerConfig">MicrocontrollerConfig (class in Hardware.Microcontroller)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.FPGA_Compilation_Data.model">model (BitstreamEvolutionProtocols.FPGA_Compilation_Data attribute)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="code/BitstreamEvolutionProtocols.html#module-BitstreamEvolutionProtocols">BitstreamEvolutionProtocols</a>
+</li>
+        <li><a href="code/Circuit/Circuit.html#module-Circuit.Circuit">Circuit.Circuit</a>
+</li>
+        <li><a href="code/Circuit/FileBasedCircuit.html#module-Circuit.FileBasedCircuit">Circuit.FileBasedCircuit</a>
+</li>
+        <li><a href="code/Circuit/FullySimCircuit.html#module-Circuit.FullySimCircuit">Circuit.FullySimCircuit</a>
+</li>
+        <li><a href="code/Directories.html#module-Directories">Directories</a>
+</li>
+        <li><a href="code/EvaluateFitness/EvalPulseCountFitness.html#module-EvaluateFitness.EvalPulseCountFitness">EvaluateFitness.EvalPulseCountFitness</a>
+</li>
+        <li><a href="code/EvaluateFitness/EvaluateFitness.html#module-EvaluateFitness.EvaluateFitness">EvaluateFitness.EvaluateFitness</a>
+</li>
+        <li><a href="code/EvaluateFitness/EvalVarMaxFitness.html#module-EvaluateFitness.EvalVarMaxFitness">EvaluateFitness.EvalVarMaxFitness</a>
+</li>
+        <li><a href="code/Evolution.html#module-Evolution">Evolution</a>
+</li>
+        <li><a href="code/GenerateMeasurements/GenerateMeasurements.html#module-GenerateMeasurements.GenerateMeasurements">GenerateMeasurements.GenerateMeasurements</a>
+</li>
+        <li><a href="code/Hardware/Microcontroller.html#module-Hardware.Microcontroller">Hardware.Microcontroller</a>
+</li>
+        <li><a href="code/Individual/BitstreamIndividual.html#module-Individual.BitstreamIndividual">Individual.BitstreamIndividual</a>
+</li>
+        <li><a href="code/Logger.html#module-Logger">Logger</a>
+</li>
+        <li><a href="code/PlotConfig.html#module-PlotConfig">PlotConfig</a>
+</li>
+        <li><a href="code/PlotDataRecorder.html#module-PlotDataRecorder">PlotDataRecorder</a>
+</li>
+        <li><a href="code/PlotEvolutionLive.html#module-PlotEvolutionLive">PlotEvolutionLive</a>
+</li>
+        <li><a href="code/Population/PopulationInitialization.html#module-Population.PopulationInitialization">Population.PopulationInitialization</a>
+</li>
+        <li><a href="code/tools/pulse_histogram.html#module-tools.pulse_histogram">tools.pulse_histogram</a>
+</li>
+        <li><a href="code/tools/reconstruct.html#module-tools.reconstruct">tools.reconstruct</a>
+</li>
+        <li><a href="code/TrivialImplementation.html#module-TrivialImplementation">TrivialImplementation</a>
+</li>
+        <li><a href="code/utilities.html#module-utilities">utilities</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/Circuit/FullySimCircuit.html#Circuit.FullySimCircuit.FullySimCircuit.mutate">mutate() (Circuit.FullySimCircuit.FullySimCircuit method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    PlotConfig
+
+      <ul>
+        <li><a href="code/PlotConfig.html#module-PlotConfig">module</a>
+</li>
+      </ul></li>
+      <li>
+    PlotDataRecorder
+
+      <ul>
+        <li><a href="code/PlotDataRecorder.html#module-PlotDataRecorder">module</a>
+</li>
+      </ul></li>
+      <li>
+    PlotEvolutionLive
+
+      <ul>
+        <li><a href="code/PlotEvolutionLive.html#module-PlotEvolutionLive">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population">Population (class in BitstreamEvolutionProtocols)</a>
+</li>
+      <li>
+    Population.PopulationInitialization
+
+      <ul>
+        <li><a href="code/Population/PopulationInitialization.html#module-Population.PopulationInitialization">module</a>
+</li>
+      </ul></li>
+      <li><a href="code/Population/PopulationInitialization.html#Population.PopulationInitialization.PostConstructionStrategy">PostConstructionStrategy (class in Population.PopulationInitialization)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/Population/PopulationInitialization.html#Population.PopulationInitialization.RandomizationStrategy">RandomizationStrategy (class in Population.PopulationInitialization)</a>
+</li>
+      <li><a href="code/Circuit/FullySimCircuit.html#Circuit.FullySimCircuit.FullySimCircuit.randomize_bitstream">randomize_bitstream() (Circuit.FullySimCircuit.FullySimCircuit method)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Reproducer">Reproducer (class in BitstreamEvolutionProtocols)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/Evolution.html#Evolution.Evolution.run">run() (Evolution.Evolution method)</a>
+
+      <ul>
+        <li><a href="code/PlotEvolutionLive.html#PlotEvolutionLive.run">(in module PlotEvolutionLive)</a>
+</li>
+        <li><a href="code/TrivialImplementation.html#TrivialImplementation.TrivialEvolution.run">(TrivialImplementation.TrivialEvolution method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/Circuit/Circuit.html#Circuit.Circuit.Circuit.set_bitstream">set_bitstream() (Circuit.Circuit.Circuit method)</a>
+
+      <ul>
+        <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.set_bitstream">(Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.set_file_attribute">set_file_attribute() (Circuit.FileBasedCircuit.FileBasedCircuit method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/Circuit/FileBasedCircuit.html#Circuit.FileBasedCircuit.FileBasedCircuit.set_file_attribute_st">set_file_attribute_st() (Circuit.FileBasedCircuit.FileBasedCircuit static method)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population.set_fitness">set_fitness() (BitstreamEvolutionProtocols.Population method)</a>
+</li>
+      <li><a href="code/GenerateMeasurements/GenerateMeasurements.html#GenerateMeasurements.GenerateMeasurements.SimpleGenerateMeasurements">SimpleGenerateMeasurements (class in GenerateMeasurements.GenerateMeasurements)</a>
+</li>
+      <li><a href="code/BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population.sort">sort() (BitstreamEvolutionProtocols.Population method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    tools.pulse_histogram
+
+      <ul>
+        <li><a href="code/tools/pulse_histogram.html#module-tools.pulse_histogram">module</a>
+</li>
+      </ul></li>
+      <li>
+    tools.reconstruct
+
+      <ul>
+        <li><a href="code/tools/reconstruct.html#module-tools.reconstruct">module</a>
+</li>
+      </ul></li>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.Trivial_Meas">Trivial_Meas (class in TrivialImplementation)</a>
+</li>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.TrivialCircuit">TrivialCircuit (class in TrivialImplementation)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.TrivialEvaluatePopulationFitness">TrivialEvaluatePopulationFitness() (in module TrivialImplementation)</a>
+</li>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.TrivialEvolution">TrivialEvolution (class in TrivialImplementation)</a>
+</li>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.TrivialGenerateInitialPopulation">TrivialGenerateInitialPopulation() (in module TrivialImplementation)</a>
+</li>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.TrivialHardware">TrivialHardware (class in TrivialImplementation)</a>
+</li>
+      <li>
+    TrivialImplementation
+
+      <ul>
+        <li><a href="code/TrivialImplementation.html#module-TrivialImplementation">module</a>
+</li>
+      </ul></li>
+      <li><a href="code/TrivialImplementation.html#TrivialImplementation.TrivialReproduceWithMutation">TrivialReproduceWithMutation() (in module TrivialImplementation)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    utilities
+
+      <ul>
+        <li><a href="code/utilities.html#module-utilities">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Evolvable Hardware
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024-2026, Evolvable Hardware.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

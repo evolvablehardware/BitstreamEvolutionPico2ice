@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>TrivialImplementation.py &#8212; Bitstream Evolution Develop Branch 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/TrivialImplementation';</script>
+    <link rel="icon" href="https://evolvablehardware.org/images/setup_tutorial_2.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Directories.py" href="Directories.html" />
+    <link rel="prev" title="BitstreamEvolutionProtocols.py" href="BitstreamEvolutionProtocols.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-light" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>
+    <script>document.write(`<img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-dark" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Development Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Bitstream Evolution’s Architecture</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Refactored Code</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="Circuit/index.html">Circuit</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="Circuit/Circuit.html">Circuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Circuit/FileBasedCircuit.html">FileBasedCircuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Circuit/FullySimCircuit.html">FullySimCircuit.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="EvaluateFitness/index.html">Evaluate Fitness</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="EvaluateFitness/EvaluateFitness.html">EvaluateFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EvaluateFitness/EvalPulseCountFitness.html">EvalPulseCountFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EvaluateFitness/EvalVarMaxFitness.html">EvalVarMaxFitness.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="GenerateMeasurements/index.html">Generate Measurements</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="GenerateMeasurements/GenerateMeasurements.html">GenerateMeasurements.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="Hardware/index.html">Hardware</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="Hardware/Microcontroller.html">Microcontroller.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="Individual/index.html">Individual</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="Individual/BitstreamIndividual.html">BitstreamIndividual.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="Population/index.html">Population</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="Population/PopulationInitialization.html">PopulationInitialization.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="BitstreamEvolutionProtocols.html">BitstreamEvolutionProtocols.py</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">TrivialImplementation.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Directories.html">Directories.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Evolution.html">Evolution.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Logger.html">Logger.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PlotConfig.html">PlotConfig.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PlotDataRecorder.html">PlotDataRecorder.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PlotEvolutionLive.html">PlotEvolutionLive.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.py</a></li>
+</ul>
+</details></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/code/TrivialImplementation.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>TrivialImplementation.py</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.FakeHardwareTrivialEvaluateMeasurements"><code class="docutils literal notranslate"><span class="pre">FakeHardwareTrivialEvaluateMeasurements()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.FakeMeasuringFitnessTrivialImplemention"><code class="docutils literal notranslate"><span class="pre">FakeMeasuringFitnessTrivialImplemention()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialCircuit"><code class="docutils literal notranslate"><span class="pre">TrivialCircuit</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialEvaluatePopulationFitness"><code class="docutils literal notranslate"><span class="pre">TrivialEvaluatePopulationFitness()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialEvolution"><code class="docutils literal notranslate"><span class="pre">TrivialEvolution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialEvolution.__init__"><code class="docutils literal notranslate"><span class="pre">TrivialEvolution.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialEvolution.run"><code class="docutils literal notranslate"><span class="pre">TrivialEvolution.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialGenerateInitialPopulation"><code class="docutils literal notranslate"><span class="pre">TrivialGenerateInitialPopulation()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialHardware"><code class="docutils literal notranslate"><span class="pre">TrivialHardware</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialReproduceWithMutation"><code class="docutils literal notranslate"><span class="pre">TrivialReproduceWithMutation()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.Trivial_Meas"><code class="docutils literal notranslate"><span class="pre">Trivial_Meas</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-TrivialImplementation">
+<span id="trivialimplementation-py"></span><h1>TrivialImplementation.py<a class="headerlink" href="#module-TrivialImplementation" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="TrivialImplementation.FakeHardwareTrivialEvaluateMeasurements">
+<span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">FakeHardwareTrivialEvaluateMeasurements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><span class="pre">Iterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Measurement" title="BitstreamEvolutionProtocols.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/TrivialImplementation.html#FakeHardwareTrivialEvaluateMeasurements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.FakeHardwareTrivialEvaluateMeasurements" title="Link to this definition">#</a></dt>
+<dd><p>perform the measurements and edit them in place. This would normally be done by the H</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TrivialImplementation.FakeMeasuringFitnessTrivialImplemention">
+<span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">FakeMeasuringFitnessTrivialImplemention</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unevaluated_population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population" title="BitstreamEvolutionProtocols.Population"><span class="pre">Population</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population" title="BitstreamEvolutionProtocols.Population"><span class="pre">Population</span></a></span></span><a class="reference internal" href="../_modules/TrivialImplementation.html#FakeMeasuringFitnessTrivialImplemention"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.FakeMeasuringFitnessTrivialImplemention" title="Link to this definition">#</a></dt>
+<dd><p>This is a function that prevents me from having to use async &amp; hardware while testing out TrivialEvolution.
+This returns the same population, it just evaluates it.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="TrivialImplementation.TrivialCircuit">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">TrivialCircuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inherent_fitness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/TrivialImplementation.html#TrivialCircuit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.TrivialCircuit" title="Link to this definition">#</a></dt>
+<dd><p>This is a very simple circuit that is also the Individual evolution is performed on</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TrivialImplementation.TrivialEvaluatePopulationFitness">
+<span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">TrivialEvaluatePopulationFitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population" title="BitstreamEvolutionProtocols.Population"><span class="pre">Population</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement_dependants</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Measurement" title="BitstreamEvolutionProtocols.Measurement"><span class="pre">Measurement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population" title="BitstreamEvolutionProtocols.Population"><span class="pre">Population</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Individual" title="BitstreamEvolutionProtocols.Individual"><span class="pre">Individual</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/TrivialImplementation.html#TrivialEvaluatePopulationFitness"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.TrivialEvaluatePopulationFitness" title="Link to this definition">#</a></dt>
+<dd><p>Turns measurements into fitness values and applies them to the provided population, completely evaluating the population, and only editing that population.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="TrivialImplementation.TrivialEvolution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">TrivialEvolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generation_data_factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.GenDataFactory" title="BitstreamEvolutionProtocols.GenDataFactory"><span class="pre">GenDataFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reproducer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Reproducer" title="BitstreamEvolutionProtocols.Reproducer"><span class="pre">Reproducer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">generate_intial_population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.GenerateInitialPopulation" title="BitstreamEvolutionProtocols.GenerateInitialPopulation"><span class="pre">GenerateInitialPopulation</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/TrivialImplementation.html#TrivialEvolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.TrivialEvolution" title="Link to this definition">#</a></dt>
+<dd><p>This class utilizes the protocols defined to run experiments
+This is an example that should be generalized for a more general solution.
+There should be different versions of Evolution for structurally different experiments.</p>
+<blockquote>
+<div><p>(e.x. Multiple populations of individuals evolved simultaniously, bacterial populations where only some individuals are evaluated and reproduce each loop)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Any other evolution implementations should try to maintain as similar of function signatures as possible,</dt><dd><p>with arguments communicated with protocols that are as general as possible.</p>
+</dd>
+<dt>This implementations generates, evaluates, and reproduces entire populations at once,</dt><dd><p>and does so in discrete timesteps.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="TrivialImplementation.TrivialEvolution.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generation_data_factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.GenDataFactory" title="BitstreamEvolutionProtocols.GenDataFactory"><span class="pre">GenDataFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reproducer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Reproducer" title="BitstreamEvolutionProtocols.Reproducer"><span class="pre">Reproducer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">generate_intial_population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.GenerateInitialPopulation" title="BitstreamEvolutionProtocols.GenerateInitialPopulation"><span class="pre">GenerateInitialPopulation</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/TrivialImplementation.html#TrivialEvolution.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.TrivialEvolution.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the Evolution with all of the objects and functions needed for it
+to carry out it the evolution.
+This does not execute any functions passed in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TrivialImplementation.TrivialEvolution.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/TrivialImplementation.html#TrivialEvolution.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.TrivialEvolution.run" title="Link to this definition">#</a></dt>
+<dd><p>This Function Runs the evolution run specified by the protocols provided, using them
+according to how the architecture of this evolution object is configured.</p>
+<dl class="simple">
+<dt>This implementations generates, evaluates, and reproduces entire populations at once,</dt><dd><p>and does so in discrete timesteps.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TrivialImplementation.TrivialGenerateInitialPopulation">
+<span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">TrivialGenerateInitialPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">random</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/random.html#random.Random" title="(in Python v3.14)"><span class="pre">Random</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_fitness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_fitness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population" title="BitstreamEvolutionProtocols.Population"><span class="pre">Population</span></a></span></span><a class="reference internal" href="../_modules/TrivialImplementation.html#TrivialGenerateInitialPopulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.TrivialGenerateInitialPopulation" title="Link to this definition">#</a></dt>
+<dd><p>Generates a a list of two populations which have fitnesses numbered from
+zero and population_size sorted in descending order</p>
+<p>Here min &amp; max fitness refers to the minimum and maximum inherent fitnesses that can be generated for an individual.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="TrivialImplementation.TrivialHardware">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">TrivialHardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">FPGAs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/TrivialImplementation.html#TrivialHardware"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.TrivialHardware" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TrivialImplementation.TrivialReproduceWithMutation">
+<span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">TrivialReproduceWithMutation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population" title="BitstreamEvolutionProtocols.Population"><span class="pre">Population</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">random</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/random.html#random.Random" title="(in Python v3.14)"><span class="pre">Random</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Population" title="BitstreamEvolutionProtocols.Population"><span class="pre">Population</span></a></span></span><a class="reference internal" href="../_modules/TrivialImplementation.html#TrivialReproduceWithMutation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.TrivialReproduceWithMutation" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Returns a population where all of the top half of the circuits are included, unchanged,</dt><dd><p>and each will get a child that is mutated randomly, being incremented or decremented.</p>
+</dd>
+</dl>
+<p>This primarily ensures the population remains the same size.
+If an odd length population is passed on, the next individual is kept, but does not reproduce or mutate.
+The outputed population has all of its fitnesses unevaluated (None).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="TrivialImplementation.Trivial_Meas">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TrivialImplementation.</span></span><span class="sig-name descname"><span class="pre">Trivial_Meas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">FPGA_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.DataRequest" title="BitstreamEvolutionProtocols.DataRequest"><span class="pre">DataRequest</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">circuit_to_measure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BitstreamEvolutionProtocols.html#BitstreamEvolutionProtocols.Circuit" title="BitstreamEvolutionProtocols.Circuit"><span class="pre">Circuit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/TrivialImplementation.html#Trivial_Meas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrivialImplementation.Trivial_Meas" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="BitstreamEvolutionProtocols.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">BitstreamEvolutionProtocols.py</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Directories.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Directories.py</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.FakeHardwareTrivialEvaluateMeasurements"><code class="docutils literal notranslate"><span class="pre">FakeHardwareTrivialEvaluateMeasurements()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.FakeMeasuringFitnessTrivialImplemention"><code class="docutils literal notranslate"><span class="pre">FakeMeasuringFitnessTrivialImplemention()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialCircuit"><code class="docutils literal notranslate"><span class="pre">TrivialCircuit</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialEvaluatePopulationFitness"><code class="docutils literal notranslate"><span class="pre">TrivialEvaluatePopulationFitness()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialEvolution"><code class="docutils literal notranslate"><span class="pre">TrivialEvolution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialEvolution.__init__"><code class="docutils literal notranslate"><span class="pre">TrivialEvolution.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialEvolution.run"><code class="docutils literal notranslate"><span class="pre">TrivialEvolution.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialGenerateInitialPopulation"><code class="docutils literal notranslate"><span class="pre">TrivialGenerateInitialPopulation()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialHardware"><code class="docutils literal notranslate"><span class="pre">TrivialHardware</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.TrivialReproduceWithMutation"><code class="docutils literal notranslate"><span class="pre">TrivialReproduceWithMutation()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#TrivialImplementation.Trivial_Meas"><code class="docutils literal notranslate"><span class="pre">Trivial_Meas</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Evolvable Hardware
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024-2026, Evolvable Hardware.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,930 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlotEvolutionLive &#8212; Bitstream Evolution Develop Branch 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/PlotEvolutionLive';</script>
+    <link rel="icon" href="https://evolvablehardware.org/images/setup_tutorial_2.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-light" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>
+    <script>document.write(`<img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-dark" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Development Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Bitstream Evolution’s Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../code/index.html">Refactored Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/Circuit/index.html">Circuit</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/Circuit/Circuit.html">Circuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../code/Circuit/FileBasedCircuit.html">FileBasedCircuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../code/Circuit/FullySimCircuit.html">FullySimCircuit.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/EvaluateFitness/index.html">Evaluate Fitness</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/EvaluateFitness/EvaluateFitness.html">EvaluateFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../code/EvaluateFitness/EvalPulseCountFitness.html">EvalPulseCountFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../code/EvaluateFitness/EvalVarMaxFitness.html">EvalVarMaxFitness.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/GenerateMeasurements/index.html">Generate Measurements</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/GenerateMeasurements/GenerateMeasurements.html">GenerateMeasurements.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/Hardware/index.html">Hardware</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/Hardware/Microcontroller.html">Microcontroller.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/Individual/index.html">Individual</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/Individual/BitstreamIndividual.html">BitstreamIndividual.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/Population/index.html">Population</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/Population/PopulationInitialization.html">PopulationInitialization.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/BitstreamEvolutionProtocols.html">BitstreamEvolutionProtocols.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/TrivialImplementation.html">TrivialImplementation.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/Directories.html">Directories.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/Evolution.html">Evolution.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/Logger.html">Logger.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/PlotConfig.html">PlotConfig.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/PlotDataRecorder.html">PlotDataRecorder.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/PlotEvolutionLive.html">PlotEvolutionLive.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/utilities.html">utilities.py</a></li>
+</ul>
+</details></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for PlotEvolutionLive</h1><div class="highlight"><pre>
+<span></span><span class="linenos">  1</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">  2</span><span class="sd">Plot Evolution Live</span>
+<span class="linenos">  3</span><span class="sd">===================</span>
+<span class="linenos">  4</span>
+<span class="linenos">  5</span><span class="sd">This program is spawned by a bash script to run parallel to our main program when performing an evolution.</span>
+<span class="linenos">  6</span><span class="sd">Plots of the active evolution are created and updated in this script using matplotlib.</span>
+<span class="linenos">  7</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">  8</span>
+<span class="linenos">  9</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 10</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.animation</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">animation</span>
+<span class="linenos"> 11</span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">style</span>
+<span class="linenos"> 12</span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">colormaps</span> <span class="c1"># type: ignore</span>
+<span class="linenos"> 13</span><span class="kn">import</span><span class="w"> </span><span class="nn">configparser</span>
+<span class="linenos"> 14</span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="linenos"> 15</span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span> 
+<span class="linenos"> 16</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="linenos"> 17</span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="linenos"> 18</span><span class="kn">from</span><span class="w"> </span><span class="nn">PlotConfig</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlotConfig</span>
+<span class="linenos"> 19</span><span class="kn">from</span><span class="w"> </span><span class="nn">utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">determine_color</span>
+<span class="linenos"> 20</span><span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">exists</span>
+<span class="linenos"> 21</span><span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">mkdir</span>
+<span class="linenos"> 22</span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="linenos"> 23</span>
+<span class="linenos"> 24</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 25</span><span class="sd">Static parameters can be found and changed in the config.ini file in the root project folder</span>
+<span class="linenos"> 26</span><span class="sd">DO NOT CHANGE THEM HERE</span>
+<span class="linenos"> 27</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 28</span>
+<span class="linenos"> 29</span><span class="n">MAX_VIOLIN_PLOTS</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="linenos"> 30</span><span class="n">HEATMAP_BINS</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="linenos"> 31</span>
+<span class="linenos"> 32</span><span class="n">config</span> <span class="o">=</span> <span class="n">PlotConfig</span><span class="p">(</span><span class="s1">&#39;./workspace/plot_config.ini&#39;</span><span class="p">)</span>
+<span class="linenos"> 33</span><span class="n">FRAME_INTERVAL</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Filled in by argparse later</span>
+<span class="linenos"> 34</span>
+<span class="linenos"> 35</span>
+<div class="viewcode-block" id="run">
+<a class="viewcode-back" href="../code/PlotEvolutionLive.html#PlotEvolutionLive.run">[docs]</a>
+<span class="linenos"> 36</span><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 37</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Temporary function to run all of Plot Evolution Live.&quot;&quot;&quot;</span>
+<span class="linenos"> 38</span>
+<span class="linenos"> 39</span>    <span class="c1"># ArgParse was put in the run() function to allow sphinx to document this code (which is probably of little value). This may or may not be temporary.</span>
+<span class="linenos"> 40</span>    <span class="n">arg_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="linenos"> 41</span>    <span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;--frame-interval&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="linenos"> 42</span>    <span class="n">args</span> <span class="o">=</span> <span class="n">arg_parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="linenos"> 43</span>    <span class="n">FRAME_INTERVAL</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">frame_interval</span><span class="p">)</span>
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span>
+<span class="linenos"> 46</span>    <span class="k">def</span><span class="w"> </span><span class="nf">animate_generation</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="linenos"> 47</span>        <span class="n">graph_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/alllivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos"> 48</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">graph_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos"> 49</span>        <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 50</span>        <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 51</span>        
+<span class="linenos"> 52</span>        <span class="n">is_transparent</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos"> 53</span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos"> 54</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos"> 55</span>                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos"> 56</span>                <span class="n">all_ys</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="linenos"> 57</span>                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_ys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos"> 58</span>                    <span class="n">is_transparent</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos"> 59</span>                <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">all_ys</span><span class="p">:</span>
+<span class="linenos"> 60</span>                    <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="linenos"> 61</span>                    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="linenos"> 62</span>        <span class="n">avg</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="linenos"> 63</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 64</span>            <span class="n">avg</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+<span class="linenos"> 65</span>
+<span class="linenos"> 66</span>        <span class="n">ax1</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos"> 67</span>        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">get_population_size</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># type: ignore</span>
+<span class="linenos"> 68</span>        <span class="c1"># ax1.set_xticks(range(1, config.get_population_size(), 1))</span>
+<span class="linenos"> 69</span>        <span class="n">ax1</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">avg</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_population_size</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;violet&quot;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">)</span>
+<span class="linenos"> 70</span>        <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">((</span><span class="n">accent_color2</span> <span class="o">+</span> <span class="s2">&quot;dd&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_transparent</span> <span class="k">else</span> <span class="p">(</span><span class="n">accent_color2</span> <span class="o">+</span> <span class="s2">&quot;ff&quot;</span><span class="p">)</span> <span class="p">))</span>
+<span class="linenos"> 71</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos"> 72</span>            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Circuit Pulses this Generation&#39;</span>
+<span class="linenos"> 73</span>            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Pulses&#39;</span>
+<span class="linenos"> 74</span>            <span class="c1"># Add a line for desired frequency</span>
+<span class="linenos"> 75</span>            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos"> 76</span>                <span class="n">ax1</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_desired_frequency</span><span class="p">(),</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_population_size</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">)</span>
+<span class="linenos"> 77</span>            <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span> <span class="c1"># type: ignore</span>
+<span class="linenos"> 78</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos"> 79</span>            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Circuit Fitness this Generation&#39;</span>
+<span class="linenos"> 80</span>            <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;Fitness&#39;</span>
+<span class="linenos"> 81</span>        <span class="n">ax1</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Circuit Number&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+<span class="linenos"> 82</span>
+<span class="linenos"> 83</span>        <span class="k">if</span> <span class="n">formal</span><span class="p">:</span>
+<span class="linenos"> 84</span>            <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Average Fitness&#39;</span><span class="p">,</span> <span class="s1">&#39;Individual Fitness&#39;</span><span class="p">,</span> <span class="s1">&#39;Target Fitness&#39;</span><span class="p">],</span>\
+<span class="linenos"> 85</span>                    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos"> 86</span>
+<span class="linenos"> 87</span>    <span class="k">def</span><span class="w"> </span><span class="nf">animate_epoch</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="linenos"> 88</span>        <span class="n">graph_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/bestlivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos"> 89</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">graph_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos"> 90</span>        <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 91</span>        <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 92</span>        <span class="n">zs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 93</span>        <span class="n">ws</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 94</span>        <span class="n">ts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 95</span>        <span class="n">ds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 96</span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos"> 97</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos"> 98</span>                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos"> 99</span>                <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="linenos">100</span>                <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="linenos">101</span>                <span class="n">zs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+<span class="linenos">102</span>                <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="linenos">103</span>                <span class="n">ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="linenos">104</span>                <span class="n">ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+<span class="linenos">105</span>        <span class="n">ax2</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">106</span>        <span class="c1"># ax2.set_yscale(&#39;symlog&#39;)</span>
+<span class="linenos">107</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">using_transfer_interval</span><span class="p">():</span>
+<span class="linenos">108</span>            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span><span class="n">config</span><span class="o">.</span><span class="n">get_transfer_interval</span><span class="p">()):</span>
+<span class="linenos">109</span>                <span class="n">ax2</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">accent_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">)</span>
+<span class="linenos">110</span>
+<span class="linenos">111</span>        <span class="n">plots</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">112</span>        <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">113</span>        <span class="c1"># Plot the overall best before the gen best so the gen best line appears on top</span>
+<span class="linenos">114</span>        <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#00b87d&quot;</span><span class="p">)</span> <span class="c1"># Ovr best Fitness</span>
+<span class="linenos">115</span>        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Overall Best&quot;</span><span class="p">)</span>
+<span class="linenos">116</span>        <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span> <span class="c1"># Generation/Epoch Best Fitness</span>
+<span class="linenos">117</span>        <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span> <span class="c1"># Generation Worst Fitness</span>
+<span class="linenos">118</span>        <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">yellow</span><span class="p">)</span> <span class="c1"># Generation Average Fitness</span>
+<span class="linenos">119</span>        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Best&quot;</span><span class="p">)</span>
+<span class="linenos">120</span>        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Worst&quot;</span><span class="p">)</span>
+<span class="linenos">121</span>        <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Average&quot;</span><span class="p">)</span>
+<span class="linenos">122</span>        <span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">accent_color</span><span class="p">)</span>
+<span class="linenos">123</span>
+<span class="linenos">124</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get_diversity_measure</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;NONE&quot;</span><span class="p">:</span>
+<span class="linenos">125</span>            <span class="n">ax3</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">126</span>            <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#5a70ed&quot;</span><span class="p">)</span> <span class="c1"># Generation diversity measure</span>
+<span class="linenos">127</span>            <span class="n">ax3</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;#5a70ed&#39;</span><span class="p">)</span>
+<span class="linenos">128</span>            <span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Diversity&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#5a70ed&#39;</span><span class="p">)</span>
+<span class="linenos">129</span>            <span class="n">ax3</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">130</span>            <span class="n">ax3</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_label_position</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+<span class="linenos">131</span>        
+<span class="linenos">132</span>        <span class="n">ax2</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Generation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Fitness&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Circuit Fitness per Generation&#39;</span><span class="p">)</span>
+<span class="linenos">133</span>
+<span class="linenos">134</span>        <span class="k">if</span> <span class="n">formal</span><span class="p">:</span>
+<span class="linenos">135</span>            <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">plots</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">136</span>
+<span class="linenos">137</span>        <span class="k">if</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_save_plots</span><span class="p">()):</span>
+<span class="linenos">138</span>            <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">plots_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;1_main.png&quot;</span><span class="p">)),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+<span class="linenos">139</span>
+<span class="linenos">140</span>    <span class="k">def</span><span class="w"> </span><span class="nf">animate_epoch_pulses</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="linenos">141</span>        <span class="n">graph_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/pulselivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">142</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">graph_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">143</span>        <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># closest to desired frequency</span>
+<span class="linenos">144</span>        <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># avg # of pulses</span>
+<span class="linenos">145</span>        <span class="n">zs</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># min # of pulses</span>
+<span class="linenos">146</span>        <span class="n">ws</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># max # of pulses</span>
+<span class="linenos">147</span>        <span class="n">ts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">148</span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos">149</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">150</span>                <span class="n">t</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="linenos">151</span>                <span class="n">d</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)))</span>
+<span class="linenos">152</span>                <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">153</span>                <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+<span class="linenos">154</span>                <span class="n">zs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+<span class="linenos">155</span>                <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+<span class="linenos">156</span>                <span class="n">ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="linenos">157</span>        <span class="n">ax9</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">158</span>
+<span class="linenos">159</span>        <span class="n">plots</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">160</span>        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Minimum&#39;</span><span class="p">,</span> <span class="s1">&#39;Maximum&#39;</span><span class="p">,</span> <span class="s1">&#39;Average&#39;</span><span class="p">,</span> <span class="s1">&#39;Best&#39;</span><span class="p">,</span> <span class="s1">&#39;Desired Frequency&#39;</span><span class="p">]</span>
+<span class="linenos">161</span>        <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax9</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;cornflowerblue&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="linenos">162</span>        <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax9</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;coral&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="linenos">163</span>        <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax9</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">yellow</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="linenos">164</span>        <span class="n">plots</span> <span class="o">+=</span> <span class="n">ax9</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lime&quot;</span><span class="p">)</span>
+<span class="linenos">165</span>        <span class="n">ax9</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">accent_color</span><span class="p">)</span>
+<span class="linenos">166</span>
+<span class="linenos">167</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos">168</span>            <span class="n">ax9</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_desired_frequency</span><span class="p">(),</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;violet&quot;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">)</span>
+<span class="linenos">169</span>            <span class="c1"># labels.append(&quot;Desired Frequency&quot;)</span>
+<span class="linenos">170</span>        <span class="n">ax9</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Generation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Pulses&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Circuit Pulse Count per Generation&#39;</span><span class="p">)</span>
+<span class="linenos">171</span>
+<span class="linenos">172</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">using_transfer_interval</span><span class="p">():</span>
+<span class="linenos">173</span>            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span><span class="n">config</span><span class="o">.</span><span class="n">get_transfer_interval</span><span class="p">()):</span>
+<span class="linenos">174</span>                <span class="n">ax9</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">accent_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">)</span>
+<span class="linenos">175</span>
+<span class="linenos">176</span>        <span class="k">if</span> <span class="n">formal</span><span class="p">:</span>
+<span class="linenos">177</span>            <span class="n">ax9</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">plots</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">178</span>
+<span class="linenos">179</span>        <span class="k">if</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_save_plots</span><span class="p">()):</span>
+<span class="linenos">180</span>            <span class="n">fig4</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">plots_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;2_pulses.png&quot;</span><span class="p">)),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+<span class="linenos">181</span>
+<span class="linenos">182</span>
+<span class="linenos">183</span>    <span class="k">def</span><span class="w"> </span><span class="nf">animate_waveform</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>    
+<span class="linenos">184</span>        <span class="n">graph_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/waveformlivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">185</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">graph_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">186</span>        <span class="n">pulse_trigger</span> <span class="o">=</span> <span class="p">[</span><span class="mi">341</span><span class="o">*</span><span class="mf">3.3</span><span class="o">/</span><span class="mi">715</span><span class="p">]</span><span class="o">*</span><span class="mi">500</span>
+<span class="linenos">187</span>        <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">188</span>        <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">189</span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos">190</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">191</span>                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos">192</span>                <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="linenos">193</span>                <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="mf">3.3</span><span class="o">/</span><span class="mi">715</span><span class="p">)</span>
+<span class="linenos">194</span>        <span class="n">ax4</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">195</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_tone_discriminator</span><span class="p">():</span>
+<span class="linenos">196</span>            <span class="n">ax4</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span> <span class="c1"># type: ignore</span>
+<span class="linenos">197</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">198</span>            <span class="n">ax4</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">])</span> <span class="c1"># type: ignore</span>
+<span class="linenos">199</span>        <span class="c1">#ax4.set_ylim([0, 750])</span>
+<span class="linenos">200</span>        <span class="n">ax4</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">])</span> <span class="c1"># type: ignore</span>
+<span class="linenos">201</span>        <span class="n">ax4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pulse_trigger</span><span class="p">,</span> <span class="s2">&quot;r--&quot;</span><span class="p">)</span>
+<span class="linenos">202</span>        <span class="n">ax4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="linenos">203</span>
+<span class="linenos">204</span>        <span class="k">if</span> <span class="n">formal</span><span class="p">:</span>
+<span class="linenos">205</span>            <span class="n">ax4</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Trigger Voltage&#39;</span><span class="p">,</span> <span class="s1">&#39;Circuit Voltage&#39;</span><span class="p">],</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower center&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">206</span>
+<span class="linenos">207</span>        <span class="n">ax4</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Time (μs)&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Current Hardware Waveform&#39;</span><span class="p">)</span>
+<span class="linenos">208</span>
+<span class="linenos">209</span>    <span class="k">def</span><span class="w"> </span><span class="nf">animate_state</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>    
+<span class="linenos">210</span>        <span class="n">graph_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/statelivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">211</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">graph_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">212</span>        <span class="n">pulse_trigger</span> <span class="o">=</span> <span class="p">[</span><span class="mi">341</span><span class="o">*</span><span class="mf">3.3</span><span class="o">/</span><span class="mi">715</span><span class="p">]</span><span class="o">*</span><span class="mi">500</span>
+<span class="linenos">213</span>        <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">214</span>        <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">215</span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos">216</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">217</span>                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos">218</span>                <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="linenos">219</span>                <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="linenos">220</span>        <span class="n">ax5</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">221</span>        <span class="n">ax5</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span> <span class="c1"># type: ignore</span>
+<span class="linenos">222</span>        <span class="c1">#ax4.set_ylim([0, 750])</span>
+<span class="linenos">223</span>        <span class="n">ax5</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span> <span class="c1"># type: ignore</span>
+<span class="linenos">224</span>        <span class="n">ax5</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pulse_trigger</span><span class="p">,</span> <span class="s2">&quot;r--&quot;</span><span class="p">)</span>
+<span class="linenos">225</span>        <span class="n">ax5</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="linenos">226</span>
+<span class="linenos">227</span>        <span class="k">if</span> <span class="n">formal</span><span class="p">:</span>
+<span class="linenos">228</span>            <span class="n">ax5</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Trigger Voltage&#39;</span><span class="p">,</span> <span class="s1">&#39;Circuit Voltage&#39;</span><span class="p">],</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower center&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">229</span>
+<span class="linenos">230</span>        <span class="n">ax5</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Time (μs)&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Current State&#39;</span><span class="p">)</span>
+<span class="linenos">231</span>
+<span class="linenos">232</span>    <span class="c1"># def animate_map(i):</span>
+<span class="linenos">233</span>    <span class="c1">#     graph_data = open(&#39;workspace/maplivedata.log&#39;,&#39;r&#39;).read()</span>
+<span class="linenos">234</span>    <span class="c1">#     lines = graph_data.split(&#39;\n&#39;)</span>
+<span class="linenos">235</span>    <span class="c1">#     xs = []</span>
+<span class="linenos">236</span>    <span class="c1">#     ys = []</span>
+<span class="linenos">237</span>    <span class="c1">#     fits = []</span>
+<span class="linenos">238</span>    <span class="c1">#     if len(lines) &gt; 0 and len(lines[0]) &gt; 0:</span>
+<span class="linenos">239</span>    <span class="c1">#         scale_factor = int(lines[0])</span>
+<span class="linenos">240</span>    <span class="c1">#         lines.pop(0) # Remove scale factor from the lines set</span>
+<span class="linenos">241</span>
+<span class="linenos">242</span>    <span class="c1">#         for line in lines:</span>
+<span class="linenos">243</span>    <span class="c1">#             vals = line.split(&#39; &#39;)</span>
+<span class="linenos">244</span>    <span class="c1">#             if (len(vals) &gt; 2 and len(vals[2]) &gt; 0):</span>
+<span class="linenos">245</span>    <span class="c1">#                 row = int(vals[0])</span>
+<span class="linenos">246</span>    <span class="c1">#                 col = int(vals[1])</span>
+<span class="linenos">247</span>    <span class="c1">#                 fit = float(vals[2])</span>
+<span class="linenos">248</span>    <span class="c1">#                 fits.append(fit)</span>
+<span class="linenos">249</span>    <span class="c1">#                 xs.append((col + 0.5) * scale_factor)</span>
+<span class="linenos">250</span>    <span class="c1">#                 ys.append((row + 0.5) * scale_factor)</span>
+<span class="linenos">251</span>
+<span class="linenos">252</span>    <span class="c1">#     ax5.clear()</span>
+<span class="linenos">253</span>
+<span class="linenos">254</span>    <span class="c1">#     # Add a line to the middle that separates possible from impossible cells</span>
+<span class="linenos">255</span>    <span class="c1">#     ax5.plot([0, 750], [0, 750], color=&#39;#444444&#39;, linewidth=0.5)</span>
+<span class="linenos">256</span>
+<span class="linenos">257</span>    <span class="c1">#     scatterplot = ax5.scatter(xs, ys, c=fits, s=50, cmap=&#39;winter&#39;)</span>
+<span class="linenos">258</span>    <span class="c1">#     plt.colorbar(scatterplot)</span>
+<span class="linenos">259</span>
+<span class="linenos">260</span>    <span class="c1">#     ax5.set_xlim(0, 750)</span>
+<span class="linenos">261</span>    <span class="c1">#     ax5.set_ylim(0, 750)</span>
+<span class="linenos">262</span>    <span class="c1">#     ax5.set_aspect(&#39;equal&#39;)</span>
+<span class="linenos">263</span>    <span class="c1">#     #ax5.set_xticks(np.arange(0, 1024, 50), minor=True)</span>
+<span class="linenos">264</span>    <span class="c1">#     #ax5.set_yticks(np.arange(0, 1024, 50), minor=True)</span>
+<span class="linenos">265</span>    <span class="c1">#     #ax5.grid(color = &#39;#363636&#39;, which = &#39;minor&#39;)</span>
+<span class="linenos">266</span>    <span class="c1">#     ax5.set(xlabel=&#39;Max Voltage (norm)&#39;, ylabel=&#39;Min Voltage (norm)&#39;, title=&#39;Elite Map&#39;)</span>
+<span class="linenos">267</span>
+<span class="linenos">268</span>    <span class="c1">#     if(config.get_save_plots()):</span>
+<span class="linenos">269</span>    <span class="c1">#         fig_map.savefig(str(plots_dir.joinpath(&quot;5_map.png&quot;)), bbox_inches=&quot;tight&quot;)</span>
+<span class="linenos">270</span>
+<span class="linenos">271</span>    <span class="k">def</span><span class="w"> </span><span class="nf">animate_pops</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="linenos">272</span>        <span class="n">graph_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/poplivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">273</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">graph_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">274</span>        <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">275</span>        <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">276</span>        <span class="n">ylabels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">277</span>        <span class="n">ylabel_i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos">278</span>        
+<span class="linenos">279</span>        <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos">280</span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos">281</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">282</span>                <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="linenos">283</span>                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">284</span>
+<span class="linenos">285</span>                <span class="n">args</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="linenos">286</span>                <span class="n">parsed</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">287</span>                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)):</span>
+<span class="linenos">288</span>                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">289</span>                        <span class="n">parsed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+<span class="linenos">290</span>                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">291</span>                    <span class="c1"># Haven&#39;t initialized the y&#39;s list yet, lets throw in an empty list for each out our source populations</span>
+<span class="linenos">292</span>                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parsed</span><span class="p">)):</span>
+<span class="linenos">293</span>                        <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+<span class="linenos">294</span>
+<span class="linenos">295</span>                <span class="c1"># Now we need to add to ys based on the index in parsed</span>
+<span class="linenos">296</span>                <span class="n">ylabels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Population &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ylabel_i</span><span class="p">))</span>
+<span class="linenos">297</span>                <span class="n">ylabel_i</span> <span class="o">=</span> <span class="n">ylabel_i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">298</span>                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parsed</span><span class="p">)):</span>
+<span class="linenos">299</span>                    <span class="n">ys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parsed</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="linenos">300</span>        
+<span class="linenos">301</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">302</span>            <span class="n">ax6</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">303</span>            <span class="n">ax6</span><span class="o">.</span><span class="n">stackplot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">ylabels</span><span class="p">)</span>
+<span class="linenos">304</span>            <span class="n">ax6</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">305</span>            <span class="n">ax6</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Generation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Number from Population&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Circuits from Each Source Population&#39;</span><span class="p">)</span>
+<span class="linenos">306</span>
+<span class="linenos">307</span>    <span class="k">def</span><span class="w"> </span><span class="nf">anim_violin_plots</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="linenos">308</span>        <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/violinlivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">309</span>        <span class="n">collections</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">310</span>        <span class="n">gens</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">311</span>        <span class="n">widths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">312</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">313</span>        <span class="c1"># Decide which generations to include based on the number to have and the number available</span>
+<span class="linenos">314</span>        <span class="n">interval</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">MAX_VIOLIN_PLOTS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">315</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">MAX_VIOLIN_PLOTS</span><span class="p">:</span>
+<span class="linenos">316</span>            <span class="n">interval</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos">317</span>        <span class="c1"># Makes sure the first generation displayed will always be generation 2 (the first where we have interesting data)</span>
+<span class="linenos">318</span>        <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">interval</span>
+<span class="linenos">319</span>        <span class="k">while</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="n">interval</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+<span class="linenos">320</span>            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="n">interval</span>
+<span class="linenos">321</span>            <span class="n">int_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<span class="linenos">322</span>            <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">int_index</span><span class="p">]</span>
+<span class="linenos">323</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">324</span>                <span class="n">vals</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="linenos">325</span>                <span class="n">gen</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">326</span>                <span class="n">gens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="linenos">327</span>                <span class="n">pts</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos">328</span>                <span class="n">collections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">pts</span><span class="p">)))</span>
+<span class="linenos">329</span>
+<span class="linenos">330</span>        <span class="c1"># Make sure that we always include the final generation</span>
+<span class="linenos">331</span>        <span class="c1"># File always ends with a blank line, so go 2 lines back</span>
+<span class="linenos">332</span>        <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="linenos">333</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">334</span>            <span class="n">vals</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="linenos">335</span>            <span class="n">gen</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">336</span>            <span class="n">gens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="linenos">337</span>            <span class="n">pts</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos">338</span>            <span class="n">collections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">pts</span><span class="p">)))</span>
+<span class="linenos">339</span>
+<span class="linenos">340</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">collections</span><span class="p">)):</span>
+<span class="linenos">341</span>            <span class="n">widths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interval</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="linenos">342</span>
+<span class="linenos">343</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">collections</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">344</span>            <span class="n">ax7</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">345</span>            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">using_transfer_interval</span><span class="p">():</span>
+<span class="linenos">346</span>                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span><span class="n">config</span><span class="o">.</span><span class="n">get_transfer_interval</span><span class="p">()):</span>
+<span class="linenos">347</span>                    <span class="n">ax7</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">accent_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">)</span>
+<span class="linenos">348</span>            <span class="n">ax7</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">collections</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">gens</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="n">widths</span><span class="p">)</span>
+<span class="linenos">349</span>            <span class="n">ax7</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Generation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Fitness&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Fitness Violin Plots&#39;</span><span class="p">)</span>
+<span class="linenos">350</span>
+<span class="linenos">351</span>        <span class="k">if</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_save_plots</span><span class="p">()):</span>
+<span class="linenos">352</span>            <span class="n">fig2</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">plots_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;3_violin_plots.png&quot;</span><span class="p">)))</span>
+<span class="linenos">353</span>
+<span class="linenos">354</span>    <span class="k">def</span><span class="w"> </span><span class="nf">anim_violin_plots_pulse</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="linenos">355</span>        <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/pulselivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">356</span>        <span class="n">collections</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">357</span>        <span class="n">gens</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">358</span>        <span class="n">widths</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">359</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">360</span>        <span class="c1"># Decide which generations to include based on the number to have and the number available</span>
+<span class="linenos">361</span>        <span class="n">interval</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">/</span> <span class="n">MAX_VIOLIN_PLOTS</span>
+<span class="linenos">362</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">MAX_VIOLIN_PLOTS</span><span class="p">:</span>
+<span class="linenos">363</span>            <span class="n">interval</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos">364</span>        <span class="c1"># Makes sure the first generation displayed will always be generation 2 (the first where we have interesting data)</span>
+<span class="linenos">365</span>        <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">interval</span>
+<span class="linenos">366</span>        <span class="k">while</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="n">interval</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+<span class="linenos">367</span>            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="n">interval</span>
+<span class="linenos">368</span>            <span class="n">int_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<span class="linenos">369</span>            <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">int_index</span><span class="p">]</span>
+<span class="linenos">370</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">371</span>                <span class="n">vals</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="linenos">372</span>                <span class="n">gen</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">373</span>                <span class="n">gens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="linenos">374</span>                <span class="n">pts</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos">375</span>                <span class="n">collections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">pts</span><span class="p">)))</span>
+<span class="linenos">376</span>
+<span class="linenos">377</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">collections</span><span class="p">)):</span>
+<span class="linenos">378</span>            <span class="n">widths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interval</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="linenos">379</span>
+<span class="linenos">380</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">collections</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">381</span>            <span class="n">ax10</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">382</span>            <span class="n">ax10</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">collections</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">gens</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="n">widths</span><span class="p">)</span>
+<span class="linenos">383</span>            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">using_transfer_interval</span><span class="p">():</span>
+<span class="linenos">384</span>                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span><span class="n">config</span><span class="o">.</span><span class="n">get_transfer_interval</span><span class="p">()):</span>
+<span class="linenos">385</span>                    <span class="n">ax10</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">accent_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">)</span>
+<span class="linenos">386</span>            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos">387</span>                <span class="n">ax10</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_desired_frequency</span><span class="p">(),</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;violet&quot;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">)</span>  
+<span class="linenos">388</span>            <span class="n">ax10</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Generation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Pulses&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Pulse Violin Plots&#39;</span><span class="p">)</span>
+<span class="linenos">389</span>            <span class="n">ax10</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Generation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Pulses&#39;</span><span class="p">)</span>
+<span class="linenos">390</span>
+<span class="linenos">391</span>    <span class="k">def</span><span class="w"> </span><span class="nf">anim_heatmap</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="linenos">392</span>        <span class="k">global</span> <span class="n">max_pulses</span>
+<span class="linenos">393</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos">394</span>            <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/pulselivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">395</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">396</span>            <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/heatmaplivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">397</span>
+<span class="linenos">398</span>        
+<span class="linenos">399</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">400</span>        <span class="n">collections</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">401</span>        <span class="n">gens</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">402</span>
+<span class="linenos">403</span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos">404</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="linenos">405</span>                <span class="n">vals</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="linenos">406</span>                <span class="n">pts</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos">407</span>                <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">:</span>
+<span class="linenos">408</span>                    <span class="n">gens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="linenos">409</span>                    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos">410</span>                        <span class="n">collections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">pt</span><span class="p">))</span>
+<span class="linenos">411</span>                    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">412</span>                        <span class="n">collections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span><span class="o">*</span><span class="mf">3.3</span><span class="o">/</span><span class="mi">715</span><span class="p">)</span>
+<span class="linenos">413</span>                
+<span class="linenos">414</span>        <span class="n">ax8</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>                         
+<span class="linenos">415</span>        <span class="n">ax8</span><span class="o">.</span><span class="n">hist2d</span><span class="p">(</span><span class="n">gens</span><span class="p">,</span><span class="n">collections</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">HEATMAP_BINS</span><span class="p">)</span>
+<span class="linenos">416</span>
+<span class="linenos">417</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos">418</span>            <span class="n">ax8</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Generation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Pulses&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Pulse Count Histogram&#39;</span><span class="p">)</span>
+<span class="linenos">419</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">420</span>            <span class="n">ax8</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Generation&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Voltage (V)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Voltage Heatmap&#39;</span><span class="p">)</span>
+<span class="linenos">421</span>
+<span class="linenos">422</span>        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">using_transfer_interval</span><span class="p">():</span>
+<span class="linenos">423</span>                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span><span class="n">config</span><span class="o">.</span><span class="n">get_transfer_interval</span><span class="p">()):</span>
+<span class="linenos">424</span>                    <span class="n">ax8</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">accent_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">)</span>
+<span class="linenos">425</span>
+<span class="linenos">426</span>        <span class="k">if</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_save_plots</span><span class="p">()):</span>
+<span class="linenos">427</span>            <span class="n">fig3</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">plots_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;4_heatmap.png&quot;</span><span class="p">)))</span>
+<span class="linenos">428</span>
+<span class="linenos">429</span>    <span class="k">def</span><span class="w"> </span><span class="nf">animate_pulse_map</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+<span class="linenos">430</span>        <span class="n">graph_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;workspace/maplivedata.log&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">431</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">graph_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">432</span>        <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">433</span>        <span class="n">fits</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">434</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">435</span>            <span class="n">scale_factor</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">436</span>            <span class="n">lines</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># Remove scale factor from the lines set</span>
+<span class="linenos">437</span>
+<span class="linenos">438</span>            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos">439</span>                <span class="c1"># Two values; the pulse count (frequency) and the fitness</span>
+<span class="linenos">440</span>                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="linenos">441</span>                    <span class="n">vals</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="linenos">442</span>
+<span class="linenos">443</span>                    <span class="n">col</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos">444</span>                    <span class="n">fit</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="linenos">445</span>                    <span class="n">fits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
+<span class="linenos">446</span>                    <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">col</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale_factor</span><span class="p">)</span>
+<span class="linenos">447</span>
+<span class="linenos">448</span>            <span class="n">ax5</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos">449</span>
+<span class="linenos">450</span>            <span class="n">ax5</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">fits</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">scale_factor</span><span class="p">)</span>
+<span class="linenos">451</span>
+<span class="linenos">452</span>            <span class="n">ax5</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">150_000</span><span class="p">)</span>
+<span class="linenos">453</span>            <span class="n">ax5</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="linenos">454</span>            <span class="n">ax5</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Fitness&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Elite Map&#39;</span><span class="p">)</span>
+<span class="linenos">455</span>
+<span class="linenos">456</span>    <span class="c1"># def plot(fig, function):</span>
+<span class="linenos">457</span>    <span class="c1">#     if formal:</span>
+<span class="linenos">458</span>    <span class="c1">#         return function(0)</span>
+<span class="linenos">459</span>    <span class="c1">#     else:</span>
+<span class="linenos">460</span>    <span class="c1">#         return animation.FuncAnimation(fig, function, interval=FRAME_INTERVAL, cache_frame_data=False)</span>
+<span class="linenos">461</span>
+<span class="linenos">462</span>
+<span class="linenos">463</span>    <span class="n">plots_dir</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_plots_directory</span><span class="p">()</span>
+<span class="linenos">464</span>
+<span class="linenos">465</span>    <span class="n">formal</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">466</span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;formal&#39;</span><span class="p">:</span>
+<span class="linenos">467</span>        <span class="n">formal</span> <span class="o">=</span> <span class="kc">True</span> 
+<span class="linenos">468</span>        <span class="n">plots_dir</span> <span class="o">=</span> <span class="n">plots_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;Formal&quot;</span><span class="p">)</span>
+<span class="linenos">469</span>        <span class="n">accent_color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>
+<span class="linenos">470</span>        <span class="n">accent_color2</span> <span class="o">=</span> <span class="s2">&quot;#65187A&quot;</span>
+<span class="linenos">471</span>        <span class="n">heatmap_color</span> <span class="o">=</span> <span class="s1">&#39;Blues&#39;</span>
+<span class="linenos">472</span>        <span class="n">yellow</span> <span class="o">=</span> <span class="s2">&quot;goldenrod&quot;</span>
+<span class="linenos">473</span>        <span class="n">plot</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fig</span><span class="p">,</span> <span class="n">function</span> <span class="p">:</span> <span class="n">function</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">474</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">475</span>        <span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;dark_background&#39;</span><span class="p">)</span>
+<span class="linenos">476</span>        <span class="n">accent_color</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span>
+<span class="linenos">477</span>        <span class="n">accent_color2</span> <span class="o">=</span> <span class="s2">&quot;#f0f8ff&quot;</span>
+<span class="linenos">478</span>        <span class="n">heatmap_color</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span>
+<span class="linenos">479</span>        <span class="n">yellow</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span>
+<span class="linenos">480</span>        <span class="n">plot</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fig</span><span class="p">,</span> <span class="n">function</span> <span class="p">:</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">FRAME_INTERVAL</span><span class="p">,</span> <span class="n">cache_frame_data</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos">481</span>
+<span class="linenos">482</span>    
+<span class="linenos">483</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">(</span><span class="n">plots_dir</span><span class="p">):</span>
+<span class="linenos">484</span>        <span class="n">mkdir</span><span class="p">(</span><span class="n">plots_dir</span><span class="p">)</span>
+<span class="linenos">485</span>
+<span class="linenos">486</span>    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="linenos">487</span>    <span class="n">rows</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="linenos">488</span>    <span class="n">cols</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos">489</span>    <span class="n">has_wf_plot</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">490</span>    <span class="n">has_st_plot</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">491</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos">492</span>        <span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">493</span>        <span class="n">has_wf_plot</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">494</span>
+<span class="linenos">495</span>    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_tone_discriminator</span><span class="p">():</span>
+<span class="linenos">496</span>        <span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">497</span>        <span class="n">has_st_plot</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">498</span>
+<span class="linenos">499</span>    <span class="n">has_pop_plot</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos">500</span>    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">uses_init_existing_population</span><span class="p">():</span>
+<span class="linenos">501</span>        <span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos">502</span>        <span class="n">has_pop_plot</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="linenos">503</span>
+<span class="linenos">504</span>    <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="linenos">505</span>    <span class="n">ani</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate_generation</span><span class="p">)</span>
+<span class="linenos">506</span>    <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">507</span>    <span class="n">ax3</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+<span class="linenos">508</span>    <span class="n">ani2</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate_epoch</span><span class="p">)</span>
+<span class="linenos">509</span>
+<span class="linenos">510</span>    <span class="k">if</span> <span class="n">has_wf_plot</span><span class="p">:</span>
+<span class="linenos">511</span>        <span class="n">ax4</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="linenos">512</span>        <span class="n">ani3</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate_waveform</span><span class="p">)</span>
+<span class="linenos">513</span>    
+<span class="linenos">514</span>    <span class="k">if</span> <span class="n">has_st_plot</span><span class="p">:</span>
+<span class="linenos">515</span>        <span class="n">ax5</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="linenos">516</span>        <span class="n">ani4</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate_state</span><span class="p">)</span>
+<span class="linenos">517</span>
+<span class="linenos">518</span>    <span class="k">if</span> <span class="n">has_pop_plot</span><span class="p">:</span>
+<span class="linenos">519</span>        <span class="n">ax6</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">rows</span> <span class="o">*</span> <span class="n">cols</span><span class="p">)</span>
+<span class="linenos">520</span>        <span class="n">ani6</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate_pops</span><span class="p">)</span>
+<span class="linenos">521</span>
+<span class="linenos">522</span>    <span class="n">fig2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="linenos">523</span>    <span class="n">ax7</span> <span class="o">=</span> <span class="n">fig2</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">524</span>    <span class="n">ani7</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig2</span><span class="p">,</span> <span class="n">anim_violin_plots</span><span class="p">)</span>
+<span class="linenos">525</span>
+<span class="linenos">526</span>    <span class="n">fig3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="linenos">527</span>    <span class="n">ax8</span> <span class="o">=</span> <span class="n">fig3</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">528</span>    <span class="n">ani8</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig3</span><span class="p">,</span> <span class="n">anim_heatmap</span><span class="p">)</span>
+<span class="linenos">529</span>
+<span class="linenos">530</span>    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">is_pulse_count</span><span class="p">():</span>
+<span class="linenos">531</span>        <span class="n">fig4</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="linenos">532</span>        <span class="n">ax9</span> <span class="o">=</span> <span class="n">fig4</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">533</span>        <span class="n">ani9</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig4</span><span class="p">,</span> <span class="n">animate_epoch_pulses</span><span class="p">)</span>
+<span class="linenos">534</span>        <span class="n">ax10</span> <span class="o">=</span> <span class="n">fig4</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">535</span>        <span class="n">ani10</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig4</span><span class="p">,</span> <span class="n">anim_violin_plots_pulse</span><span class="p">)</span>
+<span class="linenos">536</span>
+<span class="linenos">537</span>    <span class="c1"># if config.get_selection_type() == &#39;MAP_ELITES&#39;:</span>
+<span class="linenos">538</span>    <span class="c1">#     fig_map = plt.figure()</span>
+<span class="linenos">539</span>    <span class="c1">#     ax5 = fig_map.add_subplot(1, 1, 1)</span>
+<span class="linenos">540</span>    <span class="c1">#     if config.get_fitness_func() == &quot;PULSE_CONSISTENCY&quot;:</span>
+<span class="linenos">541</span>    <span class="c1">#         ani4 = plot(fig_map, animate_pulse_map)</span>
+<span class="linenos">542</span>    <span class="c1">#     else:</span>
+<span class="linenos">543</span>    <span class="c1">#         ani4 = plot(fig_map, animate_map)</span>
+<span class="linenos">544</span>
+<span class="linenos">545</span>    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.50</span><span class="p">)</span>
+<span class="linenos">546</span>    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
+<span class="linenos">547</span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="p">(</span><span class="ow">not</span> <span class="n">formal</span><span class="p">))</span></div>
+
+<span class="linenos">548</span>    <span class="c1">#plt.show(block=True)</span>
+<span class="linenos">549</span>
+<span class="linenos">550</span><span class="c1"># only run if this is the main method.</span>
+<span class="linenos">551</span><span class="k">if</span> <span class="p">(</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">):</span>
+<span class="linenos">552</span>    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Evolvable Hardware
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024-2026, Evolvable Hardware.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Population.PopulationInitialization &#8212; Bitstream Evolution Develop Branch 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/Population/PopulationInitialization';</script>
+    <link rel="icon" href="https://evolvablehardware.org/images/setup_tutorial_2.jpg"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-light" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>
+    <script>document.write(`<img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-dark" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Development Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Bitstream Evolution’s Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../code/index.html">Refactored Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../code/Circuit/index.html">Circuit</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../code/Circuit/Circuit.html">Circuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../code/Circuit/FileBasedCircuit.html">FileBasedCircuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../code/Circuit/FullySimCircuit.html">FullySimCircuit.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../code/EvaluateFitness/index.html">Evaluate Fitness</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../code/EvaluateFitness/EvaluateFitness.html">EvaluateFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../code/EvaluateFitness/EvalPulseCountFitness.html">EvalPulseCountFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../code/EvaluateFitness/EvalVarMaxFitness.html">EvalVarMaxFitness.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../code/GenerateMeasurements/index.html">Generate Measurements</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../code/GenerateMeasurements/GenerateMeasurements.html">GenerateMeasurements.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../code/Hardware/index.html">Hardware</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../code/Hardware/Microcontroller.html">Microcontroller.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../code/Individual/index.html">Individual</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../code/Individual/BitstreamIndividual.html">BitstreamIndividual.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../code/Population/index.html">Population</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../code/Population/PopulationInitialization.html">PopulationInitialization.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/BitstreamEvolutionProtocols.html">BitstreamEvolutionProtocols.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/TrivialImplementation.html">TrivialImplementation.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/Directories.html">Directories.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/Evolution.html">Evolution.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/Logger.html">Logger.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/PlotConfig.html">PlotConfig.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/PlotDataRecorder.html">PlotDataRecorder.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/PlotEvolutionLive.html">PlotEvolutionLive.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code/utilities.html">utilities.py</a></li>
+</ul>
+</details></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for Population.PopulationInitialization</h1><div class="highlight"><pre>
+<span></span><span class="linenos">  1</span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="linenos">  2</span><span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">Random</span>
+<span class="linenos">  3</span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Protocol</span>
+<span class="linenos">  4</span><span class="kn">from</span><span class="w"> </span><span class="nn">BitstreamEvolutionProtocols</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circuit</span><span class="p">,</span> <span class="n">Individual</span><span class="p">,</span> <span class="n">Population</span>
+<span class="linenos">  5</span><span class="kn">from</span><span class="w"> </span><span class="nn">Circuit.FileBasedCircuit</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileBasedCircuit</span>
+<span class="linenos">  6</span><span class="kn">from</span><span class="w"> </span><span class="nn">Directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">Directories</span>
+<span class="linenos">  7</span><span class="kn">from</span><span class="w"> </span><span class="nn">Individual.BitstreamIndividual</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitstreamIndividual</span>
+<span class="linenos">  8</span><span class="kn">from</span><span class="w"> </span><span class="nn">Logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">Logger</span>
+<span class="linenos">  9</span><span class="kn">from</span><span class="w"> </span><span class="nn">utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">wipe_folder</span>
+<span class="linenos"> 10</span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="linenos"> 11</span>
+<span class="linenos"> 12</span><span class="n">SEED_HARDWARE_FILEPATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data/seed-hardware.asc&quot;</span><span class="p">)</span>
+<span class="linenos"> 13</span>
+<span class="linenos"> 14</span><span class="c1"># File for implementations of GenerateInitialPopulations</span>
+<span class="linenos"> 15</span>
+<div class="viewcode-block" id="GenerateInitialPopulations">
+<a class="viewcode-back" href="../../code/Population/PopulationInitialization.html#Population.PopulationInitialization.GenerateInitialPopulations">[docs]</a>
+<span class="linenos"> 16</span><span class="k">class</span><span class="w"> </span><span class="nc">GenerateInitialPopulations</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="linenos"> 17</span>    <span class="s2">&quot;Somehow gets you an initial implementation.&quot;</span>
+<span class="linenos"> 18</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Population</span><span class="p">]:</span> <span class="o">...</span></div>
+
+<span class="linenos"> 19</span>
+<div class="viewcode-block" id="GenerateInitialPopulation">
+<a class="viewcode-back" href="../../code/Population/PopulationInitialization.html#Population.PopulationInitialization.GenerateInitialPopulation">[docs]</a>
+<span class="linenos"> 20</span><span class="k">class</span><span class="w"> </span><span class="nc">GenerateInitialPopulation</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="linenos"> 21</span>    <span class="s2">&quot;The special case of GenerateInitialPopulations that constructs only a single population&quot;</span>
+<span class="linenos"> 22</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Population</span><span class="p">:</span> <span class="o">...</span></div>
+
+<span class="linenos"> 23</span>
+<div class="viewcode-block" id="GenerateSinglePopulationWrapper">
+<a class="viewcode-back" href="../../code/Population/PopulationInitialization.html#Population.PopulationInitialization.GenerateSinglePopulationWrapper">[docs]</a>
+<span class="linenos"> 24</span><span class="k">class</span><span class="w"> </span><span class="nc">GenerateSinglePopulationWrapper</span><span class="p">:</span>
+<span class="linenos"> 25</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 26</span><span class="sd">    A wrapper around GenerateInitialPopulation (singular) that follows</span>
+<span class="linenos"> 27</span><span class="sd">    GenerateInitialPopulations (plural) which is the protocol used in Evolution</span>
+<span class="linenos"> 28</span><span class="sd">    Returns a one-element list of the population created</span>
+<span class="linenos"> 29</span><span class="sd">    Example Usage: Evolution(..., GenerateSinglePopulationWrapper(GenerateRandomPopulation(...)), ...)</span>
+<span class="linenos"> 30</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos"> 31</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gen_func</span><span class="p">:</span> <span class="n">GenerateInitialPopulation</span><span class="p">):</span>
+<span class="linenos"> 32</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__gen_func</span> <span class="o">=</span> <span class="n">gen_func</span>
+<span class="linenos"> 33</span>    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Population</span><span class="p">]:</span>
+<span class="linenos"> 34</span>        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__gen_func</span><span class="p">()]</span></div>
+
+<span class="linenos"> 35</span>
+<div class="viewcode-block" id="PostConstructionStrategy">
+<a class="viewcode-back" href="../../code/Population/PopulationInitialization.html#Population.PopulationInitialization.PostConstructionStrategy">[docs]</a>
+<span class="linenos"> 36</span><span class="k">class</span><span class="w"> </span><span class="nc">PostConstructionStrategy</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="linenos"> 37</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;Consumes the incoming parameter&#39;&#39;&#39;</span>
+<span class="linenos"> 38</span>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">BitstreamIndividual</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitstreamIndividual</span><span class="p">:</span> <span class="o">...</span></div>
+
+<span class="linenos"> 39</span>
+<div class="viewcode-block" id="RandomizationStrategy">
+<a class="viewcode-back" href="../../code/Population/PopulationInitialization.html#Population.PopulationInitialization.RandomizationStrategy">[docs]</a>
+<span class="linenos"> 40</span><span class="k">class</span><span class="w"> </span><span class="nc">RandomizationStrategy</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="linenos"> 41</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;Consumes the incoming parameter&#39;&#39;&#39;</span>
+<span class="linenos"> 42</span>    <span class="k">def</span><span class="w"> </span><span class="nf">randomize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individuals</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BitstreamIndividual</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BitstreamIndividual</span><span class="p">]:</span> <span class="o">...</span></div>
+
+<span class="linenos"> 43</span>
+<span class="linenos"> 44</span><span class="k">class</span><span class="w"> </span><span class="nc">GenerateBitstreamPopulation</span><span class="p">:</span>
+<span class="linenos"> 45</span>    <span class="c1"># force everything to be passed by keyword</span>
+<span class="linenos"> 46</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sz</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bitstream_sz</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="linenos"> 47</span>                 <span class="n">post_construction_strategy</span><span class="p">:</span> <span class="n">PostConstructionStrategy</span><span class="p">,</span>
+<span class="linenos"> 48</span>                 <span class="n">randomization_strategy</span><span class="p">:</span> <span class="n">RandomizationStrategy</span><span class="p">,</span>
+<span class="linenos"> 49</span>                 <span class="n">mutation_prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rand</span><span class="p">:</span> <span class="n">Random</span><span class="p">):</span>
+<span class="linenos"> 50</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__sz</span> <span class="o">=</span> <span class="n">sz</span>
+<span class="linenos"> 51</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__bitstream_sz</span> <span class="o">=</span> <span class="n">bitstream_sz</span>
+<span class="linenos"> 52</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__post_construction_strategy</span> <span class="o">=</span> <span class="n">post_construction_strategy</span>
+<span class="linenos"> 53</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__randomization_strategy</span> <span class="o">=</span> <span class="n">randomization_strategy</span>
+<span class="linenos"> 54</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__rand</span> <span class="o">=</span> <span class="n">rand</span>
+<span class="linenos"> 55</span>
+<span class="linenos"> 56</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__mutation_prob</span> <span class="o">=</span> <span class="n">mutation_prob</span>
+<span class="linenos"> 57</span>        
+<span class="linenos"> 58</span>    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Population</span><span class="p">:</span>
+<span class="linenos"> 59</span><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos"> 60</span><span class="sd">        Creates initial population based on the config.</span>
+<span class="linenos"> 61</span><span class="sd">        1. Clears the files used to keep track of circuit</span>
+<span class="linenos"> 62</span><span class="sd">        2. Uses appropriate initialization method specified by config.</span>
+<span class="linenos"> 63</span><span class="sd">        3. Handles randomization until condition in config is met.</span>
+<span class="linenos"> 64</span><span class="sd">        &quot;&quot;&quot;</span>
+<span class="linenos"> 65</span>
+<span class="linenos"> 66</span>        <span class="n">individuals</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 67</span>
+<span class="linenos"> 68</span>        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sz</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos"> 69</span>            <span class="n">individual</span> <span class="o">=</span> <span class="n">BitstreamIndividual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bitstream_sz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rand</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mutation_prob</span><span class="p">)</span>
+<span class="linenos"> 70</span>            <span class="n">individual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__post_construction_strategy</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+<span class="linenos"> 71</span>
+<span class="linenos"> 72</span>            <span class="n">individuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+<span class="linenos"> 73</span>
+<span class="linenos"> 74</span>        <span class="n">circuits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__randomization_strategy</span><span class="o">.</span><span class="n">randomize</span><span class="p">(</span><span class="n">individuals</span><span class="p">)</span>
+<span class="linenos"> 75</span>
+<span class="linenos"> 76</span>        <span class="k">return</span> <span class="n">Population</span><span class="p">(</span><span class="n">circuits</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos"> 77</span>
+<span class="linenos"> 78</span><span class="c1"># used for CLONE_SEED</span>
+<span class="linenos"> 79</span><span class="k">class</span><span class="w"> </span><span class="nc">NoPostConstructionStrategy</span><span class="p">:</span>
+<span class="linenos"> 80</span>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">BitstreamIndividual</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitstreamIndividual</span><span class="p">:</span>
+<span class="linenos"> 81</span>        <span class="k">return</span> <span class="n">individual</span>
+<span class="linenos"> 82</span>
+<span class="linenos"> 83</span><span class="c1"># used for CLONE_SEED_MUTATE</span>
+<span class="linenos"> 84</span><span class="k">class</span><span class="w"> </span><span class="nc">MutateOncePostConstructionStrategy</span><span class="p">:</span>
+<span class="linenos"> 85</span>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">BitstreamIndividual</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitstreamIndividual</span><span class="p">:</span>
+<span class="linenos"> 86</span>        <span class="n">individual</span><span class="o">.</span><span class="n">mutate</span><span class="p">()</span>
+<span class="linenos"> 87</span>        <span class="k">return</span> <span class="n">individual</span>
+<span class="linenos"> 88</span>    
+<span class="linenos"> 89</span><span class="c1"># used for RANDOM</span>
+<span class="linenos"> 90</span><span class="k">class</span><span class="w"> </span><span class="nc">RandomizeBitstreamPostConstructionStrategy</span><span class="p">:</span>
+<span class="linenos"> 91</span>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">BitstreamIndividual</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitstreamIndividual</span><span class="p">:</span>
+<span class="linenos"> 92</span>        <span class="n">individual</span><span class="o">.</span><span class="n">randomize</span><span class="p">()</span>
+<span class="linenos"> 93</span>        <span class="k">return</span> <span class="n">individual</span>
+<span class="linenos"> 94</span>
+<span class="linenos"> 95</span><span class="k">class</span><span class="w"> </span><span class="nc">NoRandomizationStrategy</span><span class="p">:</span>
+<span class="linenos"> 96</span>    <span class="k">def</span><span class="w"> </span><span class="nf">randomize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individuals</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BitstreamIndividual</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BitstreamIndividual</span><span class="p">]:</span>
+<span class="linenos"> 97</span>        <span class="k">return</span> <span class="n">individuals</span>
+<span class="linenos"> 98</span>
+<span class="linenos"> 99</span><span class="k">class</span><span class="w"> </span><span class="nc">FileBasedCircuitFactory</span><span class="p">:</span>
+<span class="linenos">100</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sz</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">directories</span><span class="p">:</span> <span class="n">Directories</span><span class="p">,</span> <span class="n">routing_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">accessed_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="linenos">101</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span> <span class="o">=</span> <span class="n">logger</span>
+<span class="linenos">102</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__directories</span> <span class="o">=</span> <span class="n">directories</span>
+<span class="linenos">103</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__routing_type</span> <span class="o">=</span> <span class="n">routing_type</span>
+<span class="linenos">104</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__accessed_columns</span> <span class="o">=</span> <span class="n">accessed_columns</span>
+<span class="linenos">105</span>
+<span class="linenos">106</span>        <span class="n">wipe_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__directories</span><span class="o">.</span><span class="n">asc_dir</span><span class="p">)</span>
+<span class="linenos">107</span>        <span class="n">wipe_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__directories</span><span class="o">.</span><span class="n">bin_dir</span><span class="p">)</span>
+<span class="linenos">108</span>        <span class="n">wipe_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__directories</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+<span class="linenos">109</span>
+<span class="linenos">110</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__circuits</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">111</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sz</span><span class="p">):</span>
+<span class="linenos">112</span>            <span class="n">circuit</span> <span class="o">=</span> <span class="n">FileBasedCircuit</span><span class="p">(</span>
+<span class="linenos">113</span>                <span class="n">index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+<span class="linenos">114</span>                <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;hardware&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+<span class="linenos">115</span>                <span class="n">template</span><span class="o">=</span><span class="n">SEED_HARDWARE_FILEPATH</span><span class="p">,</span>
+<span class="linenos">116</span>                <span class="n">logger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="p">,</span>
+<span class="linenos">117</span>                <span class="n">directories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__directories</span><span class="p">,</span>
+<span class="linenos">118</span>                <span class="n">routing_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__routing_type</span><span class="p">,</span>
+<span class="linenos">119</span>                <span class="n">accessed_columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__accessed_columns</span>
+<span class="linenos">120</span>            <span class="p">)</span>
+<span class="linenos">121</span>            <span class="bp">self</span><span class="o">.</span><span class="n">__circuits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">circuit</span><span class="p">)</span>
+<span class="linenos">122</span>
+<span class="linenos">123</span>    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">populations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Population</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Circuit</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Population</span><span class="p">,</span> <span class="n">Individual</span><span class="p">]]]:</span>
+<span class="linenos">124</span>        <span class="n">res</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Circuit</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Population</span><span class="p">,</span> <span class="n">Individual</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos">125</span>        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">126</span>        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">populations</span><span class="p">:</span>
+<span class="linenos">127</span>            <span class="n">pop</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">population_list</span>
+<span class="linenos">128</span>            <span class="k">for</span> <span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">pop</span><span class="p">:</span>
+<span class="linenos">129</span>                <span class="n">circuit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__circuits</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+<span class="linenos">130</span>                <span class="n">bitstream</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">individual</span><span class="o">.</span><span class="n">get_bitstream</span><span class="p">()</span> <span class="c1"># type: ignore</span>
+<span class="linenos">131</span>                <span class="n">circuit</span><span class="o">.</span><span class="n">set_bitstream</span><span class="p">(</span><span class="n">bitstream</span><span class="p">)</span>
+<span class="linenos">132</span>                <span class="n">res</span><span class="p">[</span><span class="n">circuit</span><span class="p">]</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span><span class="p">,</span> <span class="n">individual</span><span class="p">)]</span>
+<span class="linenos">133</span>                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">134</span>
+<span class="linenos">135</span>        <span class="k">return</span> <span class="n">res</span>
+<span class="linenos">136</span>
+<span class="linenos">137</span><span class="c1"># TODO: to add in randomize_until modes, we need a way to get circuit fitness/measurements AT initialization time</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Evolvable Hardware
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024-2026, Evolvable Hardware.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

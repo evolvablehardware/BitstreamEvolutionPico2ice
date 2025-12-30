@@ -1,0 +1,578 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logger &#8212; Bitstream Evolution Develop Branch 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/Logger';</script>
+    <link rel="icon" href="https://evolvablehardware.org/images/setup_tutorial_2.jpg"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-light" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>
+    <script>document.write(`<img src="https://evolvablehardware.org/images/setup_tutorial_2.jpg" class="logo__image only-dark" alt="Bitstream Evolution Develop Branch 0.1.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Development Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Bitstream Evolution’s Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../code/index.html">Refactored Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/Circuit/index.html">Circuit</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/Circuit/Circuit.html">Circuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../code/Circuit/FileBasedCircuit.html">FileBasedCircuit.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../code/Circuit/FullySimCircuit.html">FullySimCircuit.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/EvaluateFitness/index.html">Evaluate Fitness</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/EvaluateFitness/EvaluateFitness.html">EvaluateFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../code/EvaluateFitness/EvalPulseCountFitness.html">EvalPulseCountFitness.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../code/EvaluateFitness/EvalVarMaxFitness.html">EvalVarMaxFitness.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/GenerateMeasurements/index.html">Generate Measurements</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/GenerateMeasurements/GenerateMeasurements.html">GenerateMeasurements.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/Hardware/index.html">Hardware</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/Hardware/Microcontroller.html">Microcontroller.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/Individual/index.html">Individual</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/Individual/BitstreamIndividual.html">BitstreamIndividual.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../code/Population/index.html">Population</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../code/Population/PopulationInitialization.html">PopulationInitialization.py</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/BitstreamEvolutionProtocols.html">BitstreamEvolutionProtocols.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/TrivialImplementation.html">TrivialImplementation.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/Directories.html">Directories.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/Evolution.html">Evolution.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/Logger.html">Logger.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/PlotConfig.html">PlotConfig.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/PlotDataRecorder.html">PlotDataRecorder.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/PlotEvolutionLive.html">PlotEvolutionLive.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code/utilities.html">utilities.py</a></li>
+</ul>
+</details></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for Logger</h1><div class="highlight"><pre>
+<span></span><span class="linenos">  1</span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="linenos">  2</span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="linenos">  3</span><span class="kn">from</span><span class="w"> </span><span class="nn">sys</span><span class="w"> </span><span class="kn">import</span> <span class="n">stdout</span>
+<span class="linenos">  4</span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos">  5</span><span class="kn">from</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalledProcessError</span><span class="p">,</span> <span class="n">run</span>
+<span class="linenos">  6</span><span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">exists</span>
+<span class="linenos">  7</span><span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">join</span>
+<span class="linenos">  8</span><span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">mkdir</span>
+<span class="linenos">  9</span><span class="kn">from</span><span class="w"> </span><span class="nn">shutil</span><span class="w"> </span><span class="kn">import</span> <span class="n">copytree</span>
+<span class="linenos"> 10</span><span class="kn">from</span><span class="w"> </span><span class="nn">shutil</span><span class="w"> </span><span class="kn">import</span> <span class="n">rmtree</span>
+<span class="linenos"> 11</span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos"> 12</span>
+<span class="linenos"> 13</span><span class="c1"># The window dimensions</span>
+<span class="linenos"> 14</span><span class="n">LINE_WIDTH</span> <span class="o">=</span> <span class="mi">112</span>
+<span class="linenos"> 15</span><span class="n">WIN_DIM</span><span class="o">=</span><span class="s2">&quot;105x29&quot;</span>
+<span class="linenos"> 16</span><span class="n">DOUBLE_HLINE</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="n">LINE_WIDTH</span>
+<span class="linenos"> 17</span>
+<span class="linenos"> 18</span><span class="n">MONITOR_FILE</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="linenos"> 19</span>
+<span class="linenos"> 20</span><span class="n">TERM_CMD</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gnome-terminal&quot;</span><span class="p">,</span> <span class="s2">&quot;--geometry=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">WIN_DIM</span><span class="p">),</span> <span class="s2">&quot;--&quot;</span><span class="p">]</span>
+<span class="linenos"> 21</span>
+<span class="linenos"> 22</span><span class="c1"># The time between animation frames in milliseconds</span>
+<span class="linenos"> 23</span><span class="n">FRAME_DELAY</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="linenos"> 24</span>
+<span class="linenos"> 25</span><span class="c1"># The spacing between matplotlib subplots as a percentage of the average</span>
+<span class="linenos"> 26</span><span class="c1"># axis height</span>
+<span class="linenos"> 27</span><span class="n">SUBPLOT_SPACING</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="linenos"> 28</span>
+<span class="linenos"> 29</span><span class="c1"># Formatting constants</span>
+<span class="linenos"> 30</span><span class="n">HEADER</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[95m&#39;</span>
+<span class="linenos"> 31</span><span class="n">OKBLUE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[94m&#39;</span>
+<span class="linenos"> 32</span><span class="n">OKGREEN</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[92m&#39;</span>
+<span class="linenos"> 33</span><span class="n">WARNING</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[93m&#39;</span>
+<span class="linenos"> 34</span><span class="n">FAIL</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[91m&#39;</span>
+<span class="linenos"> 35</span><span class="n">ENDC</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[0m&#39;</span>
+<span class="linenos"> 36</span><span class="n">BOLD</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[1m&#39;</span>
+<span class="linenos"> 37</span><span class="n">UNDERLINE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[4m&#39;</span>
+<span class="linenos"> 38</span>
+<span class="linenos"> 39</span><span class="n">README_FILE_HEADER</span> <span class="o">=</span> <span class="s2">&quot;FPGA/MCU [1] </span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="linenos"> 40</span>
+<div class="viewcode-block" id="LoggerConfig">
+<a class="viewcode-back" href="../code/Logger.html#Logger.LoggerConfig">[docs]</a>
+<span class="linenos"> 41</span><span class="nd">@dataclass</span>
+<span class="linenos"> 42</span><span class="k">class</span><span class="w"> </span><span class="nc">LoggerConfig</span><span class="p">:</span>
+<span class="linenos"> 43</span>    <span class="n">plots_dir</span><span class="p">:</span> <span class="n">Path</span>
+<span class="linenos"> 44</span>    <span class="n">launch_plots</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="linenos"> 45</span>    <span class="n">is_sensitivity</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="linenos"> 46</span>    <span class="n">frame_interval</span><span class="p">:</span> <span class="nb">int</span>
+<span class="linenos"> 47</span>    <span class="n">log_file</span><span class="p">:</span> <span class="n">Path</span>
+<span class="linenos"> 48</span>    <span class="n">log_level</span><span class="p">:</span> <span class="nb">int</span>
+<span class="linenos"> 49</span>    <span class="n">save_log</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="linenos"> 50</span>    <span class="n">datetime_format</span><span class="p">:</span> <span class="nb">str</span></div>
+
+<span class="linenos"> 51</span>
+<span class="linenos"> 52</span><span class="c1"># TODO Utilize Python logging library</span>
+<span class="linenos"> 53</span><span class="k">class</span><span class="w"> </span><span class="nc">Logger</span><span class="p">:</span>
+<span class="linenos"> 54</span>    <span class="k">def</span><span class="w"> </span><span class="nf">__init_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 55</span>        <span class="c1"># Start the monitor</span>
+<span class="linenos"> 56</span>        <span class="c1"># self.log_event(1, &quot;Creating the monitor file...&quot;)</span>
+<span class="linenos"> 57</span>
+<span class="linenos"> 58</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="linenos"> 59</span>            <span class="s2">&quot;Evolutionary Experiment Monitor&quot;</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">LINE_WIDTH</span><span class="p">),</span>
+<span class="linenos"> 60</span>            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="linenos"> 61</span>        <span class="p">))</span>
+<span class="linenos"> 62</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">DOUBLE_HLINE</span><span class="p">))</span>
+<span class="linenos"> 63</span>        <span class="c1"># self.log_monitor(1, &quot;Parameters and updates load during circuit evaluation&quot;)</span>
+<span class="linenos"> 64</span>        <span class="c1"># self.log_monitor(1, &quot;.\n&quot; * 23)</span>
+<span class="linenos"> 65</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__experiment_explanation</span><span class="p">))</span>
+<span class="linenos"> 66</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">DOUBLE_HLINE</span><span class="p">))</span>
+<span class="linenos"> 67</span>        <span class="c1"># self.log_monitor(&quot;&quot;, self.__config.get_raw_data())</span>
+<span class="linenos"> 68</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">DOUBLE_HLINE</span><span class="p">))</span>
+<span class="linenos"> 69</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__monitor_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+<span class="linenos"> 70</span>
+<span class="linenos"> 71</span>        <span class="c1"># args = TERM_CMD + [&quot;python3&quot;, &quot;src/Monitor.py&quot;]</span>
+<span class="linenos"> 72</span>        <span class="c1"># try:</span>
+<span class="linenos"> 73</span>        <span class="c1">#     run(args, check=True, capture_output=True)</span>
+<span class="linenos"> 74</span>        <span class="c1"># except OSError as e:</span>
+<span class="linenos"> 75</span>        <span class="c1">#     self.log_error(1, &quot;An error occured while launching Monitor.py&quot;)</span>
+<span class="linenos"> 76</span>        <span class="c1"># except CalledProcessError as e:</span>
+<span class="linenos"> 77</span>        <span class="c1">#     self.log_error(1, &quot;An error occured in Monitor.py&quot;)</span>
+<span class="linenos"> 78</span>
+<span class="linenos"> 79</span>        <span class="c1">#set up directory for saving files</span>
+<span class="linenos"> 80</span>        <span class="n">plots_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">plots_dir</span>
+<span class="linenos"> 81</span>        <span class="k">try</span><span class="p">:</span>
+<span class="linenos"> 82</span>            <span class="n">rmtree</span><span class="p">(</span><span class="n">plots_dir</span><span class="p">)</span>
+<span class="linenos"> 83</span>        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+<span class="linenos"> 84</span>            <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="linenos"> 85</span>
+<span class="linenos"> 86</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">plots_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="linenos"> 87</span>            <span class="n">plots_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">launch_plots</span><span class="p">:</span>
+<span class="linenos"> 90</span>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">is_sensitivity</span><span class="p">:</span>
+<span class="linenos"> 91</span>                <span class="n">args</span> <span class="o">=</span> <span class="n">TERM_CMD</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;python3&quot;</span><span class="p">,</span> <span class="s2">&quot;src/PlotSensitivityLive.py&quot;</span><span class="p">]</span>
+<span class="linenos"> 92</span>            <span class="k">else</span><span class="p">:</span> 
+<span class="linenos"> 93</span>                <span class="n">args</span> <span class="o">=</span> <span class="n">TERM_CMD</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;python3&quot;</span><span class="p">,</span> <span class="s2">&quot;src/PlotEvolutionLive.py&quot;</span><span class="p">,</span> <span class="s2">&quot;--frame-interval&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">frame_interval</span><span class="p">)]</span>
+<span class="linenos"> 94</span>            
+<span class="linenos"> 95</span>            <span class="k">try</span><span class="p">:</span>
+<span class="linenos"> 96</span>                <span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos"> 97</span>            <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="linenos"> 98</span>                <span class="bp">self</span><span class="o">.</span><span class="n">log_error</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;An error occured while launching PlotEvolutionLive.py&quot;</span><span class="p">)</span>
+<span class="linenos"> 99</span>            <span class="k">except</span> <span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="linenos">100</span>                <span class="bp">self</span><span class="o">.</span><span class="n">log_error</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;An error occured in PlotEvolutionLive.py&quot;</span><span class="p">)</span>
+<span class="linenos">101</span>                <span class="bp">self</span><span class="o">.</span><span class="n">log_error</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="linenos">102</span>
+<span class="linenos">103</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">explanation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logger_config</span><span class="p">:</span> <span class="n">LoggerConfig</span><span class="p">):</span>
+<span class="linenos">104</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__monitor_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">logger_config</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="linenos">105</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__log_file</span> <span class="o">=</span> <span class="n">stdout</span>
+<span class="linenos">106</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__config</span> <span class="o">=</span> <span class="n">logger_config</span>
+<span class="linenos">107</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__experiment_explanation</span> <span class="o">=</span> <span class="n">explanation</span>
+<span class="linenos">108</span>
+<span class="linenos">109</span>        <span class="c1"># Ensure the logs exists and have been cleared. Not happy with</span>
+<span class="linenos">110</span>        <span class="c1"># this method, but couldn&#39;t find a better way to do it.</span>
+<span class="linenos">111</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/alllivedata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">112</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/bestlivedata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">113</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/waveformlivedata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">114</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/maplivedata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">115</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/heatmaplivedata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">116</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/pulselivedata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">117</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/violinlivedata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">118</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/poplivedata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">119</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/randomizationdata.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">120</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/fitnesssensitivity.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">121</span>        <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;workspace/bitstream_avg.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">122</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">(</span><span class="s2">&quot;workspace/template&quot;</span><span class="p">):</span>
+<span class="linenos">123</span>            <span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;workspace/template&quot;</span><span class="p">)</span>
+<span class="linenos">124</span>
+<span class="linenos">125</span>        <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span class="s2">&quot;workspace/plots&quot;</span><span class="p">):</span>
+<span class="linenos">126</span>            <span class="n">rmtree</span><span class="p">(</span><span class="s2">&quot;workspace/plots&quot;</span><span class="p">)</span>
+<span class="linenos">127</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">(</span><span class="s2">&quot;workspace/plots&quot;</span><span class="p">):</span>
+<span class="linenos">128</span>            <span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;workspace/plots&quot;</span><span class="p">)</span>
+<span class="linenos">129</span>        <span class="c1"># Determine if we need to the to initialize the analysis and</span>
+<span class="linenos">130</span>        <span class="c1"># if so, do so.</span>
+<span class="linenos">131</span>        <span class="c1"># currently removed since we&#39;re not currently storing any data, so there&#39;s a bunch of empty files and directories</span>
+<span class="linenos">132</span>        <span class="c1"># if explanation != &quot;test&quot;:</span>
+<span class="linenos">133</span>        <span class="c1">#     self.__init_analysis()</span>
+<span class="linenos">134</span>
+<span class="linenos">135</span>        <span class="c1"># Determine whether we need to launch the monitor and launch it</span>
+<span class="linenos">136</span>        <span class="c1"># if so.</span>
+<span class="linenos">137</span>        <span class="c1"># if config.get_launch_monitor():</span>
+<span class="linenos">138</span>        <span class="c1">#     self.__init_monitor()</span>
+<span class="linenos">139</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__init_monitor</span><span class="p">()</span>
+<span class="linenos">140</span>
+<span class="linenos">141</span>    <span class="k">def</span><span class="w"> </span><span class="nf">log_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">epoch_time</span><span class="p">):</span>
+<span class="linenos">142</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">DOUBLE_HLINE</span><span class="p">)</span>
+<span class="linenos">143</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">DOUBLE_HLINE</span><span class="p">)</span>
+<span class="linenos">144</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">DOUBLE_HLINE</span><span class="p">)</span>
+<span class="linenos">145</span>
+<span class="linenos">146</span>        <span class="n">current_best_circuit</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">get_current_best_circuit</span><span class="p">()</span>
+<span class="linenos">147</span>        <span class="n">overall_best_circuit</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">get_overall_best_circuit_info</span><span class="p">()</span>
+<span class="linenos">148</span>
+<span class="linenos">149</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;CURRENT BEST: </span><span class="si">{}</span><span class="s2"> : EPOCH </span><span class="si">{}</span><span class="s2"> : FITNESS </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="linenos">150</span>            <span class="nb">str</span><span class="p">(</span><span class="n">overall_best_circuit</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+<span class="linenos">151</span>            <span class="nb">str</span><span class="p">(</span><span class="n">population</span><span class="o">.</span><span class="n">get_best_epoch</span><span class="p">()),</span>
+<span class="linenos">152</span>            <span class="nb">str</span><span class="p">(</span><span class="n">overall_best_circuit</span><span class="o">.</span><span class="n">fitness</span><span class="p">)</span>
+<span class="linenos">153</span>        <span class="p">))</span>
+<span class="linenos">154</span>
+<span class="linenos">155</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;HIGHEST FITNESS OF EPOCH </span><span class="si">{}</span><span class="s2"> IS: </span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2"> over </span><span class="si">{}</span><span class="s2"> seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="linenos">156</span>            <span class="nb">str</span><span class="p">(</span><span class="n">population</span><span class="o">.</span><span class="n">get_current_epoch</span><span class="p">()),</span>
+<span class="linenos">157</span>            <span class="nb">str</span><span class="p">(</span><span class="n">current_best_circuit</span><span class="p">),</span>
+<span class="linenos">158</span>            <span class="nb">str</span><span class="p">(</span><span class="n">current_best_circuit</span><span class="o">.</span><span class="n">get_fitness</span><span class="p">()),</span>
+<span class="linenos">159</span>            <span class="nb">str</span><span class="p">(</span><span class="n">epoch_time</span><span class="p">)</span>
+<span class="linenos">160</span>        <span class="p">))</span>
+<span class="linenos">161</span>
+<span class="linenos">162</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">DOUBLE_HLINE</span><span class="p">)</span>
+<span class="linenos">163</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">DOUBLE_HLINE</span><span class="p">)</span>
+<span class="linenos">164</span>        <span class="bp">self</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">DOUBLE_HLINE</span><span class="p">)</span>
+<span class="linenos">165</span>
+<span class="linenos">166</span>    <span class="k">def</span><span class="w"> </span><span class="nf">log_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span>  <span class="o">*</span><span class="n">msg</span><span class="p">):</span>
+<span class="linenos">167</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">save_log</span><span class="p">:</span>
+<span class="linenos">168</span>            <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="linenos">169</span>            <span class="nb">print</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__monitor_file</span><span class="p">)</span>
+<span class="linenos">170</span>
+<span class="linenos">171</span>    <span class="k">def</span><span class="w"> </span><span class="nf">log_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">):</span>
+<span class="linenos">172</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">log_level</span> <span class="o">&gt;=</span> <span class="n">level</span><span class="p">:</span>
+<span class="linenos">173</span>            <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__log_file</span><span class="p">)</span>
+<span class="linenos">174</span>            <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+<span class="linenos">175</span>
+<span class="linenos">176</span>    <span class="k">def</span><span class="w"> </span><span class="nf">log_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">):</span>
+<span class="linenos">177</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">log_level</span> <span class="o">&gt;=</span> <span class="n">level</span><span class="p">:</span>
+<span class="linenos">178</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;INFO: &quot;</span><span class="p">,</span> <span class="n">OKBLUE</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">ENDC</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__log_file</span><span class="p">)</span>
+<span class="linenos">179</span>            <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;INFO: &quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+<span class="linenos">180</span>
+<span class="linenos">181</span>    <span class="k">def</span><span class="w"> </span><span class="nf">log_warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">):</span>
+<span class="linenos">182</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">log_level</span> <span class="o">&gt;=</span> <span class="n">level</span><span class="p">:</span>
+<span class="linenos">183</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: &quot;</span><span class="p">,</span> <span class="n">WARNING</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">ENDC</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__log_file</span><span class="p">)</span>
+<span class="linenos">184</span>            <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;WARNING: &quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+<span class="linenos">185</span>
+<span class="linenos">186</span>    <span class="k">def</span><span class="w"> </span><span class="nf">log_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">):</span>
+<span class="linenos">187</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">log_level</span> <span class="o">&gt;=</span> <span class="n">level</span><span class="p">:</span>
+<span class="linenos">188</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: &quot;</span><span class="p">,</span> <span class="n">FAIL</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">ENDC</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__log_file</span><span class="p">)</span>
+<span class="linenos">189</span>            <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;ERROR: &quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+<span class="linenos">190</span>
+<span class="linenos">191</span>    <span class="k">def</span><span class="w"> </span><span class="nf">log_critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">):</span>
+<span class="linenos">192</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">log_level</span> <span class="o">&gt;=</span> <span class="n">level</span><span class="p">:</span>
+<span class="linenos">193</span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CRITICAL: &quot;</span><span class="p">,</span> <span class="n">FAIL</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="n">ENDC</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__log_file</span><span class="p">)</span>
+<span class="linenos">194</span>            <span class="bp">self</span><span class="o">.</span><span class="n">log_monitor</span><span class="p">(</span><span class="s2">&quot;CRITICAL: &quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+<span class="linenos">195</span>
+<span class="linenos">196</span>    <span class="k">def</span><span class="w"> </span><span class="nf">save_workspace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+<span class="linenos">197</span>        <span class="bp">self</span><span class="o">.</span><span class="n">__monitor_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos">198</span>        <span class="n">current_time</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__config</span><span class="o">.</span><span class="n">datetime_format</span><span class="p">))</span>
+<span class="linenos">199</span>        <span class="n">current_time</span> <span class="o">=</span> <span class="n">current_time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="linenos">200</span>        <span class="n">copytree</span><span class="p">(</span><span class="s2">&quot;./workspace&quot;</span><span class="p">,</span> <span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">current_time</span><span class="p">))</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Evolvable Hardware
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024-2026, Evolvable Hardware.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
