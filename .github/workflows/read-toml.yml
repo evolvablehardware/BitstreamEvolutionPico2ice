@@ -22,7 +22,7 @@ on:
 jobs:
   extractinfo:
     runs-on: ubuntu-latest
-    name: extract info from toml file form commit
+    name: extract info from toml file from commit
     outputs:
       output_json: ${{steps.get-vals.outputs.output_json}}
     
@@ -78,7 +78,7 @@ jobs:
 
       - name: Setup to collect variables
         run: |
-          poetry install  --with gh_read_pyproject
+          poetry install  --only gh_read_pyproject
 
       - id: get-vals
         run: |

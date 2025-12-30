@@ -1,6 +1,6 @@
----------
-dev index
----------
+-----------------------
+Development Information
+-----------------------
 
 Link To Main Website
 --------------------
@@ -31,3 +31,20 @@ The Webiste will be generated automatically by Github Actions, but this section 
     open_in_web_browser index.html
 
 
+
+Below are some alternatives to the `poetry run make html` line above for slightly different goals:
+
+.. code-block:: bash
+    :caption: Installing using the Makefile or make.bat, implicitly running sphinx-build
+
+    poetry run make html
+
+.. code-block:: bash
+    :caption: Creating the website to make the html website that is for public release
+
+    poetry run sphinx-build -M html "source" "build" -t release
+
+.. code-block:: bash
+    :caption: Creating the website to make the html website that is for development use only
+
+    poetry run sphinx-build -M html "source" "build" -t dev
