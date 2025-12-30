@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from typing import Generic, Iterator, Protocol, Callable, Iterable, Optional, TypeVar, Any
+from collections.abc import Iterator, Callable, Iterable
+from typing import Generic, Protocol, Optional, TypeVar, Any
 from abc import ABC
 from pathlib import Path
-from result import Result, Ok, Err # type: ignore
+from returns.result import Result, Success, Failure # type: ignore
 from enum import Enum, auto
 import asyncio
 
@@ -198,7 +199,7 @@ class DataRequest(Enum):
     WAVEFORM = auto()
     OSCILLATIONS = auto()
 
-C = TypeVar("C",bound=Circuit) #circuit type used
+C = TypeVar("C", bound=Circuit) #circuit type used
 M = TypeVar("M", bound=Any) # type of measurement taken
 class Measurement(Generic[C,M]):
     "All measurement data, this could even be a class potentially"
@@ -208,16 +209,16 @@ class Measurement(Generic[C,M]):
     # FPGA_used:Optional[str]
     # result = Result[Any,Exception] 
     # argument = Any
-    def __init__(self, FPGA_request:str, data_request:DataRequest,circuit_to_measure:C, num_samples: int)->None:
+    def __init__(self, FPGA_request:str, data_request:DataRequest,circuit_to_measure:Circuit, num_samples: int)->None:
         """
-        TODO::
-          Figure out the format for an FPGA Request, potentially also changing the type, and adjust that here.
+        .. TODO::
+            Figure out the format for an FPGA Request, potentially also changing the type, and adjust that here.
         """
         self.FPGA_request:str = FPGA_request #may want to refine typing here
         self.data_request:Enum = data_request
         self.circuit:C = circuit_to_measure
         self.FPGA_used:Optional[str] = None
-        self.result: Result[M,Exception] = Err(MeasurementNotTaken("Initialized Measurement option has not yet been measured."))
+        self.result: Result[M,Exception] = Failure(MeasurementNotTaken("Initialized Measurement option has not yet been measured."))
                       # The Any should be the measurement data, which we may want to standardize at some point
         self.num_samples = num_samples
     
@@ -226,9 +227,9 @@ class Measurement(Generic[C,M]):
     
     def record_measurement_result(self,result:M|Exception):
         if isinstance(result,Exception):
-            self.result = Err(result)
+            self.result = Failure(result)
         else:
-            self.result = Ok(result)
+            self.result = Success(result)
 
 class EvaluatePopulationFitness(Protocol):
     "Fully Evaluates a Population, the fitnesses in the population are fully specified. The populations involved will be edited in place. Any populations not provided will not be edited."

@@ -1,7 +1,7 @@
 [config.sphinx] # Metadata displayed on Sphinx page (custom)
 name = "Bitstream Evolution"
 #version = uses version in tool.poetry
-copyright_message = '2024, Evolvable Hardware'
+copyright_message = '2024-2026, Evolvable Hardware'
 author = 'Evolvable Hardware'
 
 theme = "sphinx_nefertiti"
@@ -21,7 +21,7 @@ test_fail_logo = "https://evolvablehardware.org/images/EHWsetup.jpg"
 
 [tests.workflows]
 # these are values that need verification in testing
-python-versions = ["3.10","3.11","3.12","3.13"]
+python-versions = ["3.11","3.12","3.13", "3.14"]
 # These are the marker groups we are testing together, separate more for greater concurrency
 pytest-testing-groups = ["immediate or short", "long"]
 # Test Results to Display:
@@ -88,70 +88,116 @@ documentation = "https://evolvablehardware.org/setup.html"
 [tool.poetry.urls]
 #"Bug Tracker" = "https://github.com/python-poetry/poetry/issues"
 
-#dependancies needed to run the app under normal conditions
-[tool.poetry.dependencies]
-python = "^3.10"
-toml = "^0.10.2"
-pyserial = "^3.5"
-numpy = "^2.2.2"
-matplotlib = "^3.10.0"
-sortedcontainers = "^2.4.0"
-result = "^0.17.0"
-mypy = "^1.15.0"
-returns = "^0.26.0"
 
+
+## Dependancy groups, and when to install them:
+#   How to install default dependancies:
+#       poetry install
+#   How to install the dependancies included in all groups:
+#       poetry install --all-groups
+#   How to install default dependancies with another group:
+#       poetry install --with dev
+#       poetry install --with test,docs
+#   How to add dependancies to groups: (only add dependancies to `Base Broups`)
+#       poetry add numpy --with test
+#   How to install only the dependancies in a group and none of the default ones:
+#       poetry install --only read_pyproject
+#
+## Default Group:
+#   tool.poetry.dependencies:    The dependancies required to run the code, always included
+#
+## Base Groups: -- Groups dependancies are added to and specified. Each dependancy should only be specified once.
+#   docs:           (optional) Dependancies required to compile the documentation
+#   test:           (optional) Dependancies required to run the tests
+#   lint:           (optional) Dependancies required to perform linting on the codebase
+#   read_pyproject: (optional) Mimimum dependancies needed to interpret the pyprojct.toml file by using `interpret_pyptoject.py`.
+#
+## Composite Groups:  -- Groups assembled entirely from the base groups for a specific higher-level purpose
+#   dev:                (optional) Additional dependancies required to do all development activities, including documentation & testing.
+#   gh_read_pyproject:  (optional) The group used by github actions to read the pyproject.toml file with `interpret_pyproject.py` (uses --only)
+#   gh_tests:           (optional) Group used by Github Actions to evaluate the tests in the deployment pipeline
+#   gh_docs:            (optional) Group used by Github Actions to generate the Documentation
+
+###################
+## Default Group ##
+###################
+
+[tool.poetry.dependencies] #dependancies needed to run the app under normal conditions
+python = "^3.11"
+toml = "^0.10"
+pyserial = "^3.5"
+numpy = "^2"
+matplotlib = "^3"
+sortedcontainers = "^2.4"
+result = "0.17.0"
+returns = "^0.26"
+
+#################
+## Base Groups ##
+#################
+
+[tool.poetry.group.read_pyproject]
+optional = true
+[tool.poetry.group.read_pyproject.dependencies]
+python = "^3.11"
+toml = "^0.10"
+
+[tool.poetry.group.docs]
+optional = true
+[tool.poetry.group.docs.dependencies]
+Sphinx = ">=8.0.0"
+sphinx-nefertiti = ">=0.3.2, <1.0.0"
+sphinx-book-theme = ">=1.1.2, <2.0.0"
+sphinx-wagtail-theme = ">=6.3.0, <7.0.0"
+pydata-sphinx-theme = ">=0.15.2, <1.0.0"
+sphinx-design = ">=0.6.1, <1.0.0"
+
+[tool.poetry.group.test]
+optional = true
+[tool.poetry.group.test.dependencies] #tests group is group for testing in local contexts
+toml = "^0.10.2"
+pytest = ">=8.0.0, <=10.0.0"
+pytest-mock = "^3"
+
+[tool.poetry.group.lint]
+optional = true
+[tool.poetry.group.lint.dependencies] #tests group is group for testing in local contexts
+mypy = "^1"
+
+######################
+## Composite Groups ##
+######################
 
 [tool.poetry.group.dev]
 #dev group for developers updating the code
 optional = true
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.2.0"
-pytest-mock = "^3.14.0"
-Sphinx = "^7.2.6"
-sphinx-nefertiti = "^0.3.2"
-sphinx-book-theme = "^1.1.2"
-sphinx-wagtail-theme = "^6.3.0"
-pydata-sphinx-theme = "^0.15.2"
-sphinx-design = "^0.6.1"
-
+include-groups = [
+    "docs",
+    "test",
+    "lint"
+]
 
 [tool.poetry.group.gh_read_pyproject] #This is used when we want to read pyproject.toml while evaluating workflows.
 optional = true
-
-[tool.poetry.group.gh_read_pyproject.dependencies]
-toml = "^0.10.2"
-
+include-groups = [
+    "read_pyproject",
+]
 
 [tool.poetry.group.gh_tests]
 #gh_tests group for all testing on github.
 optional = true
-
-[tool.poetry.group.gh_tests.dependencies]
-pytest = "^8.2.0"
-pytest-mock = "^3.14.0"
-toml = "^0.10.2"
-
+include-groups = [
+    "test",
+]
 
 [tool.poetry.group.gh_docs]
 #gh_tests group for building documentation on github.
 optional = true
+include-groups = [
+    "docs",
+    "test"
+]
 
-[tool.poetry.group.gh_docs.dependencies]
-pytest = "^8.2.0"
-pytest-mock = "^3.14.0"
-toml = "^0.10.2"
-Sphinx = "^7.2.6"
-sphinx-nefertiti = "^0.3.2"
-sphinx-book-theme = "^1.1.2"
-sphinx-wagtail-theme = "^6.3.0"
-pydata-sphinx-theme = "^0.15.2"
-sphinx-design = "^0.6.1"
-
-
-[tool.poetry.group.tests.dependencies] #tests group is group for testing in local contexts
-pytest = "^8.2.0"
-pytest-mock = "^3.14.0"
 
 [build-system]
 requires = ["poetry-core"]
