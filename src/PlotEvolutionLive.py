@@ -30,14 +30,19 @@ MAX_VIOLIN_PLOTS = 11
 HEATMAP_BINS = 40
 
 config = PlotConfig('./workspace/plot_config.ini')
+FRAME_INTERVAL = None # Filled in by argparse later
 
-arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument("-f", "--frame-interval", required=False, default=10000)
-args = arg_parser.parse_args()
-FRAME_INTERVAL = int(args.frame_interval)
 
 def run():
     """Temporary function to run all of Plot Evolution Live."""
+
+    # ArgParse was put in the run() function to allow sphinx to document this code (which is probably of little value). This may or may not be temporary.
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("-f", "--frame-interval", required=False, default=10000)
+    args = arg_parser.parse_args()
+    FRAME_INTERVAL = int(args.frame_interval)
+
+
     def animate_generation(i):
         graph_data = open('workspace/alllivedata.log','r').read()
         lines = graph_data.split('\n')

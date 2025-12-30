@@ -1,7 +1,7 @@
 import random
 from BitstreamEvolutionProtocols import Circuit, Individual,FPGA_Compilation_Data, Population, CircuitFactory, Measurement, EvaluatePopulationFitness, GenData, GenDataFactory, GenerateInitialPopulation, GenerateMeasurements, Hardware, Reproducer, DataRequest
 from pathlib import Path
-from result import Result, Ok, Err # type: ignore
+from returns.result import Result, Success, Failure
 import functools as ft
 from typing import Any
 from collections.abc import Iterable
@@ -35,7 +35,7 @@ class TrivialCircuit:
         self.inherent_fitness = inherent_fitness
 
     def compile(self, fpga: FPGA_Compilation_Data) -> Result[None,Exception]:
-        return Ok(None)
+        return Success(None)
 
 
 def TrivialCircuitFactory(population: Population) -> dict[Circuit,list[tuple[Population,Individual]]]:
@@ -127,9 +127,9 @@ def TrivialEvaluatePopulationFitness(population:Population,measurement_dependant
 
             individual_fitness = 0
             match meas.result:
-                case Ok(fitness):
+                case Success(fitness):
                     individual_fitness = fitness
-                case Err(exception):
+                case Failure(exception):
                     individual_fitness = 0
                 case _:
                     individual_fitness = 0
