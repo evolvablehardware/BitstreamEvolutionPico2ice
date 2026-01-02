@@ -1,4 +1,4 @@
-""" 
+"""
 Circuit Population
 ------------------
 
@@ -6,6 +6,7 @@ This class was reviewed, and should be fully documented at a basic level.
 
 """
 import os
+import logging
 import numpy as np
 from typing import NamedTuple
 from shutil import copyfile
@@ -16,6 +17,7 @@ from pathlib import Path
 from itertools import zip_longest
 from collections import namedtuple
 from time import time
+import atexit
 from subprocess import run
 import random
 import math
@@ -31,6 +33,8 @@ from Config import Config
 from ascTemplateBuilder import ascTemplateBuilder
 from utilities import wipe_folder
 from datetime import datetime
+
+from usbipice.client.drivers import PulseCountClient
 
 RANDOMIZE_UNTIL_NOT_SET_ERR_MSG = '''\
 RANDOMIZE_UNTIL not set in config.ini, continuing without randomization'''
@@ -78,7 +82,7 @@ def is_pulse_func(config):
     bool
         True if it is any type of oscilator (uses count pulses), False otherwise.
     """
-    return (config.get_fitness_func() == 'PULSE_COUNT' or config.get_fitness_func() == 'TOLERANT_PULSE_COUNT' 
+    return (config.get_fitness_func() == 'PULSE_COUNT' or config.get_fitness_func() == 'TOLERANT_PULSE_COUNT'
             or config.get_fitness_func() == 'SENSITIVE_PULSE_COUNT' or config.get_fitness_func() == 'PULSE_CONSISTENCY')
 
 class CircuitPopulation:
@@ -87,7 +91,7 @@ class CircuitPopulation:
     and deciding when to stop evolution"""
     # SECTION Initialization functions
     def __init__(self, mcu, config: Config, logger):
-        """ 
+        """
         Generates the initial population of circuits with the following arguments
 
         Parameters
@@ -101,6 +105,22 @@ class CircuitPopulation:
         """
         self.__config = config
         self.__microcontroller = mcu
+
+        logging_logger = logging.getLogger(__name__)
+        logging_logger.setLevel(logging.DEBUG)
+
+        if not (URL := os.environ.get("USBIPICE_CONTROL")):
+                raise Exception("USBIPICE_CONTROL not configured")
+
+        self.client = PulseCountClient(URL, "bitstream evolution", logging_logger, log_events=True)
+        atexit.register(self.client.endAll)
+        self.BATCH_SIZE = 5
+
+        serials = self.client.reserve(1)
+        if not serials:
+            raise Exception("Failed to reserve a device")
+
+        logging_logger.info(f"Reserved device: {serials[0]}")
 
         # A list of Circuits that's sorted by fitness decreasing order
         # (to get it to sort in decreasing order I had to multiply the
@@ -164,7 +184,7 @@ class CircuitPopulation:
         using_trials = self.__config.using_sensitivity_trials()
         cur_trial = 0
         num_trials = self.__config.get_sensitivity_trials()
-        
+
         #loop through trials and log fitness
         should_continue = True
         while should_continue:
@@ -185,7 +205,7 @@ class CircuitPopulation:
                     h = self.__microcontroller.measure_humidity()
                     self.__log_event(4, "Recorded temperature: " + str(t) + ". Recorded humidity: " + str(h))
 
-                
+
                 now = datetime.now()
                 timestamp = now.strftime("%H.%M.%S")
 
@@ -389,7 +409,7 @@ class CircuitPopulation:
                     no_pulses_generated = False
                     self.__log_info(1, "Pulse generated! Exiting randomization. Pulses recorded:", pulses)
                     break
-    
+
     def __randomize_until_voltage(self):
         """
         Randomizes population until a mean voltage is found near the desired value
@@ -512,15 +532,36 @@ class CircuitPopulation:
 
             for circuit in self.__circuits:
                 circuit.clear_data()
-                
+
             for i in range(self.__config.get_num_passes()):
                 # Shuffle the circuits each time
                 circuits = np.random.permutation(self.__circuits)
-                for circuit in circuits:
-                    if isinstance(circuit, FileBasedCircuit):
-                        circuit.upload()
-                    for i in range(self.__config.get_num_samples()):
-                        circuit.collect_data_once()
+
+                for c in circuits:
+                    c._compile()
+
+                queue = list(map(lambda c : c._bitstream_filepath, circuits))
+                file_to_circuit = dict(zip(queue, circuits))
+
+                while queue:
+                    batch = []
+                    for _ in range(self.BATCH_SIZE):
+                        if not queue:
+                            break
+
+                        batch.append(queue.pop())
+
+                    results = self.client.evaluate(batch)
+                    for serial, resmap in results.items():
+                        for file, pulses in resmap.items():
+                            file_to_circuit[file]._data.append(int(pulses))
+                            self.__log_info(4, f"{file_to_circuit[file]}: {pulses} pulses")
+
+            #     for circuit in circuits:
+            #         if isinstance(circuit, FileBasedCircuit):
+            #             circuit.upload()
+            #         for i in range(self.__config.get_num_samples()):
+            #             circuit.collect_data_once()
 
             for circuit in self.__circuits:
                 circuit.calculate_fitness()
@@ -645,7 +686,7 @@ class CircuitPopulation:
                     str(self.get_overall_best_circuit_info().fitness),
                     diversity
                 ))
-        
+
         if self.__multiple_populations:
             # Write the population counts to file (i.e. count of circuits from each source population)
             with open("workspace/poplivedata.log", "a") as live_file:
@@ -661,7 +702,7 @@ class CircuitPopulation:
                 for ckt in self.__circuits:
                     fits.append(str(ckt.get_fitness()))
                 live_file.write(("{}:{}\n").format(self.__current_epoch, ",".join(fits)))
-            
+
             if self.__config.get_simulation_mode() == "FULLY_INTRINSIC":
                 if not self.__config.is_pulse_func():
                     with open("workspace/heatmaplivedata.log", "a") as live_file2:
@@ -674,7 +715,7 @@ class CircuitPopulation:
                         live_file2.write(("{}:{}\n").format(self.__current_epoch, ",".join(data)))
                 else:
                     with open("workspace/pulselivedata.log", "a") as live_file3:
-                        data = []    
+                        data = []
                         for ckt in self.__circuits:
                             data.append(str(ckt.get_extra_data('pulses')))
                         live_file3.write(("{}:{}\n").format(self.__current_epoch, ",".join(data)))
@@ -970,7 +1011,7 @@ class CircuitPopulation:
                 rand_elite = self.__rand.choice(elites)
                 ckt.copy_from(rand_elite)
                 ckt.mutate()
-        
+
         self.__output_map_file(elite_map)
 
     def __output_map_file(self, elite_map):
@@ -1004,7 +1045,7 @@ class CircuitPopulation:
     def __generate_map(self):
         """
         Generates the elite map for this generation based on variance.
-        
+
         Returns
         -------
         list(list(Circuit))
@@ -1024,7 +1065,7 @@ class CircuitPopulation:
             if elite_map[row][col] == 0 or ckt.get_fitness() > elite_map[row][col].get_fitness():
                 elite_map[row][col] = ckt
         return elite_map
-   
+
     def __generate_pulse_map(self):
         """
         Generates the elite map for this generation based on pulse count.
@@ -1058,7 +1099,7 @@ class CircuitPopulation:
 
     def get_overall_best_circuit_info(self):
         """
-        Returns the information of the circuit with the highest fitness throughout the run 
+        Returns the information of the circuit with the highest fitness throughout the run
 
         Returns
         -------
@@ -1162,7 +1203,7 @@ class CircuitPopulation:
         -------
         int
             Number of unique circuits in the population
-        
+
         """
         if self.__config.get_simulation_mode() == "FULLY_SIM":
             bitstreams = []
@@ -1218,7 +1259,7 @@ class CircuitPopulation:
             if shouldAdd:
                 soln.append(a)
         return soln
-    
+
     def count_differing_bits(self):
         """
         Returns the number of bits in the bistream where 2 circuits have different values
@@ -1227,7 +1268,7 @@ class CircuitPopulation:
         -------
         int
             Number of bits in the bistream where 2 circuits have different values
-        
+
         """
         if self.__config.get_simulation_mode() == "FULLY_SIM":
             bitstream_sums = np.zeros[len(self.__circuits[0].get_sim_bitstream())]
@@ -1251,12 +1292,12 @@ class CircuitPopulation:
         -------
         str
             The number of circuits with a 1 at each bit in the bitstream
-        
+
         """
         s = ""
         for bit in self.__population_bistream_sum:
             s += chr(int(bit)+32)
-        return s 
+        return s
 
     def __arr_eq(self, ar1, ar2):
         """
@@ -1313,7 +1354,7 @@ class CircuitPopulation:
         .. todo::
             Take a closer look at this function. Not sure why, but a comment here told me to.
             Also, further document what this function is I couldn't tell.
-        
+
         Collect data into fixed-length chunks or blocks
         #grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx
         Taken from python recipes.

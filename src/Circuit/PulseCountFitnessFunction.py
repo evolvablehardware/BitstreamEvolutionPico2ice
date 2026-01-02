@@ -12,16 +12,18 @@ class PulseCountFitnessFunction(FitnessFunction):
 
     def calculate_fitness(self, data: list[float]) -> float:
         # Get the pulse that is furthest away from the target, and calculate with that
-        dist = 0
-        pulse_count = -1
-        for pc in data:
-            this_dist = abs(pc - self._config.get_desired_frequency())
-            if this_dist >= dist:
-                dist = this_dist
-                pulse_count = pc
-        
-        self._extra_data['pulses'] = pulse_count
-        return self.__calculate_pulse_fitness(pulse_count)
+        # dist = 0
+        # pulse_count = -1
+        # for pc in data:
+        #     this_dist = abs(pc - self._config.get_desired_frequency())
+        #     if this_dist >= dist:
+        #         dist = this_dist
+        #         pulse_count = pc
+
+        # self._extra_data['pulses'] = pulse_count
+
+        self._extra_data['pulses'] = data[0]
+        return self.__calculate_pulse_fitness(data[0])
 
     def get_waveform(self):
         return []

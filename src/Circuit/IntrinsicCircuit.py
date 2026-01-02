@@ -46,7 +46,7 @@ class IntrinsicCircuit(FileBasedCircuit):
         Compiles and uploads the compiled circuit and runs it on the FPGA
         """
         self._compile()
-        
+
         cmd_str = [
             RUN_CMD,
             self._bitstream_filepath,
