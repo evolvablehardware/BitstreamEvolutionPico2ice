@@ -110,15 +110,21 @@ class CircuitPopulation:
         logging_logger.setLevel(logging.DEBUG)
 
         if not (URL := os.environ.get("USBIPICE_CONTROL")):
-                raise Exception("USBIPICE_CONTROL not configured")
+            raise Exception("USBIPICE_CONTROL not configured")
+
+        if (DEVICES := os.environ.get("USBIPICE_DEVICES")):
+            DEVICES = int(DEVICES)
+        else:
+            DEVICES = 1
+
 
         self.client = PulseCountClient(URL, "bitstream evolution", logging_logger, log_events=True)
         atexit.register(self.client.endAll)
-        self.BATCH_SIZE = 5
+        self.BATCH_SIZE = 8
 
-        serials = self.client.reserve(1)
-        if not serials:
-            raise Exception("Failed to reserve a device")
+        serials = self.client.reserve(DEVICES)
+        if len(serials) != DEVICES:
+            raise Exception("Failed to reserve requested amount of devices")
 
         logging_logger.info(f"Reserved device: {serials[0]}")
 
@@ -543,6 +549,7 @@ class CircuitPopulation:
                 queue = list(map(lambda c : c._bitstream_filepath, circuits))
                 file_to_circuit = dict(zip(queue, circuits))
 
+                t1 = time()
                 while queue:
                     batch = []
                     for _ in range(self.BATCH_SIZE):
@@ -551,11 +558,13 @@ class CircuitPopulation:
 
                         batch.append(queue.pop())
 
-                    results = self.client.evaluate(batch)
+                    results = self.client.evaluateQuick(batch)
                     for serial, resmap in results.items():
                         for file, pulses in resmap.items():
                             file_to_circuit[file]._data.append(int(pulses))
                             self.__log_info(4, f"{file_to_circuit[file]}: {pulses} pulses")
+
+                self.__log_info(4, f"Evaluation time: {time() - t1:.2f}")
 
             #     for circuit in circuits:
             #         if isinstance(circuit, FileBasedCircuit):
