@@ -34,7 +34,7 @@ from ascTemplateBuilder import ascTemplateBuilder
 from utilities import wipe_folder
 from datetime import datetime
 
-from usbipice.client.drivers import PulseCountClient
+from icefarm.client.drivers import PulseCountClient
 
 RANDOMIZE_UNTIL_NOT_SET_ERR_MSG = '''\
 RANDOMIZE_UNTIL not set in config.ini, continuing without randomization'''
@@ -207,9 +207,11 @@ class CircuitPopulation:
                 t = 0
                 h = 0
                 if(self.__config.reading_temp_humidity()):
-                    t = self.__microcontroller.measure_temp()
-                    h = self.__microcontroller.measure_humidity()
-                    self.__log_event(4, "Recorded temperature: " + str(t) + ". Recorded humidity: " + str(h))
+                    pass
+                    # TODO
+                    # t = self.__microcontroller.measure_temp()
+                    # h = self.__microcontroller.measure_humidity()
+                    # self.__log_event(4, "Recorded temperature: " + str(t) + ". Recorded humidity: " + str(h))
 
 
                 now = datetime.now()
@@ -550,21 +552,11 @@ class CircuitPopulation:
                 file_to_circuit = dict(zip(queue, circuits))
 
                 t1 = time()
-                while queue:
-                    batch = []
-                    for _ in range(self.BATCH_SIZE):
-                        if not queue:
-                            break
 
-                        batch.append(queue.pop())
-
-                    results = self.client.evaluateQuick(batch)
-                    for serial, resmap in results.items():
-                        for file, pulses in resmap.items():
-                            file_to_circuit[file]._data.append(int(pulses))
-                            self.__log_info(4, f"{file_to_circuit[file]}: {pulses} pulses")
-
-                self.__log_info(4, f"Evaluation time: {time() - t1:.2f}")
+                for serial, fpath, pulses in self.client.evaluateBitstreams(queue):
+                    circuit = file_to_circuit[fpath]
+                    circuit._data.append(int(pulses))
+                    self.__log_info(4, f"{file_to_circuit[fpath]}: {pulses} pulses")
 
             #     for circuit in circuits:
             #         if isinstance(circuit, FileBasedCircuit):
@@ -655,7 +647,10 @@ class CircuitPopulation:
 
             if self.__config.using_transfer_interval():
                 if self.__current_epoch % self.__config.get_transfer_interval() == 0:
-                    self.__microcontroller.switch_fpga()
+                    pass
+                    # self.__microcontroller.switch_fpga()
+                    # TODO
+
 
         # We have finished evolution! Lets quickly re-evaluate the top circuit, since it
         # will then output its waveform
