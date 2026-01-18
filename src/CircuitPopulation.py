@@ -35,6 +35,7 @@ from utilities import wipe_folder
 from datetime import datetime
 
 from icefarm.client.drivers import PulseCountClient
+from icefarm.client.lib.pulsecount import PulseCountEvaluation
 
 RANDOMIZE_UNTIL_NOT_SET_ERR_MSG = '''\
 RANDOMIZE_UNTIL not set in config.ini, continuing without randomization'''
@@ -553,7 +554,19 @@ class CircuitPopulation:
 
                 t1 = time()
 
-                for serial, fpath, pulses in self.client.evaluateBitstreams(queue):
+                amount = len(self.client.getSerials())
+                batches = [[] for _ in range(amount)]
+                for i, item in enumerate(queue):
+                    batches[i % amount].append(item)
+
+                commands = []
+                for serial, batches in zip(self.client.getSerials(), batches):
+                    for f in batches:
+                        commands.append(PulseCountEvaluation([serial], f))
+
+
+                for serial, evaluation, pulses in self.client.evaluateEvaluations(commands):
+                    fpath = evaluation.filepath
                     circuit = file_to_circuit[fpath]
                     circuit._data.append(int(pulses))
                     self.__log_info(4, f"{file_to_circuit[fpath]}: {pulses} pulses")
