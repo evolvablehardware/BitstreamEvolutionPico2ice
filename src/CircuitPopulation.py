@@ -140,8 +140,11 @@ class CircuitPopulation:
         self.__current_epoch = 0
         self.__best_epoch = 0
         num_rows = 3
-        if(config.get_routing_type == "NEWSE"):
+        if(config.get_routing_type() == "NEWSE"):
             num_rows = 2
+        elif config.get_routing_type() == "ALL":
+            num_rows = 16
+
         num_cols = len(config.get_accessed_columns())
         # 660 logic tiles - no tiles for x=6 or x=19
         self.__population_bistream_sum = np.zeros(660*num_rows*num_cols)
@@ -1169,6 +1172,8 @@ class CircuitPopulation:
             crossover_point = self.__rand.integers(1, 3)
         elif self.__config.get_routing_type() == "NWSE":
             crossover_point = self.__rand.integers(13, 15)
+        elif self.__config.get_routing_type() == "ALL":
+            crossover_point = self.__rand.integers(1, 16)
         else:
             self.__log_error(
                 1, "Invalid routing type specified in config.ini. Exiting...")

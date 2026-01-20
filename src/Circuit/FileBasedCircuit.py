@@ -61,7 +61,7 @@ class FileBasedCircuit(Circuit):
                 # 48 = 0, 49 = 1. To flip, just need to do (48+49) - the current value (48+49=97)
                 # This now always flips the bit instead of randomly assigning it every time
                 # Note: If prev != 48 or 49, then we changed the wrong value because it was not a 0 or 1 previously
-                self._log_event(4, "Mutating:", self, "@(", row, ",", col, ") previous was", bit)
+                # self._log_event(4, "Mutating:", self, "@(", row, ",", col, ") previous was", bit)
                 return 97 - bit
         self._run_at_each_modifiable(mutate_bit)
 
@@ -106,7 +106,7 @@ class FileBasedCircuit(Circuit):
 
             parent_tile = parent_hw_file.find(b".logic_tile", parent_tile + 1)
             my_tile = self._hardware_file.find(b".logic_tile", my_tile + 1)
-        
+
         # Need to set our source population to our parent's
         src_pop = parent.get_file_attribute("src_population")
         if src_pop != None:
@@ -122,7 +122,7 @@ class FileBasedCircuit(Circuit):
         Keep in mind the bytes are the ASCII codes, so for example 49 = 1
 
         .. todo::
-            Go over this with someone who can clarify what all of the data types are. 
+            Go over this with someone who can clarify what all of the data types are.
 
         Parameters
         ----------
@@ -151,11 +151,11 @@ class FileBasedCircuit(Circuit):
         # The b prefix makes the string an instance of the "bytes" type
         # The .logic_tile header indicates that there is a tile, so the "tile" variable stores the starting point of the current tile
         tile = hardware_file.find(b".logic_tile")
-        
+
         while tile > 0:
             # Set pos to the position of this tile, but with the length of ".logic_tile" added so it is in front of where we have the x/y coords
             pos = tile + len(".logic_tile")
-            
+
             # Check if the position is legal to modify
             if self.__tile_is_included(hardware_file, pos):
                 # Find the start and end of the line; the positions of the \n newline just before and at the end of this line
@@ -172,6 +172,8 @@ class FileBasedCircuit(Circuit):
                     rows = [1, 2, 13]
                 elif routing_type == "NEWSE":
                     rows = [1, 2]
+                elif routing_type == "ALL":
+                    rows = list(range(1, 17))
                 # Iterate over each row and the columns that we can access within each row
                 for row in rows:
                     for col in accessible_columns:
@@ -190,6 +192,7 @@ class FileBasedCircuit(Circuit):
             tile = hardware_file.find(b".logic_tile", tile + 1)
 
     def _compile(self):
+        
         """
         Compile circuit ASC file to a BIN file for hardware upload.
         """
@@ -214,7 +217,7 @@ class FileBasedCircuit(Circuit):
         NOTE: Tile = the .logic_tile in the asc file.
 
         .. todo::
-            Preexisting todo: Replace magic values with a more generalized solution. 
+            Preexisting todo: Replace magic values with a more generalized solution.
             These magic values are indicative of the underlying hardware (ice40up5k)
 
         Parameters
@@ -239,10 +242,10 @@ class FileBasedCircuit(Circuit):
         # tiles while scraping the asc files
         # This is in the actual asc file; this is why we can simply pull from "pos"
         # i.e. you'll see the header ".logic_file 1 1" - x=1, y=1
-        
+
         # This is where we had a fundamental issue before: The value in the hardware at this position is going to be an ASCII char value, not the actual
         # number. Here, we parse the byte as an integer, then to a char, then back to an integer
-        
+
         # However, we have a great problem now: what about multi-digit numbers?
         # Find the space that separates the x and y, and find the end of the line
         # Then, grab the bytes for x, grab the bytes for y, convert to strings, and parse those strings
@@ -279,8 +282,8 @@ class FileBasedCircuit(Circuit):
 
         .. todo::
             Pre-existing: Add error checking here
-        
-        
+
+
         Parameters
         ----------
         pos : int
@@ -397,7 +400,7 @@ class FileBasedCircuit(Circuit):
             The value of the attribute
         '''
         return FileBasedCircuit.get_file_attribute_st(self._hardware_file, attribute)
-    
+
     def set_file_attribute(self, attribute, value):
         '''
         Sets this Circuit's file attribute to the specified value
