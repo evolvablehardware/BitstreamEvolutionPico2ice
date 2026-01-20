@@ -23,7 +23,7 @@ class PulseCountFitnessFunction(FitnessFunction):
         # self._extra_data['pulses'] = pulse_count
 
         self._extra_data['pulses'] = data[0]
-        return self.__calculate_pulse_fitness(data[0])
+        return min(self.__calculate_pulse_fitness(point) for point in data)
 
     def get_waveform(self):
         return []
@@ -52,7 +52,8 @@ class PulseCountFitnessFunction(FitnessFunction):
         if self.__is_tolerant_pulse_count():
             # Build a normal-ish distribution function where the "mean" is desired_freq,
             # and the "standard deviation" is of our choosing (here we select 0.025*freq)
-            deviation = 0.025 * desired_freq # 25 for 1,000 Hz, 250 for 10,000 Hz
+            # TODO this has been changed
+            deviation = 0.05 * desired_freq # 25 for 1,000 Hz, 250 for 10,000 Hz
             # No need to check for this because it's included in the function
             # Note: Fitness is still from 0-1
             fitness = math.exp(-0.5 * math.pow((pulses - desired_freq) / deviation, 2))

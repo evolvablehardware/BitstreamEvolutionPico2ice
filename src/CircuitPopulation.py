@@ -118,6 +118,12 @@ class CircuitPopulation:
         else:
             DEVICES = 1
 
+        # quick/all
+        if (MODE := os.environ.get("USBIPICE_MODE")):
+            self.mode = MODE
+        else:
+            self.mode = "quick"
+
 
         self.client = PulseCountClient(URL, "bitstream evolution", logging_logger, log_events=True)
         atexit.register(self.client.endAll)
@@ -558,21 +564,30 @@ class CircuitPopulation:
                 t1 = time()
 
                 amount = len(self.client.getSerials())
-                batches = [[] for _ in range(amount)]
-                for i, item in enumerate(queue):
-                    batches[i % amount].append(item)
+                if self.mode == "quick":
+                    batches = [[] for _ in range(amount)]
+                    for i, item in enumerate(queue):
+                        batches[i % amount].append(item)
 
-                commands = []
-                for serial, batches in zip(self.client.getSerials(), batches):
-                    for f in batches:
-                        commands.append(PulseCountEvaluation([serial], f))
+                    commands = []
+                    for serial, batches in zip(self.client.getSerials(), batches):
+                        for f in batches:
+                            commands.append(PulseCountEvaluation([serial], f))
+                elif self.mode == "all":
+                    commands = []
+                    serials = self.client.getSerials()
 
+                    for bitstream in queue:
+                        commands.append(PulseCountEvaluation(serials, bitstream))
+
+                else:
+                    raise Exception("Unknown USBIPICE_MODE. Valid values are quick, all")
 
                 for serial, evaluation, pulses in self.client.evaluateEvaluations(commands):
                     fpath = evaluation.filepath
                     circuit = file_to_circuit[fpath]
                     circuit._data.append(int(pulses))
-                    self.__log_info(4, f"{file_to_circuit[fpath]}: {pulses} pulses")
+                    self.__log_info(4, f"{circuit} got data: {pulses}")
 
             #     for circuit in circuits:
             #         if isinstance(circuit, FileBasedCircuit):
@@ -581,6 +596,7 @@ class CircuitPopulation:
             #             circuit.collect_data_once()
 
             for circuit in self.__circuits:
+                self.__log_info(4, f"{circuit} pulses: {circuit._data}")
                 circuit.calculate_fitness()
 
             self.__population_bistream_sum = np.zeros(self.__population_bistream_sum.size)
