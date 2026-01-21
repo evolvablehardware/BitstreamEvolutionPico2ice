@@ -53,7 +53,7 @@ class PulseCountFitnessFunction(FitnessFunction):
             # Build a normal-ish distribution function where the "mean" is desired_freq,
             # and the "standard deviation" is of our choosing (here we select 0.025*freq)
             # TODO 0.05 for multi
-            deviation = 0.0025 * desired_freq # 25 for 1,000 Hz, 250 for 10,000 Hz
+            deviation = 0.025 * desired_freq # 25 for 1,000 Hz, 250 for 10,000 Hz
             # No need to check for this because it's included in the function
             # Note: Fitness is still from 0-1
             fitness = math.exp(-0.5 * math.pow((pulses - desired_freq) / deviation, 2))
