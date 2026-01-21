@@ -7,7 +7,10 @@
 - See [```farmconfig.ini```](./farmconfig.ini) for an example config. This is the config used when running through Docker. Configuration values not present in this example config may produce unexpected behavior. Notably, an addition option has been added to ROUTING - ```ALL``` - which removes all row restraints.
 
 ## Running - locally
-Set up BitstreamEvolution normally, start the iCEFARM compose stack. Move ```1kz_ice27_generated.asc``` to ```data/seed-hardware.asc```. This is a 1kHz clock outputting on ice40 27/pico gpio 20 generated from verilog. Set the environment variables mentioned previously and specify the ```farmconfig.ini``` config.
+Set up BitstreamEvolution normally, start the iCEFARM compose stack. Move ```1kz_ice27_generated.asc``` to ```data/seed-hardware.asc```. This is a 1kHz clock outputting on ice40 27/pico gpio 20 generated from verilog. Set the environment variables mentioned previously and specify the ```farmconfig.ini``` config. Start the iCEFARM compose stack. Run BitstreamEvolution normally:
+```
+python3 src/evolve.py -c farmconfig.ini
+```
 
 ## Running - docker
 Start the iCEFARM control stack. Set the environment variables mentioned previously and modify the config if desired. The docker image will automatically use the ```1kz_ice27_generated.asc``` seed. Build and run the image:
