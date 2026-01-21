@@ -15,6 +15,7 @@ from configparser import ConfigParser
 from pathlib import Path
 from shutil import copyfile
 import os
+import getpass
 
 def run():
 
@@ -57,7 +58,7 @@ def run():
 		)
 
 	# Make sure that user has permissions for workspace and data folder if running via sudo
-	USERNAME=os.getlogin()
+	USERNAME=getpass.getuser()
 	os.system(f"chown -R {USERNAME} data")
 	os.system(f"chown -R {USERNAME} workspace")
 
