@@ -6,6 +6,7 @@ This class was reviewed, and should be fully documented at a basic level.
 
 """
 import os
+import sys
 import logging
 import numpy as np
 from typing import NamedTuple
@@ -109,6 +110,7 @@ class CircuitPopulation:
 
         logging_logger = logging.getLogger(__name__)
         logging_logger.setLevel(logging.DEBUG)
+        logging_logger.addHandler(logging.StreamHandler(sys.stdout))
 
         if not (URL := os.environ.get("USBIPICE_CONTROL")):
             raise Exception("USBIPICE_CONTROL not configured")
