@@ -96,6 +96,7 @@ pyserial = "^3.5"
 numpy = "^2.2.2"
 matplotlib = "^3.10.0"
 sortedcontainers = "^2.4.0"
+ascutil = "0.1.0"
 
 #dev group for developers updating the code
 [tool.poetry.group.dev]

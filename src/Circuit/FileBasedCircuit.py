@@ -7,6 +7,8 @@ from Circuit.Circuit import Circuit
 import Config
 import Logger
 
+from ascutil import mutate
+
 COMPILE_CMD = "icepack"
 
 class FileBasedCircuit(Circuit):
@@ -52,18 +54,30 @@ class FileBasedCircuit(Circuit):
         copyfile(other._hardware_filepath, self._hardware_filepath)
 
     def mutate(self):
-        def mutate_bit(bit, row, col, *rest):
-            if self._config.get_mutation_probability() >= self._rand.uniform(0,1):
-                # Set this bit to either a 0 or 1 randomly
-                # Keep in mind that these are BYTES that we are modifying, not characters
-                # Therefore, we have to set it to either ASCII 0 (48) or ASCII 1 (49), not actual 0 or 1, which represent different characters
-                # and will corrupt the file if we mutate in this way
-                # 48 = 0, 49 = 1. To flip, just need to do (48+49) - the current value (48+49=97)
-                # This now always flips the bit instead of randomly assigning it every time
-                # Note: If prev != 48 or 49, then we changed the wrong value because it was not a 0 or 1 previously
-                # self._log_event(4, "Mutating:", self, "@(", row, ",", col, ") previous was", bit)
-                return 97 - bit
-        self._run_at_each_modifiable(mutate_bit)
+        # def mutate_bit(bit, row, col, *rest):
+        #     if self._config.get_mutation_probability() >= self._rand.uniform(0,1):
+        #         # Set this bit to either a 0 or 1 randomly
+        #         # Keep in mind that these are BYTES that we are modifying, not characters
+        #         # Therefore, we have to set it to either ASCII 0 (48) or ASCII 1 (49), not actual 0 or 1, which represent different characters
+        #         # and will corrupt the file if we mutate in this way
+        #         # 48 = 0, 49 = 1. To flip, just need to do (48+49) - the current value (48+49=97)
+        #         # This now always flips the bit instead of randomly assigning it every time
+        #         # Note: If prev != 48 or 49, then we changed the wrong value because it was not a 0 or 1 previously
+        #         # self._log_event(4, "Mutating:", self, "@(", row, ",", col, ") previous was", bit)
+        #         return 97 - bit
+        # self._run_at_each_modifiable(mutate_bit)
+        routing_type = self._config.get_routing_type()
+        if routing_type == "MOORE":
+            rows = [1, 2, 13]
+        elif routing_type == "NEWSE":
+            rows = [1, 2]
+        elif routing_type == "ALL":
+            rows = list(range(1, 17))
+
+        rows = [row-1 for row in rows]
+        columns = [int(column)-1 for column in self._config.get_accessed_columns()]
+        mutation_chance = self._config.get_mutation_probability()
+        mutate(self._hardware_filepath, rows, columns, mutation_chance)
 
     def randomize_bitstream(self):
         def randomize_bit(*rest):
@@ -192,7 +206,7 @@ class FileBasedCircuit(Circuit):
             tile = hardware_file.find(b".logic_tile", tile + 1)
 
     def _compile(self):
-        
+
         """
         Compile circuit ASC file to a BIN file for hardware upload.
         """

@@ -10,7 +10,7 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 RUN python3 -m venv .venv
-RUN .venv/bin/pip install pyserial numpy matplotlib sortedcontainers pytest
+RUN .venv/bin/pip install pyserial numpy matplotlib sortedcontainers pytest ascutil
 # client pip install broken last I checked
 RUN .venv/bin/pip install -e /usr/local/lib/iCEFARM
 RUN make init
