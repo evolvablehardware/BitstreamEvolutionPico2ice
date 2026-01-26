@@ -31,14 +31,14 @@ class Evolution:
 
             print('Execution of evolve.py Finished.')
             return
-    
+
         if not os.path.exists("./workspace"):
             os.mkdir("./workspace")
 
         ## Creating the config that will be used.
         config_builder = ConfigBuilder(primary_config_path, override_base_config=base_config_path)
         config_builder.build_config(built_config_path)
-        
+
         ## Use config generated to run experiment
         config = Config(built_config_path)
 
@@ -81,10 +81,10 @@ class Evolution:
         try:
             run(args, check=True, capture_output=True)
         except OSError as e:
-            self.logger.log_error(1, "An error occured while launching PlotEvolutionLive.py")
+            self.logger.error(1, "An error occured while launching PlotEvolutionLive.py")
         except CalledProcessError as e:
-            self.logger.log_error(1, "An error occured in PlotEvolutionLive.py")
-            self.logger.log_error(1, e)
+            self.logger.error(1, "An error occured in PlotEvolutionLive.py")
+            self.logger.error(1, e)
 
         # SECTION Clean up resources
 
@@ -96,7 +96,7 @@ class Evolution:
                 "i:0x0403:0x6010:0",
                 "data/hardware_blink.bin"
             ])
-        
+
         self.clean_up()
 
     def clean_up(self):
@@ -110,7 +110,7 @@ class Evolution:
         self.__WorkspaceFormatter = WorkspaceFormatter(self.config, self.experiment_description)
         self.__WorkspaceFormatter.format_workspace()
 
-    ## Don't know if this is needed, but it might be useful to validate all inputs 
+    ## Don't know if this is needed, but it might be useful to validate all inputs
     ## especially if this is going to take a while to run.
     ## It would also be nice if we could have script that could look over a bunch of configs and validate
     ## that they have all necessary parameters

@@ -13,7 +13,7 @@ from matplotlib import colormaps
 import configparser
 import re
 from Config import Config
-import math 
+import math
 import numpy as np
 import sys
 from utilities import determine_color
@@ -43,7 +43,7 @@ def run():
         lines = graph_data.split('\n')
         xs = []
         ys = []
-        
+
         is_transparent = False
         for line in lines:
             if len(line) > 1:
@@ -124,7 +124,7 @@ def run():
             ax3.set_ylabel('Diversity', color='#5a70ed')
             ax3.set_ylim(bottom=0)
             ax3.yaxis.set_label_position("right")
-        
+
         ax2.set(xlabel='Generation', ylabel='Fitness', title='Circuit Fitness per Generation')
 
         if formal:
@@ -176,7 +176,7 @@ def run():
             fig4.savefig(plots_dir.joinpath("2_pulses.png"), bbox_inches="tight")
 
 
-    def animate_waveform(i):    
+    def animate_waveform(i):
         graph_data = open('workspace/waveformlivedata.log','r').read()
         lines = graph_data.split('\n')
         pulse_trigger = [341*3.3/715]*500
@@ -202,7 +202,7 @@ def run():
 
         ax4.set(xlabel='Time (μs)', ylabel='Voltage (V)', title='Current Hardware Waveform')
 
-    def animate_state(i):    
+    def animate_state(i):
         graph_data = open('workspace/statelivedata.log','r').read()
         lines = graph_data.split('\n')
         pulse_trigger = [341*3.3/715]*500
@@ -271,7 +271,7 @@ def run():
         ys = []
         ylabels = []
         ylabel_i = 1
-        
+
         x = 1
         for line in lines:
             if len(line) > 1:
@@ -293,7 +293,7 @@ def run():
                 ylabel_i = ylabel_i + 1
                 for i in range(len(parsed)):
                     ys[i].append(parsed[i])
-        
+
         if len(ys) > 0:
             ax6.clear()
             ax6.stackplot(xs, ys, labels=ylabels)
@@ -380,7 +380,7 @@ def run():
                 for i in range(0,len(lines),config.get_transfer_interval()):
                     ax10.axvline(x=i, color=accent_color, linestyle="dashed")
             if config.is_pulse_count():
-                ax10.hlines(y=config.get_desired_frequency(), xmin=1, xmax=len(lines), color="violet", linestyles="dotted")  
+                ax10.hlines(y=config.get_desired_frequency(), xmin=1, xmax=len(lines), color="violet", linestyles="dotted")
             ax10.set(xlabel='Generation', ylabel='Pulses', title='Pulse Violin Plots')
             ax10.set(xlabel='Generation', ylabel='Pulses')
 
@@ -391,7 +391,7 @@ def run():
         else:
             data = open('workspace/heatmaplivedata.log','r').read()
 
-        
+
         lines = data.split('\n')
         collections = []
         gens = []
@@ -406,8 +406,8 @@ def run():
                         collections.append(float(pt))
                     else:
                         collections.append(float(pt)*3.3/715)
-                
-        ax8.clear()                         
+
+        ax8.clear()
         hist = ax8.hist2d(gens,collections,bins=HEATMAP_BINS,cmap=heatmap_color)
 
         if config.is_pulse_func():
@@ -461,7 +461,7 @@ def run():
 
     formal = False
     if len(sys.argv) > 1 and sys.argv[1] == 'formal':
-        formal = True 
+        formal = True
         plots_dir = plots_dir.joinpath("Formal")
         accent_color = "black"
         accent_color2 = "#65187A"
@@ -476,7 +476,7 @@ def run():
         yellow = "yellow"
         plot = lambda fig, function : animation.FuncAnimation(fig, function, interval=FRAME_INTERVAL, cache_frame_data=False)
 
-    
+
     if not exists(plots_dir):
         mkdir(plots_dir)
 
@@ -507,7 +507,7 @@ def run():
     if has_wf_plot:
         ax4 = fig.add_subplot(rows, cols, 3)
         ani3 = plot(fig, animate_waveform)
-    
+
     if has_st_plot:
         ax5 = fig.add_subplot(rows, cols, 4)
         ani4 = plot(fig, animate_state)

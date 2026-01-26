@@ -35,13 +35,13 @@ class Microcontroller:
         self.__logger.log_event(level, *event)
 
     def __log_info(self, level, *info):
-        self.__logger.log_info(level, *info)
+        self.__logger.info(level, *info)
 
     def __log_error(self, level, *error):
-        self.__logger.log_error(level, *error)
+        self.__logger.error(level, *error)
 
     def __log_warning(self, level, *warning):
-        self.__logger.log_warning(level, *warning)
+        self.__logger.warning(level, *warning)
 
     def __init__(self, config: Config, logger: Logger):
         """

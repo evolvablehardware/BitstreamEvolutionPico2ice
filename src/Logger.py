@@ -106,16 +106,16 @@ class Logger:
         if self.__config.get_launch_plots():
             if (self.__config.get_simulation_mode() == 'INTRINSIC_SENSITIVITY'):
                 args = TERM_CMD + ["python3", "src/PlotSensitivityLive.py"]
-            else: 
+            else:
                 args = TERM_CMD + ["python3", "src/PlotEvolutionLive.py", "--frame-interval", str(self.__config.get_frame_interval())]
-            
+
             try:
                 run(args, check=True, capture_output=True)
             except OSError as e:
-                self.log_error(1, "An error occured while launching PlotEvolutionLive.py")
+                self.error(1, "An error occured while launching PlotEvolutionLive.py")
             except CalledProcessError as e:
-                self.log_error(1, "An error occured in PlotEvolutionLive.py")
-                self.log_error(1, e)
+                self.error(1, "An error occured in PlotEvolutionLive.py")
+                self.error(1, e)
 
     def __init__(self, config, explanation):
         self.__config = config
@@ -191,22 +191,22 @@ class Logger:
             print(*msg, file=self.__log_file)
             self.log_monitor("", *msg)
 
-    def log_info(self, level, *msg):
+    def info(self, level, *msg):
         if self.__config.get_log_level() >= level:
             print("INFO: ", OKBLUE, *msg, ENDC, file=self.__log_file)
             self.log_monitor("INFO: ", *msg)
 
-    def log_warning(self, level, *msg):
+    def warning(self, level, *msg):
         if self.__config.get_log_level() >= level:
             print("WARNING: ", WARNING, *msg, ENDC, file=self.__log_file)
             self.log_monitor("WARNING: ", *msg)
 
-    def log_error(self, level, *msg):
+    def error(self, level, *msg):
         if self.__config.get_log_level() >= level:
             print("ERROR: ", FAIL, *msg, ENDC, file=self.__log_file)
             self.log_monitor("ERROR: ", *msg)
 
-    def log_critical(self, level, *msg):
+    def critical(self, level, *msg):
         if self.__config.get_log_level() >= level:
             print("CRITICAL: ", FAIL, *msg, ENDC, file=self.__log_file)
             self.log_monitor("CRITICAL: ", *msg)
