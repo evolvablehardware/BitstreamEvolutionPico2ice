@@ -313,7 +313,7 @@ class Config:
 		"""
 		desiredFreq = int(self.get_fitness_parameters("DESIRED_FREQ"))
 		if desiredFreq < 0:
-			self.__log_error(1, "Invalid desired frequency " + str(desiredFreq) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid desired frequency " + str(desiredFreq) + "'. Must be greater than zero.")
 			exit()
 		return desiredFreq
 
@@ -375,14 +375,14 @@ class Config:
 		"""
 		value = int(self.get_fitness_parameters("NUM_SAMPLES"))
 		if value < 1:
-			self.__log_error(1, "Invalid number of samples " + str(value) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid number of samples " + str(value) + "'. Must be greater than zero.")
 			exit()
 		return value
 
 	def get_num_passes(self):
 		value = int(self.get_fitness_parameters("NUM_PASSES"))
 		if value < 1:
-			self.__log_error(1, "Invalid number of passes " + str(value) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid number of passes " + str(value) + "'. Must be greater than zero.")
 			exit()
 		return value
 
@@ -390,37 +390,37 @@ class Config:
 	def get_population_size(self):
 		popSize = int(self.get_ga_parameters("POPULATION_SIZE"))
 		if popSize < 1:
-			self.__log_error(1, "Invalid population size " + str(popSize) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid population size " + str(popSize) + "'. Must be greater than zero.")
 			exit()
 		return popSize
 
 	def get_mutation_probability(self):
 		prob = float(self.get_ga_parameters("MUTATION_PROBABILITY"))
 		if prob < 0.0:
-			self.__log_error(1, "Invalid mutation probability " + str(prob) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid mutation probability " + str(prob) + "'. Must be greater than zero.")
 			exit()
 		if prob > 1.0:
-			self.__log_error(1, "Invalid mutation probability " + str(prob) + "'. Must be less than one.")
+			self.__logger.error("Invalid mutation probability " + str(prob) + "'. Must be less than one.")
 			exit()
 		return prob
 
 	def get_crossover_probability(self):
 		prob = float(self.get_ga_parameters("CROSSOVER_PROBABILITY"))
 		if prob < 0.0:
-			self.__log_error(1, "Invalid crossover probability " + str(prob) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid crossover probability " + str(prob) + "'. Must be greater than zero.")
 			exit()
 		if prob > 1.0:
-			self.__log_error(1, "Invalid crossover probability " + str(prob) + "'. Must be less than one.")
+			self.__logger.error("Invalid crossover probability " + str(prob) + "'. Must be less than one.")
 			exit()
 		return prob
 
 	def get_elitism_fraction(self):
 		frac = float(self.get_ga_parameters("ELITISM_FRACTION"))
 		if frac < 0.0:
-			self.__log_error(1, "Invalid elitism fraction " + str(frac) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid elitism fraction " + str(frac) + "'. Must be greater than zero.")
 			exit()
 		if frac > 1.0:
-			self.__log_error(1, "Invalid elistism probability " + str(frac) + "'. Must be less than one.")
+			self.__logger.error("Invalid elistism probability " + str(frac) + "'. Must be less than one.")
 			exit()
 		return frac
 
@@ -433,10 +433,10 @@ class Config:
 	def get_random_injection(self):
 		frac = float(self.get_ga_parameters("RANDOM_INJECTION"))
 		if frac < 0.0:
-			self.__log_error(1, "Invalid random injection rate " + str(frac) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid random injection rate " + str(frac) + "'. Must be greater than zero.")
 			exit()
 		if frac > 1.0:
-			self.__log_error(1, "Invalid random injection rate " + str(frac) + "'. Must be less than one.")
+			self.__logger.error("Invalid random injection rate " + str(frac) + "'. Must be less than one.")
 			exit()
 		return frac
 
@@ -464,7 +464,7 @@ class Config:
 	def get_randomize_threshold(self):
 		threshold = float(self.get_init_parameters("RANDOMIZE_THRESHOLD"))
 		if threshold < 0:
-			self.__log_error(1, "Invalid random threshold " + str(threshold) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid random threshold " + str(threshold) + "'. Must be greater than zero.")
 			exit()
 		return threshold
 
@@ -484,10 +484,10 @@ class Config:
 		try:
 			nGenerations = int(self.get_stop_parameters("GENERATIONS"))
 		except:
-			self.__log_warning(2, "Non-int user input for number of generations. Program will not terminate based on the number of generations",)
+			self.__logger.warning("Non-int user input for number of generations. Program will not terminate based on the number of generations",)
 			return "IGNORE"
 		if nGenerations < 1:
-			self.__log_error(1, "Invalid number of generations " + str(nGenerations) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid number of generations " + str(nGenerations) + "'. Must be greater than zero.")
 			exit()
 		return nGenerations
 
@@ -498,10 +498,10 @@ class Config:
 		try:
 			targetFitness = float(self.get_stop_parameters("TARGET_FITNESS"))
 		except:
-			self.__log_warning(2, "Non-int user input for target fitness. Program will not terminate based on fitness")
+			self.__logger.warning("Non-int user input for target fitness. Program will not terminate based on fitness")
 			return "IGNORE"
 		if targetFitness < 0.0:
-			self.__log_error(1, "Invalid target fitness " + str(targetFitness) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid target fitness " + str(targetFitness) + "'. Must be greater than zero.")
 			exit()
 		return targetFitness
 
@@ -510,7 +510,7 @@ class Config:
 		try:
 			return Path(self.get_sensitivity_parameters("TEST_CIRCUIT"))
 		except NoOptionError:
-			self.__log_error(1, "Invalid file path " + self.get_sensitivity_parameters("TEST_CIRCUIT") + " for test circuit.")
+			self.__logger.error("Invalid file path " + self.get_sensitivity_parameters("TEST_CIRCUIT") + " for test circuit.")
 
 	def using_sensitivity_trials(self):
 		return self.get_sensitivity_parameters("SENSITIVITY_TRIALS") != "IGNORE"
@@ -519,10 +519,10 @@ class Config:
 		try:
 			trials = int(self.get_sensitivity_parameters("SENSITIVITY_TRIALS"))
 		except:
-			self.__log_warning(1, "Non-int user input for the number of sensitivity trials. Program will not terminate based on the number of of trials")
+			self.__logger.warning("Non-int user input for the number of sensitivity trials. Program will not terminate based on the number of of trials")
 			return "IGNORE"
 		if trials < 1:
-			self.__log_error(1, "Invalid number of sensitivity trials" + str(trials) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid number of sensitivity trials" + str(trials) + "'. Must be greater than zero.")
 			exit()
 		return trials
 
@@ -535,10 +535,10 @@ class Config:
 			seconds = 86400*date_time.day + 3600*date_time.hour + 60*date_time.minute + date_time.second
 			print(seconds)
 		except ValueError:
-			self.__log_warning(1, "Invalid value for the amount of time to sensitivity trials. Should be in the format %-j:%H:%M:%S. Program will not terminate based on the amount of time passed")
+			self.__logger.warning("Invalid value for the amount of time to sensitivity trials. Should be in the format %-j:%H:%M:%S. Program will not terminate based on the amount of time passed")
 			return "IGNORE"
 		if seconds < 0:
-			self.__log_error(1, "Invalid amount of time to do sensitivity trials: " + str(seconds) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid amount of time to do sensitivity trials: " + str(seconds) + "'. Must be greater than zero.")
 			exit()
 		return seconds
 
@@ -563,10 +563,10 @@ class Config:
 		try:
 			interval = int(self.get_transfer_parameters("TRANSFER_INTERVAl"))
 		except:
-			# self.__log_info(2, "Non-int user input for transfer interval. Evolution will occur on only one FPGA")
+			# self.__logger.info("Non-int user input for transfer interval. Evolution will occur on only one FPGA")
 			return "IGNORE"
 		if interval < 1:
-			self.__log_error(1, "Invalid transfer interval size " + str(interval) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid transfer interval size " + str(interval) + "'. Must be greater than zero.")
 			exit()
 		return interval
 
@@ -597,7 +597,7 @@ class Config:
 		except:
 			return "IGNORE"
 		if interval < 1:
-			self.__log_error(1, "Invalid population bistream save interval " + str(interval) + "'. Must be greater than zero.")
+			self.__logger.error("Invalid population bistream save interval " + str(interval) + "'. Must be greater than zero.")
 			exit()
 		return interval
 
@@ -753,7 +753,7 @@ class Config:
 
 	def check_valid_value(self, param_name, user_input, allowed_values):
 		if not user_input in allowed_values:
-			self.__log_error(1, "Invalid " + param_name + " '" + str(user_input) + "'. Valid parameters are: " +
+			self.__logger.error("Invalid " + param_name + " '" + str(user_input) + "'. Valid parameters are: " +
 			", ".join(list(map(lambda x: str(x), allowed_values))))
 			exit()
 
@@ -779,12 +779,12 @@ class Config:
 		# Make sure user follows our requirements
 		# Pulse consistency must have >=1 passes and >=1 samples
 		if self.get_fitness_func() == "PULSE_CONSISTENCY" and (self.get_num_passes() * self.get_num_samples()) <= 1:
-			self.__log_error(1, "PULSE_CONSISTENCY function can only be used with multiple samples/passes")
+			self.__logger.error("PULSE_CONSISTENCY function can only be used with multiple samples/passes")
 			exit()
 		# MAP elites can only be used with VARIANCE, COMBINED, and PULSE CONSISTENCY
 		if self.get_selection_type() == "MAP_ELITES":
 			if self.get_fitness_func() not in ["VARIANCE", "COMBINED", "PULSE_CONSISTENCY"]:
-				self.__log_error(1, "MAP_ELITES selection can only be used with the following fitness functions: " +
+				self.__logger.error("MAP_ELITES selection can only be used with the following fitness functions: " +
 				"VARIANCE, COMBINED, PULSE_CONSISTENCY")
 				exit()
 
@@ -874,34 +874,6 @@ class Config:
 	def validate_sensitivity_params(self):
 		self.get_test_circuit()
 		self.get_sensitivity_trials()
-
-	def __log_event(self, level, *event):
-		"""
-		Emit an event-level log. This function is fulfilled through
-		the logger.
-		"""
-		self.__logger.log_event(level, *event)
-
-	def __log_info(self, level, *info):
-		"""
-		Emit an info-level log. This function is fulfilled through
-		the logger.
-		"""
-		self.__logger.log_info(level, *info)
-
-	def __log_error(self, level, *error):
-		"""
-		Emit an error-level log. This function is fulfilled through
-		the logger.
-		"""
-		self.__logger.log_error(level, *error)
-
-	def __log_warning(self, level, *warning):
-		"""
-		Emit a warning-level log. This function is fulfilled through
-		the logger.
-		"""
-		self.__logger.log_warning(level, *warning)
 
 	# used by the logger to store a back-up of the config
 	# probably not the cleanest way to do this

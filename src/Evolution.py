@@ -1,8 +1,10 @@
+import sys
+import logging
 from Microcontroller import Microcontroller
 from CircuitPopulation import CircuitPopulation
 from ConfigBuilder import ConfigBuilder
 from Config import Config
-from Logger import Logger
+from Logger import EvolutionLogger
 from subprocess import CalledProcessError, run
 import os
 
@@ -54,7 +56,10 @@ class Evolution:
             u = run(["./arduino-cli", "upload", "-b", "arduino:avr:nano", "-p", usb_port, "data/ReadSignal/ReadSignal.ino"])
 
         ## Run Evolution
-        logger = Logger(config, experiment_description)
+        logger = logging.getLogger(__name__)
+        logger .setLevel(logging.DEBUG)
+        logger .addHandler(logging.StreamHandler(sys.stdout))
+        logger = EvolutionLogger(logger, config, experiment_description)
         # logger.log_info(1, args) - Not sure how to log arguments. This was my attempt to do so.
         config.add_logger(logger)
         config.validate_all()
@@ -74,9 +79,9 @@ class Evolution:
             population.run_fitness_sensitity()
 
 
-        logger.log_event(0, "Evolution has completed successfully")
+        logger.event(0, "Evolution has completed successfully")
 
-        logger.log_event(1, "Launching the Live Plot window...")
+        logger.event(1, "Launching the Live Plot window...")
         args = ["python3", "src/PlotEvolutionLive.py", "formal"]
         try:
             run(args, check=True, capture_output=True)

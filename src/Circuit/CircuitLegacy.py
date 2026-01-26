@@ -21,7 +21,7 @@ import typing
 # Will only import these at type-checking time, not at runtime
 if typing.TYPE_CHECKING:
     from Microcontroller import Microcontroller
-    from Logger import Logger
+    from Logger import EvolutionLogger
     from Config import Config
 
 # TODO Integrate globals in a more elegant manner.
@@ -71,7 +71,7 @@ class CircuitLegacy:
         return self.__filename
 
     def __init__(self, index: int, filename: str, template, mcu: Microcontroller,
-            logger: Logger, config: Config, rand, sine_funcs):
+            logger: EvolutionLogger, config: Config, rand, sine_funcs):
         """
         Creates a circuit object.
 
@@ -276,7 +276,7 @@ class CircuitLegacy:
         """
         Compile circuit ASC file to a BIN file for hardware upload.
         """
-        self.__log_event(2, "Compiling", self, "with icepack...")
+        self.__logger.event(2, "Compiling", self, "with icepack...")
 
         # Ensure the file backing the mmap is up to date with the latest
         # changes to the mmap.
@@ -289,7 +289,7 @@ class CircuitLegacy:
         ]
         run(compile_command)
 
-        self.__log_event(2, "Finished compiling", self)
+        self.__logger.event(2, "Finished compiling", self)
 
     def get_sim_bitstream(self):
         """
@@ -342,12 +342,12 @@ class CircuitLegacy:
             # Even one would break consistency anyway, we want to force things between the desired range
             if len(invalid_data) > 0:
                 fit = 0
-                self.__log_event(2, "Data had invalid values, fitness is 0")
+                self.__logger.event(2, "Data had invalid values, fitness is 0")
             else:
                 std = stdev(data)
                 self.__mean_freq = sum(data) / len(data)
                 fit = 1_000 / (std + 1)
-                self.__log_event(2, "Consistency std", std, "data", data, "fitness", fit)
+                self.__logger.event(2, "Consistency std", std, "data", data, "fitness", fit)
         else:
             # Pulse fitness will be > 1 if there were more than 0 pulses detected
             # Therefore to combine pulse fitnesses, subtract 1 from each, multiply them together,
@@ -436,7 +436,7 @@ class CircuitLegacy:
                 self.__fitness = self.__fitness + int.from_bytes(byte, "big")
                 byte = f.read(1)
 
-        self.__log_event(3, "Fitness: ", self.__fitness)
+        self.__logger.event(3, "Fitness: ", self.__fitness)
 
         self.__update_all_live_data()
 
@@ -466,7 +466,7 @@ class CircuitLegacy:
         self.__microcontroller.measure_signal(self.get_data_filepath())
 
         elapsed = time() - start
-        self.__log_event(1,
+        self.__logger.event(1,
             "TIME TAKEN RUNNING AND LOGGING ---------------------- ",
             elapsed
         )
@@ -508,7 +508,7 @@ class CircuitLegacy:
         self.__microcontroller.measure_signal_td(self)
 
         elapsed = time() - start
-        self.__log_event(1,
+        self.__logger.event(1,
             "TIME TAKEN RUNNING AND LOGGING ---------------------- ",
             elapsed
         )
@@ -555,7 +555,7 @@ class CircuitLegacy:
         self.__microcontroller.simple_measure_pulses(self.get_data_filepath(), self.__config.get_num_samples())
 
         elapsed = time() - start
-        self.__log_event(1,
+        self.__logger.event(1,
             "TIME TAKEN RUNNING AND LOGGING ---------------------- ",
             elapsed
         )
@@ -590,7 +590,7 @@ class CircuitLegacy:
         self.__microcontroller.measure_signal(self)
 
         elapsed = time() - start
-        self.__log_event(1,
+        self.__logger.event(1,
             "TIME TAKEN RUNNING AND LOGGING ---------------------- ",
             elapsed
         )
@@ -620,7 +620,7 @@ class CircuitLegacy:
         self.__microcontroller.measure_signal(self)
 
         elapsed = time() - start
-        self.__log_event(1,
+        self.__logger.event(1,
             "TIME TAKEN RUNNING AND LOGGING ---------------------- ",
             elapsed
         )
@@ -674,13 +674,13 @@ class CircuitLegacy:
                 x = int(data[i].strip().split(b": ", 1)[1])
                 waveform.append(x)
             except:
-                self.__log_error(1, "FAILED TO READ {} AT LINE {} -> ZEROIZING LINE".format(
+                self.__logger.error("FAILED TO READ {} AT LINE {} -> ZEROIZING LINE".format(
                     self,
                     i
                 ))
                 waveform.append(0)
 
-        self.__log_event(5, "Waveform: ", waveform)
+        self.__logger.event(5, "Waveform: ", waveform)
         return waveform
 
     def __read_variance_data_td(self):
@@ -722,15 +722,15 @@ class CircuitLegacy:
                 state.append(y)
             except:
                 # If the reading of the data fails, just record the data as 0s
-                self.__log_error(1, "TONE_DISC FAILED TO READ {} AT LINE {} -> ZEROIZING LINE".format(
+                self.__logger.error("TONE_DISC FAILED TO READ {} AT LINE {} -> ZEROIZING LINE".format(
                     self,
                     i
                 ))
                 waveform.append(0)
                 state.append(0)
 
-        self.__log_event(5, "Waveform: ", waveform)
-        self.__log_event(5, "State: ", state)
+        self.__logger.event(5, "Waveform: ", waveform)
+        self.__logger.event(5, "State: ", state)
 
         # Return the populated arrays
         return [waveform, state]
@@ -947,7 +947,7 @@ class CircuitLegacy:
             stateZeroAve = (waveform_sums[0] / stateZeroCount)
             stateOneAve = (waveform_sums[1] / stateOneCount)
             self.__fitness = (abs(stateZeroAve - stateOneAve) / 737.0)
-            self.__log_event(1,
+            self.__logger.event(1,
             "State 0 Average = ",
             stateZeroAve, " --- State 0 Count = ", stateZeroCount,
               " ----- State 1 Average = ", stateOneAve,
@@ -1016,11 +1016,11 @@ class CircuitLegacy:
                 dist = this_dist
                 pulse_count = pc
 
-        self.__log_event(3, "Pulses counted: {}".format(pulse_count))
+        self.__logger.event(3, "Pulses counted: {}".format(pulse_count))
         self.__pulses = pulse_count
 
         if len(pulse_counts) == 0:
-            self.__log_event(2, "NULL DATA FILE. ZEROIZING")
+            self.__logger.event(2, "NULL DATA FILE. ZEROIZING")
 
         self.__fitness = self.__calc_pulse_fitness(pulse_count)
 
@@ -1051,7 +1051,7 @@ class CircuitLegacy:
             fitness = math.exp(-0.5 * math.pow((pulses - desired_freq) / deviation, 2))
         else:
             if pulses == desired_freq:
-                self.__log_event(1, "Unity achieved: {}".format(self))
+                self.__logger.event(1, "Unity achieved: {}".format(self))
                 fitness = 1
             elif pulses == 0:
                 fitness = 0
@@ -1097,15 +1097,15 @@ class CircuitLegacy:
         pulseFitness = 10 * math.exp(-0.5 * math.pow((self.__mean_voltage - 341) / 200, 2))
         pulseWeight = self.__config.get_pulse_weight()
 
-        self.__log_event(4, "Pulse Fitness: ", pulseFitness)
-        self.__log_event(4, "Variance Fitness: ", varFitness)
+        self.__logger.event(4, "Pulse Fitness: ", pulseFitness)
+        self.__logger.event(4, "Variance Fitness: ", varFitness)
 
         if self.__config.get_combined_mode() == "ADD":
             self.__fitness = (pulseWeight * pulseFitness) + (varWeight * varFitness)
         else: #MULT
             self.__fitness = pow(pulseFitness, pulseWeight) * pow(varFitness, varWeight)
 
-        self.__log_event(3, "Combined Fitness: ", self.__fitness)
+        self.__logger.event(3, "Combined Fitness: ", self.__fitness)
 
         return self.__fitness
 
@@ -1210,7 +1210,7 @@ class CircuitLegacy:
                 # 48 = 0, 49 = 1. To flip, just need to do (48+49) - the current value (48+49=97)
                 # This now always flips the bit instead of randomly assigning it every time
                 # Note: If prev != 48 or 49, then we changed the wrong value because it was not a 0 or 1 previously
-                self.__log_event(4, "Mutating:", self, "@(", row, ",", col, ") previous was", bit)
+                self.__logger.event(4, "Mutating:", self, "@(", row, ",", col, ") previous was", bit)
                 return 97 - bit
 
         def randomize_bit(*rest):
@@ -1698,31 +1698,3 @@ class CircuitLegacy:
             High Value for MAP elites
         """
         return self.__high_val
-
-    def __log_event(self, level, *event):
-        """
-        Emit an event-level log. This function is fulfilled through
-        the logger.
-        """
-        self.__logger.log_event(level, *event)
-
-    def __log_info(self, level, *info):
-        """
-        Emit an info-level log. This function is fulfilled through
-        the logger.
-        """
-        self.__logger.info(level, *info)
-
-    def __log_error(self, level, *error):
-        """
-        Emit an error-level log. This function is fulfilled through
-        the logger.
-        """
-        self.__logger.error(level, *error)
-
-    def __log_warning(self, level, *warning):
-        """
-        Emit a warning-level log. This function is fulfilled through
-        the logger.
-        """
-        self.__logger.warning(level, *warning)

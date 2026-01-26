@@ -102,7 +102,7 @@ class PulseCountFitnessFunction(FitnessFunction):
             fitness = math.exp(-0.5 * math.pow((pulses - desired_freq) / deviation, 2))
         else:
             if pulses == desired_freq:
-                # self.__log_event(1, "Unity achieved: {}".format(self))
+                # self.__logger.event(1, "Unity achieved: {}".format(self))
                 fitness = 1
             elif pulses == 0:
                 fitness = 0

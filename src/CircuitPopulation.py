@@ -108,10 +108,6 @@ class CircuitPopulation:
         self.__config = config
         self.__microcontroller = mcu
 
-        logging_logger = logging.getLogger(__name__)
-        logging_logger.setLevel(logging.DEBUG)
-        logging_logger.addHandler(logging.StreamHandler(sys.stdout))
-
         if not (URL := os.environ.get("USBIPICE_CONTROL")):
             raise Exception("USBIPICE_CONTROL not configured")
 
@@ -127,7 +123,7 @@ class CircuitPopulation:
             self.mode = "quick"
 
 
-        self.client = PulseCountClient(URL, "bitstream evolution", logging_logger, log_events=True)
+        self.client = PulseCountClient(URL, "bitstream evolution", logger, log_events=True)
         atexit.register(self.client.endAll)
         self.BATCH_SIZE = 8
 
@@ -135,7 +131,7 @@ class CircuitPopulation:
         if len(serials) != DEVICES:
             raise Exception("Failed to reserve requested amount of devices")
 
-        logging_logger.info(f"Reserved device: {serials[0]}")
+        logger.info(f"Reserved device: {serials[0]}")
 
         # A list of Circuits that's sorted by fitness decreasing order
         # (to get it to sort in decreasing order I had to multiply the
@@ -173,7 +169,7 @@ class CircuitPopulation:
         elif config.get_selection_type() == "MAP_ELITES":
             self.__run_selection = self.__run_map_elites_selection
         else:
-            self.__log_error(
+            self.__logger.error(
                 1, "Invalid Selection method in config.ini. Exiting...")
             exit()
 
@@ -187,7 +183,7 @@ class CircuitPopulation:
         Internally has a while loop to determine how many times to run.
         """
         #create circuit object
-        self.__log_info(1, "Creating circuit object for fitness sensitivity experiment")
+        self.__logger.info("Creating circuit object for fitness sensitivity experiment")
         ckt = self.__construct_circuit(
             1,
             "hardware1",
@@ -223,20 +219,20 @@ class CircuitPopulation:
                     # TODO
                     # t = self.__microcontroller.measure_temp()
                     # h = self.__microcontroller.measure_humidity()
-                    # self.__log_event(4, "Recorded temperature: " + str(t) + ". Recorded humidity: " + str(h))
+                    # self.__logger.event(4, "Recorded temperature: " + str(t) + ". Recorded humidity: " + str(h))
 
 
                 now = datetime.now()
                 timestamp = now.strftime("%H.%M.%S")
 
                 live_file.write(("{}:{},{},{},{},{}\n").format(str(cur_trial), fitness, data2, t, h, timestamp))
-            self.__log_event(2, "Trial " + str(cur_trial) + " done. Fitness recorded and logged to file: " + str(fitness))
+            self.__logger.event(2, "Trial " + str(cur_trial) + " done. Fitness recorded and logged to file: " + str(fitness))
 
             cur_trial += 1
             should_continue = ((not using_time) or (time() - start_time < stop_time)) and \
                               ((not using_trials) or (cur_trial < num_trials))
 
-        self.__log_event(1, "Fitness sensitivity trails done.")
+        self.__logger.event(1, "Fitness sensitivity trails done.")
 
     def __generate_sine_funcs(self):
         """
@@ -360,15 +356,15 @@ class CircuitPopulation:
                 ckt.set_file_attribute('src_population', str(subdirectory_index))
 
             self.__circuits.add(ckt)
-            self.__log_event(3, "Created circuit: {0}".format(ckt))
+            self.__logger.event(3, "Created circuit: {0}".format(ckt))
 
         # If map-elites selection method selected, then randomly generate until we fill up 25% of the map
         '''if self.__config.get_selection_type() == 'MAP_ELITES':
-            self.__log_event(1, 'Randomizing until map is 25% full...')
+            self.__logger.event(1, 'Randomizing until map is 25% full...')
             elites = list(filter(lambda x: x != 0, [j for sub in self.__generate_map() for j in sub]))
             elite_count = len(elites)
             while elite_count < 0.1 * (21 * 21 / 2):
-                self.__log_event(3, "Got %s%% (%s)" % (elite_count / (21*21/2) * 100, elite_count))
+                self.__logger.event(3, "Got %s%% (%s)" % (elite_count / (21*21/2) * 100, elite_count))
                 # Need to mutate non-elites
                 for ckt in self.__circuits:
                     if not ckt in elites:
@@ -387,20 +383,20 @@ class CircuitPopulation:
         if self.__config.get_simulation_mode() != "FULLY_INTRINSIC":
             pass # No randomization implemented for simulation mode
         elif self.__config.get_randomization_type() == "PULSE":
-            self.__log_info(1, "PULSE randomization mode selected.")
+            self.__logger.info("PULSE randomization mode selected.")
             self.__randomize_until_pulses()
         elif self.__config.get_randomization_type() == "VARIANCE":
-            self.__log_info(1, "VARIANCE randomization mode selected.")
+            self.__logger.info("VARIANCE randomization mode selected.")
             if self.__config.get_randomize_threshold() <= 0:
-                self.__log_error(INVALID_VARIANCE_ERR_MSG)
+                self.__logger.error(INVALID_VARIANCE_ERR_MSG)
             else:
                 self.__randomize_until_variance()
         elif self.__config.get_randomization_type() == "VOLTAGE":
             self.__randomize_until_voltage()
         elif self.__config.get_randomization_type() == "NO":
-            self.__log_info(1, "NO randomization mode selected.")
+            self.__logger.info("NO randomization mode selected.")
         else:
-            self.__log_error(1, RANDOMIZE_UNTIL_NOT_SET_ERR_MSG)
+            self.__logger.error(RANDOMIZE_UNTIL_NOT_SET_ERR_MSG)
 
         # Output the first data point to live data files
         self.__write_to_livedata()
@@ -415,7 +411,7 @@ class CircuitPopulation:
         while no_pulses_generated:
             # NOTE Randomize until pulses will continue mutating and
             # not revert to the original seed-hardware until restarting
-            self.__log_event(3, "Randomizing to generate pulses")
+            self.__logger.event(3, "Randomizing to generate pulses")
             for circuit in self.__circuits:
                 if self.__config.get_randomize_mode() == 'RANDOM':
                     circuit.randomize_bitstream()
@@ -427,7 +423,7 @@ class CircuitPopulation:
                 th = self.__config.get_randomize_threshold()
                 if (pulses > th):
                     no_pulses_generated = False
-                    self.__log_info(1, "Pulse generated! Exiting randomization. Pulses recorded:", pulses)
+                    self.__logger.info("Pulse generated! Exiting randomization. Pulses recorded:", pulses)
                     break
 
     def __randomize_until_voltage(self):
@@ -437,7 +433,7 @@ class CircuitPopulation:
         Should only be used with variance maximization fitness function
         """
         while True:
-            self.__log_event(3, "Randomizing to get voltage")
+            self.__logger.event(3, "Randomizing to get voltage")
             for circuit in self.__circuits:
                 if self.__config.get_randomize_mode() == 'RANDOM':
                     circuit.randomize_bitstream()
@@ -447,7 +443,7 @@ class CircuitPopulation:
                 circuit.evaluate_once()
                 mean_voltage = circuit.get_extra_data('mean_voltage')
                 if (abs(mean_voltage - 341) < 10):
-                    self.__log_info(1, "Voltage Achieved! Exiting randomization. Voltage:", mean_voltage)
+                    self.__logger.info("Voltage Achieved! Exiting randomization. Voltage:", mean_voltage)
                     break
 
     # NOTE This is whole function going to be upgraded to handle a from-scratch circuit seeding process.
@@ -462,24 +458,24 @@ class CircuitPopulation:
         bestVariance = 0
         variance = 0
         while bestVariance < self.__config.get_randomize_threshold():
-            self.__log_event(3, "Randomizing to generate variance")
+            self.__logger.event(3, "Randomizing to generate variance")
             for circuit in self.__circuits:
                 circuit.randomize_bitstream()
                 circuit.evaluate_once()
                 variance = circuit.get_fitness()
-                self.__log_info(3, "Variance generated:", variance)
+                self.__logger.info("Variance generated:", variance)
 
                 with open("workspace/randomizationdata.log", "a") as liveFile:
                     liveFile.write(str(variance) + "\n")
 
                 if variance > bestVariance:
-                    self.__log_info(3, "New best variance: ", variance)
+                    self.__logger.info("New best variance: ", variance)
                     bestVariance = variance
                     self.__overall_best_circuit_info = CircuitInfo(str(circuit), variance)
                     copyfile(circuit.get_hardware_file_path(), self.__config.get_best_file())
                     break
 
-        self.__log_info(3, "Variance generated! Exiting randomization. Fitness:", variance)
+        self.__logger.info("Variance generated! Exiting randomization. Fitness:", variance)
 
     def __next_epoch(self):
         """
@@ -522,7 +518,7 @@ class CircuitPopulation:
         while also storing statistics in a file for the plot to access.
         """
         if len(self.__circuits) == 0:
-            self.__log_error(
+            self.__logger.error(
                 1, "Attempting to evolve with empty population. Exiting...")
             exit()
 
@@ -536,7 +532,7 @@ class CircuitPopulation:
 
         while(self.__should_continue_evo()): #self.get_current_epoch() < self.__config.get_n_generations()):
 
-            #self.__log_event(3, "Starting evo cycle", self.get_current_epoch(
+            #self.__logger.event(3, "Starting evo cycle", self.get_current_epoch(
             #), "<", self.__config.get_n_generations(), "?")
 
             # Since sortedcontainers don't update when the value by
@@ -589,7 +585,7 @@ class CircuitPopulation:
                     fpath = evaluation.filepath
                     circuit = file_to_circuit[fpath]
                     circuit._data.append(int(pulses))
-                    self.__log_info(4, f"{circuit} got data: {pulses}")
+                    self.__logger.info(f"{circuit} got data: {pulses}")
 
             #     for circuit in circuits:
             #         if isinstance(circuit, FileBasedCircuit):
@@ -598,7 +594,7 @@ class CircuitPopulation:
             #             circuit.collect_data_once()
 
             for circuit in self.__circuits:
-                self.__log_info(4, f"{circuit} pulses: {circuit._data}")
+                self.__logger.info(f"{circuit} pulses: {circuit._data}")
                 circuit.calculate_fitness()
 
             self.__population_bistream_sum = np.zeros(self.__population_bistream_sum.size)
@@ -618,7 +614,7 @@ class CircuitPopulation:
                 # Commented out for now while we test
                 # Pretty sure this was originally for pulse count only, leaving it commented out since things are working right now
                 '''if fitness > self.__config.get_randomize_threshold():
-                    self.__log_event(1, "{} fitness: {}".format(circuit, fitness))
+                    self.__logger.event(1, "{} fitness: {}".format(circuit, fitness))
                     return'''
                 reevaulated_circuits.add(circuit)
 
@@ -632,8 +628,8 @@ class CircuitPopulation:
             # If one of the new Circuits has a higher fitness than our
             # recorded best, make it the recorded best.
             best_circuit_info = self.get_overall_best_circuit_info()
-            self.__log_event(2, "Best circuit info", best_circuit_info.fitness)
-            self.__log_event(2, "Circuit 0 info",
+            self.__logger.event(2, "Best circuit info", best_circuit_info.fitness)
+            self.__logger.event(2, "Circuit 0 info",
                              self.__circuits[0].get_fitness())
             if self.__circuits[0].get_fitness() > best_circuit_info.fitness:
                 self.__overall_best_circuit_info = CircuitInfo(
@@ -660,7 +656,7 @@ class CircuitPopulation:
                         for points in self.__circuits[0].get_state_td():
                             stateLive.write(str(i) + ", " + str(points) + "\n")
                             i += 1
-                self.__log_event(2, "New best found")
+                self.__logger.event(2, "New best found")
 
             self.__logger.log_generation(self, epoch_time)
             # The circuits that are protected from randomization
@@ -691,7 +687,7 @@ class CircuitPopulation:
         if not is_pulse_func(self.__config):
             self.__eval_circuit_once(self.__circuits[0])
         # Also, log the name of the top circuit
-        self.__log_event(1, "Top Circuit in Final Generation:", self.__circuits[0])
+        self.__logger.event(1, "Top Circuit in Final Generation:", self.__circuits[0])
 
     def __write_to_livedata(self):
         """
@@ -814,7 +810,7 @@ class CircuitPopulation:
         """
         population = self.__rand.permutation(self.__circuits)
 
-        self.__log_event(3, "Tournament Number:", self.get_current_epoch())
+        self.__logger.event(3, "Tournament Number:", self.get_current_epoch())
 
         # For all Circuits in the CircuitPopulation, take two random
         # circuits at a time from the population and compare them. Copy
@@ -827,7 +823,7 @@ class CircuitPopulation:
                 winner = ckt2
                 loser = ckt1
 
-            self.__log_event(3,
+            self.__logger.event(3,
                             "Fitness {}: {} < Fitness {}: {}".format(
                                 loser,
                                 loser.get_fitness(),
@@ -838,7 +834,7 @@ class CircuitPopulation:
             if self.__rand.uniform(0, 1) <= self.__config.get_crossover_probability():
                 self.__single_point_crossover(winner, loser)
             else:
-                self.__log_event(3, "Cloning:", winner, " ---> ", loser)
+                self.__logger.event(3, "Cloning:", winner, " ---> ", loser)
                 loser.copy_from(winner)
 
             loser.mutate()
@@ -847,7 +843,7 @@ class CircuitPopulation:
         """
         Selection Algorithm that mutates the hardware of every circuit that is not the current best circuit
         """
-        self.__log_event(3, "Tournament Number: {}".format(
+        self.__logger.event(3, "Tournament Number: {}".format(
             str(self.get_current_epoch())))
 
         best = self.__circuits[0]
@@ -858,15 +854,15 @@ class CircuitPopulation:
                 if ckt.get_fitness() <= best.get_fitness():
                     ckt.mutate()
             else:
-                self.__log_info(2, ckt, "is current BEST")
+                self.__logger.info(ckt, "is current BEST")
 
     def __run_fitness_proportional_selection(self):
         """
         Selection algorithm that compares every circuit in the population to a random elite (chosen proportionally based on each elite's fitness).
         If circuit has a lower fitness, crossover or mutate the circuit
         """
-        self.__log_event(2, "Number of Elites:", self.__n_elites)
-        self.__log_event(2, "Ranked Fitness:", self.__circuits)
+        self.__logger.event(2, "Number of Elites:", self.__n_elites)
+        self.__logger.event(2, "Ranked Fitness:", self.__circuits)
 
         # Generate a group of elites from the best n = <self.__n_elites>
         # Circuits. Based on their fitness values, map each Circuit with
@@ -885,11 +881,11 @@ class CircuitPopulation:
                 elites[elite] = 1 / self.__n_elites
         else:
             # elite_sum is negative. This should not be possible.
-            self.__log_error(1, "Elite_sum is negative. Exiting...")
+            self.__logger.error("Elite_sum is negative. Exiting...")
             exit()
 
-        self.__log_event(2, "Elite Group:", elites.keys())
-        self.__log_event(2, "Elite Probabilites:", elites.values())
+        self.__logger.event(2, "Elite Group:", elites.keys())
+        self.__logger.event(2, "Elite Probabilites:", elites.values())
         self.__protected_elites = elites.keys()
 
         # For all Circuits in this CircuitPopulation, choose a random
@@ -912,18 +908,18 @@ class CircuitPopulation:
             else:
                 rand_elite = self.__rand.choice(self.__circuits)
 
-            self.__log_event(4, "Elite", rand_elite)
+            self.__logger.event(4, "Elite", rand_elite)
 
             if ckt.get_fitness() <= rand_elite.get_fitness() and ckt != rand_elite and ckt not in elites:
                 # if self.__config.get_crossover_probability() == 0:
-                # 	self.__log_event(3, "Cloning:", rand_elite, " ---> ", ckt)
+                # 	self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
                 # 	ckt.copy_from(rand_elite)
                 # else:
                 # 	self.__single_point_crossover(rand_elite, ckt)
                 if self.__rand.uniform(0, 1) <= self.__config.get_crossover_probability():
                     self.__single_point_crossover(rand_elite, ckt)
                 else:
-                    self.__log_event(4, "Cloning:", rand_elite, " ---> ", ckt)
+                    self.__logger.event(4, "Cloning:", rand_elite, " ---> ", ckt)
                     ckt.copy_from(rand_elite)
                 ckt.mutate()
 
@@ -932,8 +928,8 @@ class CircuitPopulation:
         Selection algorithm that compares every circuit in the population to a random elite (chosen proportionally based on each elite's rank).
         If circuit has a lower fitness, crossover or mutate the circuit
         '''
-        self.__log_event(2, "Number of Elites:", self.__n_elites)
-        self.__log_event(2, "Ranked Fitness:", self.__circuits)
+        self.__logger.event(2, "Number of Elites:", self.__n_elites)
+        self.__logger.event(2, "Ranked Fitness:", self.__circuits)
 
         # Generate a group of elites from the best n = <self.__n_elites>
         # Circuits. Based on their fitness values, map each Circuit with
@@ -947,13 +943,13 @@ class CircuitPopulation:
                 elites[self.__circuits[i]] = (self.__n_elites - i) / elite_sum
         else:
             # elite_sum is negative. This should not be possible.
-            self.__log_error(1, "Elite_sum is zero or negative. Exiting...")
+            self.__logger.error("Elite_sum is zero or negative. Exiting...")
             exit()
 
-        self.__log_event(3, "Elite Group:", elites.keys())
-        self.__log_event(3, "Elite Probabilites:", elites.values())
+        self.__logger.event(3, "Elite Group:", elites.keys())
+        self.__logger.event(3, "Elite Probabilites:", elites.values())
         self.__protected_elites = elites.keys()
-        #self.__log_event(3, "Elite", rand_elite)
+        #self.__logger.event(3, "Elite", rand_elite)
 
         # For all Circuits in this CircuitPopulation, choose a random
         # elite (based on the associated probabilities calculated above)
@@ -977,7 +973,7 @@ class CircuitPopulation:
 
             if ckt.get_fitness() <= rand_elite.get_fitness() and ckt != rand_elite and ckt not in elites:
                 # if self.__config.get_crossover_probability() == 0:
-                #     self.__log_event(3, "Cloning:", rand_elite, " ---> ", ckt)
+                #     self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
                 #     ckt.copy_from(rand_elite)
                 # else:
                 #     self.__single_point_crossover(rand_elite, ckt)
@@ -985,7 +981,7 @@ class CircuitPopulation:
                 if self.__rand.uniform(0, 1) <= self.__config.get_crossover_probability():
                     self.__single_point_crossover(rand_elite, ckt)
                 else:
-                    self.__log_event(3, "Cloning:", rand_elite, " ---> ", ckt)
+                    self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
                     ckt.copy_from(rand_elite)
                 ckt.mutate()
 
@@ -993,15 +989,15 @@ class CircuitPopulation:
         """
         Selection algorithm that compares every circuit in the population to a random elite. If circuit has a lower fitness, crossover or mutate the circuit
         """
-        self.__log_info(2, "Number of Elites: ", str(self.__n_elites))
-        self.__log_info(2, "Ranked Fitness: ", self.__circuits)
+        self.__logger.info("Number of Elites: ", str(self.__n_elites))
+        self.__logger.info("Ranked Fitness: ", self.__circuits)
 
         # Generate a group of elite Circuits from the
         # n = <self.__n_elites> best performing Circuits.
         elite_group = []
         for i in range(0, self.__n_elites):
             elite_group.append(self.__circuits[i])
-        self.__log_info(3, "Elite Group:", elite_group)
+        self.__logger.info("Elite Group:", elite_group)
 
         # For all the Circuits in the CircuitPopulation compare the
         # Circuit against a random elite Circuit from the group
@@ -1013,7 +1009,7 @@ class CircuitPopulation:
             rand_elite = self.__rand.choice(elite_group)
             if ckt.get_fitness() <= rand_elite.get_fitness() and ckt != rand_elite and ckt not in elite_group:
                 # if self.__config.crossover_probability  == 0:
-                #     self.__log_event(3, "Cloning:", rand_elite, " ---> ", ckt)
+                #     self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
                 #     ckt.replace_hardware_file(rand_elite.get_hardware_filepath)
                 # else:
                 #     self.__single_point_crossover(rand_elite, ckt)
@@ -1021,7 +1017,7 @@ class CircuitPopulation:
                 if self.__rand.uniform(0, 1) <= self.__config.get_crossover_probability():
                     self.__single_point_crossover(rand_elite, ckt)
                 else:
-                    self.__log_event(3, "Cloning:", rand_elite, " ---> ", ckt)
+                    self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
                     ckt.copy_from(rand_elite)
                 ckt.mutate()
 
@@ -1193,7 +1189,7 @@ class CircuitPopulation:
         elif self.__config.get_routing_type() == "ALL":
             crossover_point = self.__rand.integers(1, 16)
         else:
-            self.__log_error(
+            self.__logger.error(
                 1, "Invalid routing type specified in config.ini. Exiting...")
             exit()
         dest.crossover(source, crossover_point)
@@ -1211,7 +1207,7 @@ class CircuitPopulation:
         n = len(self.__circuits)
         num_pairs = n * (n-1) / 2
 
-        self.__log_event(4, "Starting Hamming Distance Calculation")
+        self.__logger.event(4, "Starting Hamming Distance Calculation")
         bitstreams = list(map(lambda c: c.get_bitstream(), self.__circuits))
 
         # We now have all the bitstreams, we can do the faster hamming calculation by comparing each bit of them
@@ -1220,7 +1216,7 @@ class CircuitPopulation:
         running_total = 0
         n = len(self.__circuits)
         num_pairs = n * (n-1) / 2
-        self.__log_event(4, "HDIST - Entering loop")
+        self.__logger.event(4, "HDIST - Entering loop")
         for i in range(len(bitstreams[0])):
             ones_count = 0
             zero_count = 0
@@ -1232,7 +1228,7 @@ class CircuitPopulation:
             running_total = running_total + ones_count * zero_count
 
         running_total = running_total / num_pairs
-        self.__log_event(4, "HDIST - Final value", running_total)
+        self.__logger.event(4, "HDIST - Final value", running_total)
         return running_total
 
     def count_unique(self):
@@ -1250,7 +1246,7 @@ class CircuitPopulation:
             for ckt in self.__circuits:
                 bitstreams.append(ckt.get_sim_bitstream())
             bitstreams = self.__unique(bitstreams)
-            self.__log_event(
+            self.__logger.event(
                 2, "Number of Unique Individuals:", len(bitstreams))
             return len(bitstreams)
 
@@ -1270,7 +1266,7 @@ class CircuitPopulation:
                     break
             if not not_unique:
                 unique_file_paths.append(full_path)
-        self.__log_event(2, "Number of Unique Individuals:",
+        self.__logger.event(2, "Number of Unique Individuals:",
                          len(unique_file_paths))
         return len(unique_file_paths)
 
@@ -1321,7 +1317,7 @@ class CircuitPopulation:
         for bit_sum in bitstream_sums:
             if bit_sum != 0 and bit_sum != len(self.__circuits):
                 count += 1
-        self.__log_event(
+        self.__logger.event(
                 2, "Number of differing bits:", count)
         return count
 
@@ -1402,59 +1398,3 @@ class CircuitPopulation:
 
         args = [iter(iterable)] * n
         return zip_longest(fillvalue=fillvalue, *args)
-
-    def __log_event(self, level, *event):
-        """
-        Emit an event-level log. This function is fulfilled through
-        the logger.
-
-        Parameters
-        ----------
-        level : int
-            The level of importance of the logged information (lower level = higher importance)
-        event : tuple[string]
-            The message being logged
-        """
-        self.__logger.log_event(level, *event)
-
-    def __log_info(self, level, *info):
-        """
-        Emit an info-level log. This function is fulfilled through
-        the logger.
-
-        Parameters
-        ----------
-        level : int
-            The level of importance of the logged information (lower level = higher importance)
-        info : tuple[string]
-            The message being logged
-        """
-        self.__logger.log_info(level, *info)
-
-    def __log_error(self, level, *error):
-        """
-        Emit an error-level log. This function is fulfilled through
-        the logger.
-
-        Parameters
-        ----------
-        level : int
-            The level of importance of the logged information (lower level = higher importance)
-        error : tuple[string]
-            The message being logged
-        """
-        self.__logger.log_error(level, *error)
-
-    def __log_warning(self, level, *warning):
-        """
-        Emit a warning-level log. This function is fulfilled through
-        the logger.
-
-        Parameters
-        ----------
-        level : int
-            The level of importance of the logged information (lower level = higher importance)
-        warning : tuple[string]
-            The message being logged
-        """
-        self.__logger.log_warning(level, *warning)
