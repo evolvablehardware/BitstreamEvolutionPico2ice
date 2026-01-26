@@ -6,20 +6,15 @@ This class was reviewed, and should be fully documented at a basic level.
 
 """
 import os
-import sys
-import logging
 import numpy as np
 from typing import NamedTuple
 from shutil import copyfile
 from sortedcontainers import SortedKeyList
-from math import ceil
 from numpy.random import default_rng
 from pathlib import Path
-from itertools import zip_longest
 from collections import namedtuple
 from time import time
 import atexit
-from subprocess import run
 import random
 import math
 from mmap import mmap
@@ -30,6 +25,7 @@ from Circuit.PulseCountFitnessFunction import PulseCountFitnessFunction
 from Circuit.SimHardwareCircuit import SimHardwareCircuit
 from Circuit.ToneDiscriminatorFitnessFunction import ToneDiscriminatorFitnessFunction
 from Circuit.VarMaxFitnessFunction import VarMaxFitnessFunction
+from Selection.utils import selection_fac
 from Config import Config
 from ascTemplateBuilder import ascTemplateBuilder
 from utilities import wipe_folder
@@ -54,7 +50,6 @@ SEED_HARDWARE_FILEPATH = Path("data/seed-hardware.asc")
 # hardware, bitstream, and data files.
 CIRCUIT_FILE_BASENAME = "hardware"
 
-ELITE_MAP_SCALE_FACTOR = 50
 
 # Create a named tuple for easy and clear storage of information about
 # a Circuit (currently its name and fitness)
@@ -63,9 +58,6 @@ CircuitInfo = namedtuple("CircuitInfo", ["name", "fitness"])
 # Named tuple for circuit's path and fitness; currently only used for combining populations
 CircuitPathInfo = namedtuple("CircuitPathInfo", ["path", "fitness"])
 
-# Bin sizes for elite maps
-ELITE_MAP_SCALE_FACTOR = 50
-PULSE_ELITE_MAP_SCALE_FACTOR = 5000
 
 def is_pulse_func(config):
     """
@@ -108,6 +100,7 @@ class CircuitPopulation:
         self.__config = config
         self.__microcontroller = mcu
 
+        # TODO make these config values
         if not (URL := os.environ.get("USBIPICE_CONTROL")):
             raise Exception("USBIPICE_CONTROL not configured")
 
@@ -125,7 +118,6 @@ class CircuitPopulation:
 
         self.client = PulseCountClient(URL, "bitstream evolution", logger, log_events=True)
         atexit.register(self.client.endAll)
-        self.BATCH_SIZE = 8
 
         serials = self.client.reserve(DEVICES)
         if len(serials) != DEVICES:
@@ -144,7 +136,7 @@ class CircuitPopulation:
         self.__current_epoch = 0
         self.__best_epoch = 0
         num_rows = 3
-        if(config.get_routing_type() == "NEWSE"):
+        if config.get_routing_type() == "NEWSE":
             num_rows = 2
         elif config.get_routing_type() == "ALL":
             num_rows = 16
@@ -153,29 +145,7 @@ class CircuitPopulation:
         # 660 logic tiles - no tiles for x=6 or x=19
         self.__population_bistream_sum = np.zeros(660*num_rows*num_cols)
 
-        # Set the selection type here since the selection type should
-        # not change during a run. This way we don't have to branch each
-        # time we run selection.
-        if config.get_selection_type() == "SINGLE_ELITE":
-            self.__run_selection = self.__run_single_elite_tournament
-        elif config.get_selection_type() == "FRAC_ELITE":
-            self.__run_selection = self.__run_fractional_elite_tournament
-        elif config.get_selection_type() == "CLASSIC_TOURN":
-            self.__run_selection = self.__run_classic_tournament
-        elif config.get_selection_type() == "FIT_PROP_SEL":
-            self.__run_selection = self.__run_fitness_proportional_selection
-        elif config.get_selection_type() == "RANK_PROP_SEL":
-            self.__run_selection = self.__run_rank_proportional_selection
-        elif config.get_selection_type() == "MAP_ELITES":
-            self.__run_selection = self.__run_map_elites_selection
-        else:
-            self.__logger.error(
-                1, "Invalid Selection method in config.ini. Exiting...")
-            exit()
-
-        elitism_fraction = config.get_elitism_fraction()
-        population_size = config.get_population_size()
-        self.__n_elites = int(ceil(elitism_fraction * population_size))
+        self.__run_selection = selection_fac(config, logger, self.__rand)
 
     def run_fitness_sensitity(self):
         """
@@ -553,6 +523,7 @@ class CircuitPopulation:
                 # Shuffle the circuits each time
                 circuits = np.random.permutation(self.__circuits)
 
+                # TODO make remote circuit
                 for c in circuits:
                     c._compile()
 
@@ -587,6 +558,7 @@ class CircuitPopulation:
                     circuit._data.append(int(pulses))
                     self.__logger.info(f"{circuit} got data: {pulses}")
 
+            # TODO use this once remote circuit in place
             #     for circuit in circuits:
             #         if isinstance(circuit, FileBasedCircuit):
             #             circuit.upload()
@@ -660,8 +632,10 @@ class CircuitPopulation:
 
             self.__logger.log_generation(self, epoch_time)
             # The circuits that are protected from randomization
-            self.__protected_elites = []
-            self.__run_selection()
+
+            new_circuits = self.__run_selection(self.__circuits)
+            self.__circuits = SortedKeyList(new_circuits, key=lambda ckt: -1 * ckt.get_fitness())
+            protected_elites = self.__run_selection.protected
 
             # Remove bottom X% of population to replace with random circuits
             # (just randomize bitstream of the bottom X%)
@@ -669,7 +643,7 @@ class CircuitPopulation:
                 amt = int(self.__config.get_random_injection() * self.__config.get_population_size())
                 circuits_to_randomize = self.__circuits[-amt:]
                 for ckt in circuits_to_randomize:
-                    if ckt not in self.__protected_elites:
+                    if ckt not in protected_elites:
                         ckt.randomize_bitstream()
 
             self.__write_to_livedata()
@@ -803,321 +777,8 @@ class CircuitPopulation:
                 else:
                     live_file.write(("{}:{}\n").format(self.__current_epoch, ",".join(best.get_waveform())))
 
-    # SECTION Selection algorithms.
-    def __run_classic_tournament(self):
-        """
-        Selection Algorithm that randomly pairs together circuits, compares their fitness, and preforms crossover on and mutates the "loser"
-        """
-        population = self.__rand.permutation(self.__circuits)
 
-        self.__logger.event(3, "Tournament Number:", self.get_current_epoch())
 
-        # For all Circuits in the CircuitPopulation, take two random
-        # circuits at a time from the population and compare them. Copy
-        # some genes from the fittest of the two to the least fittest of
-        # the two and mutate the latter.
-        for ckt1, ckt2 in CircuitPopulation.__group(population, 2):
-            winner = ckt1
-            loser = ckt2
-            if ckt2.get_fitness() > ckt1.get_fitness():
-                winner = ckt2
-                loser = ckt1
-
-            self.__logger.event(3,
-                            "Fitness {}: {} < Fitness {}: {}".format(
-                                loser,
-                                loser.get_fitness(),
-                                winner,
-                                winner.get_fitness()
-                            ))
-
-            if self.__rand.uniform(0, 1) <= self.__config.get_crossover_probability():
-                self.__single_point_crossover(winner, loser)
-            else:
-                self.__logger.event(3, "Cloning:", winner, " ---> ", loser)
-                loser.copy_from(winner)
-
-            loser.mutate()
-
-    def __run_single_elite_tournament(self):
-        """
-        Selection Algorithm that mutates the hardware of every circuit that is not the current best circuit
-        """
-        self.__logger.event(3, "Tournament Number: {}".format(
-            str(self.get_current_epoch())))
-
-        best = self.__circuits[0]
-        self.__protected_elites.append(best)
-        for ckt in self.__circuits:
-            # Mutate the hardware of every circuit that is not the best
-            if ckt != best:
-                if ckt.get_fitness() <= best.get_fitness():
-                    ckt.mutate()
-            else:
-                self.__logger.info(ckt, "is current BEST")
-
-    def __run_fitness_proportional_selection(self):
-        """
-        Selection algorithm that compares every circuit in the population to a random elite (chosen proportionally based on each elite's fitness).
-        If circuit has a lower fitness, crossover or mutate the circuit
-        """
-        self.__logger.event(2, "Number of Elites:", self.__n_elites)
-        self.__logger.event(2, "Ranked Fitness:", self.__circuits)
-
-        # Generate a group of elites from the best n = <self.__n_elites>
-        # Circuits. Based on their fitness values, map each Circuit with
-        # a probabilty value (used later for crossover/copying/mutation).
-        elites = {}
-        elite_sum = 0
-
-        for i in range(self.__n_elites):
-            elites[self.__circuits[i]] = 0
-            elite_sum += self.__circuits[i].get_fitness()
-        if elite_sum > 0:
-            for elite in elites.keys():
-                elites[elite] = elite.get_fitness() / elite_sum
-        elif elite_sum == 0:
-            for elite in elites.keys():
-                elites[elite] = 1 / self.__n_elites
-        else:
-            # elite_sum is negative. This should not be possible.
-            self.__logger.error("Elite_sum is negative. Exiting...")
-            exit()
-
-        self.__logger.event(2, "Elite Group:", elites.keys())
-        self.__logger.event(2, "Elite Probabilites:", elites.values())
-        self.__protected_elites = elites.keys()
-
-        # For all Circuits in this CircuitPopulation, choose a random
-        # elite (based on the associated probabilities calculated above)
-        # and compare it to the Circuit. If the Circuit has lower
-        # fitness than the elite, perform crossover (with the elite) and
-        # mutation on it (or copy the elite's hardware if crossover is
-        # disabled).
-        elite_prob_sum = sum(elites.values())
-        for ckt in self.__circuits:
-            if self.__n_elites != 0:
-                if elite_prob_sum > 0:
-                    rand_elite = self.__rand.choice(
-                        list(elites.keys()),
-                        self.__n_elites,
-                        p=list(elites.values())
-                    )[0]
-                else:  # If fitness isn't negative, this should never happen
-                    rand_elite = self.__rand.choice(list(elites.keys()))[0]
-            else:
-                rand_elite = self.__rand.choice(self.__circuits)
-
-            self.__logger.event(4, "Elite", rand_elite)
-
-            if ckt.get_fitness() <= rand_elite.get_fitness() and ckt != rand_elite and ckt not in elites:
-                # if self.__config.get_crossover_probability() == 0:
-                # 	self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
-                # 	ckt.copy_from(rand_elite)
-                # else:
-                # 	self.__single_point_crossover(rand_elite, ckt)
-                if self.__rand.uniform(0, 1) <= self.__config.get_crossover_probability():
-                    self.__single_point_crossover(rand_elite, ckt)
-                else:
-                    self.__logger.event(4, "Cloning:", rand_elite, " ---> ", ckt)
-                    ckt.copy_from(rand_elite)
-                ckt.mutate()
-
-    def __run_rank_proportional_selection(self):
-        '''
-        Selection algorithm that compares every circuit in the population to a random elite (chosen proportionally based on each elite's rank).
-        If circuit has a lower fitness, crossover or mutate the circuit
-        '''
-        self.__logger.event(2, "Number of Elites:", self.__n_elites)
-        self.__logger.event(2, "Ranked Fitness:", self.__circuits)
-
-        # Generate a group of elites from the best n = <self.__n_elites>
-        # Circuits. Based on their fitness values, map each Circuit with
-        # a probabilty value (used later for crossover/copying/mutation).
-        elites = {}
-        # can use summation formula since sum of ranks is the sum of natural numbers
-        elite_sum = (self.__n_elites) * (self.__n_elites + 1) / 2
-        if (elite_sum > 0):
-            for i in range(self.__n_elites):
-                # Using (self.__n_elites - i) since highest ranked indiviual is at self.__circuits[0]
-                elites[self.__circuits[i]] = (self.__n_elites - i) / elite_sum
-        else:
-            # elite_sum is negative. This should not be possible.
-            self.__logger.error("Elite_sum is zero or negative. Exiting...")
-            exit()
-
-        self.__logger.event(3, "Elite Group:", elites.keys())
-        self.__logger.event(3, "Elite Probabilites:", elites.values())
-        self.__protected_elites = elites.keys()
-        #self.__logger.event(3, "Elite", rand_elite)
-
-        # For all Circuits in this CircuitPopulation, choose a random
-        # elite (based on the associated probabilities calculated above)
-        # and compare it to the Circuit. If the Circuit has lower
-        # fitness than the elite, perform crossover (with the elite) and
-        # mutation on it (or copy the elite's hardware if crossover is
-        # disabled).
-        elite_prob_sum = sum(elites.values())
-        for ckt in self.__circuits:
-            if self.__n_elites != 0:
-                if elite_prob_sum > 0:
-                    rand_elite = self.__rand.choice(
-                        list(elites.keys()),
-                        self.__n_elites,
-                        p=list(elites.values())
-                    )[0]
-                else:  # If fitness isn't negative, this should never happen
-                    rand_elite = self.__rand.choice(list(elites.keys()))[0]
-            else:
-                rand_elite = self.__rand.choice(self.__circuits)
-
-            if ckt.get_fitness() <= rand_elite.get_fitness() and ckt != rand_elite and ckt not in elites:
-                # if self.__config.get_crossover_probability() == 0:
-                #     self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
-                #     ckt.copy_from(rand_elite)
-                # else:
-                #     self.__single_point_crossover(rand_elite, ckt)
-
-                if self.__rand.uniform(0, 1) <= self.__config.get_crossover_probability():
-                    self.__single_point_crossover(rand_elite, ckt)
-                else:
-                    self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
-                    ckt.copy_from(rand_elite)
-                ckt.mutate()
-
-    def __run_fractional_elite_tournament(self):
-        """
-        Selection algorithm that compares every circuit in the population to a random elite. If circuit has a lower fitness, crossover or mutate the circuit
-        """
-        self.__logger.info("Number of Elites: ", str(self.__n_elites))
-        self.__logger.info("Ranked Fitness: ", self.__circuits)
-
-        # Generate a group of elite Circuits from the
-        # n = <self.__n_elites> best performing Circuits.
-        elite_group = []
-        for i in range(0, self.__n_elites):
-            elite_group.append(self.__circuits[i])
-        self.__logger.info("Elite Group:", elite_group)
-
-        # For all the Circuits in the CircuitPopulation compare the
-        # Circuit against a random elite Circuit from the group
-        # generated above. If the Circuit's fitness is less than than
-        # the elite's perform crossover (or clone if crossover is
-        # disabled) and then mutate the Circuit.
-        self.__protected_elites = elite_group
-        for ckt in self.__circuits:
-            rand_elite = self.__rand.choice(elite_group)
-            if ckt.get_fitness() <= rand_elite.get_fitness() and ckt != rand_elite and ckt not in elite_group:
-                # if self.__config.crossover_probability  == 0:
-                #     self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
-                #     ckt.replace_hardware_file(rand_elite.get_hardware_filepath)
-                # else:
-                #     self.__single_point_crossover(rand_elite, ckt)
-
-                if self.__rand.uniform(0, 1) <= self.__config.get_crossover_probability():
-                    self.__single_point_crossover(rand_elite, ckt)
-                else:
-                    self.__logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
-                    ckt.copy_from(rand_elite)
-                ckt.mutate()
-
-    def __run_map_elites_selection(self):
-        """
-        Selection Algorithm that is an alternate version of the map elites algorithm from another paper.
-        This version of map elites will protect the highest-fitness individual in each "square"
-        We're going to have slightly granular squares to make sure that circuits have room to spread out early
-        to hopefully promote diversity
-        Group size length of 50 means we'll have 21x21 groups
-        """
-
-        if self.__config.get_map_elites_dimension() == 1:
-            elite_map = self.__generate_pulse_map()
-            elites = list(filter(lambda x: x != 0, [j for j in elite_map]))
-        else:
-            elite_map = self.__generate_map()
-            elites = list(filter(lambda x: x != 0, [j for sub in elite_map for j in sub]))
-
-        self.__protected_elites = elites
-
-        for ckt in self.__circuits:
-            # If not an elite, then we will clone and mutate
-            if ckt not in elites:
-                rand_elite = self.__rand.choice(elites)
-                ckt.copy_from(rand_elite)
-                ckt.mutate()
-
-        self.__output_map_file(elite_map)
-
-    def __output_map_file(self, elite_map):
-        """
-        Writes the map to a file (workspace/maplivedata.log)
-
-        Parameters
-        ----------
-        elite_map : Circuit[][]
-            2D array of circuits that fell into these groupings depending on their characteristics.
-        """
-        with open("workspace/maplivedata.log", "w+") as liveFile:
-            # First line describes granularity/scale factor
-            liveFile.write("{}\n".format(str(ELITE_MAP_SCALE_FACTOR)))
-            # If square is empty, write a "blank" to that line
-            if self.__config.get_map_elites_dimension() == 1:
-                for c in range(len(elite_map)):
-                    ckt = elite_map[c]
-                    if ckt != 0:
-                        liveFile.write("{} {}\n".format(c, ckt.get_fitness()))
-            else:
-                for r in range(len(elite_map)):
-                    sl = elite_map[r]
-                    for c in range(len(sl)):
-                        ckt = sl[c]
-                        to_write = ""
-                        if ckt != 0:
-                            to_write = str(ckt.get_fitness())
-                        liveFile.write("{} {} {}\n".format(r, c, to_write))
-
-    def __generate_map(self):
-        """
-        Generates the elite map for this generation based on variance.
-
-        Returns
-        -------
-        list(list(Circuit))
-            A 2D array of circuits catagorized based off of shared characteristics
-        """
-        # If the value is not a circuit (i.e. it is 0) then we know the spot is open to be filled in
-        # Go up to 21 since upper bound is 1024
-        # Can't do [[0]*21]*21 because this will make all the sub-arrays point to same memory location
-        elite_map = []
-        for i in range(22):
-            elite_map.append([0]*21)
-        # Evaluate each circuit's fitness and where it falls on the elite map
-        # Populate elite map first
-        for ckt in self.__circuits:
-            row = math.floor(ckt.get_low_value() / ELITE_MAP_SCALE_FACTOR)
-            col = math.floor(ckt.get_high_value() / ELITE_MAP_SCALE_FACTOR)
-            if elite_map[row][col] == 0 or ckt.get_fitness() > elite_map[row][col].get_fitness():
-                elite_map[row][col] = ckt
-        return elite_map
-
-    def __generate_pulse_map(self):
-        """
-        Generates the elite map for this generation based on pulse count.
-
-        Returns
-        -------
-        Circuit[][]
-            A 2D array of circuits catagorized based off of shared characteristics
-        """
-
-        elite_map = []
-        for i in range((150_000 - 1_000) / PULSE_ELITE_MAP_SCALE_FACTOR):
-            elite_map.append(0)
-        for ckt in self.__circuits:
-            col = math.floor(ckt.get_mean_frequency() / PULSE_ELITE_MAP_SCALE_FACTOR)
-            if elite_map[col] == 0 or ckt.get_fitness() > elite_map[col].get_fitness():
-                elite_map[col] = ckt
-        return elite_map
 
     # SECTION Getters.
     def get_current_best_circuit(self):
@@ -1165,34 +826,6 @@ class CircuitPopulation:
         return self.__best_epoch
 
     # SECTION Miscellaneous helper functions.
-    def __single_point_crossover(self, source, dest):
-        """
-        Copy some series of chiasmas (points of genetic exchange) from fitter circuit into children
-
-        Parameters
-        ----------
-        source : Circuit
-            The circuit you are copying data from.
-        dest : Circuit
-            The circuit you are overwriting data from source to.
-        """
-        crossover_point = 0
-
-        # Replace magic values with more generalized solutions
-        if self.__config.get_simulation_mode() == "FULLY_SIM":
-            crossover_point = self.__rand.integers(
-                1, len(self.__circuits[0].get_bitstream()) - 1)
-        elif self.__config.get_routing_type() == "MOORE":
-            crossover_point = self.__rand.integers(1, 3)
-        elif self.__config.get_routing_type() == "NWSE":
-            crossover_point = self.__rand.integers(13, 15)
-        elif self.__config.get_routing_type() == "ALL":
-            crossover_point = self.__rand.integers(1, 16)
-        else:
-            self.__logger.error(
-                1, "Invalid routing type specified in config.ini. Exiting...")
-            exit()
-        dest.crossover(source, crossover_point)
 
     def avg_hamming_dist(self):
         """
@@ -1298,12 +931,12 @@ class CircuitPopulation:
 
     def count_differing_bits(self):
         """
-        Returns the number of bits in the bistream where 2 circuits have different values
+        Returns the number of bits in the bitstream where 2 circuits have different values
 
         Returns
         -------
         int
-            Number of bits in the bistream where 2 circuits have different values
+            Number of bits in the bitstream where 2 circuits have different values
 
         """
         if self.__config.get_simulation_mode() == "FULLY_SIM":
@@ -1382,19 +1015,3 @@ class CircuitPopulation:
         with open(fp2, 'rb') as content:
             content2 = content.read()
         return list(content1) == list(content2)
-
-    # TODO Take a closer look at this function
-    @staticmethod
-    def __group(iterable, n, fillvalue=None):
-        """
-        .. todo::
-            Take a closer look at this function. Not sure why, but a comment here told me to.
-            Also, further document what this function is I couldn't tell.
-
-        Collect data into fixed-length chunks or blocks
-        #grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx
-        Taken from python recipes.
-        """
-
-        args = [iter(iterable)] * n
-        return zip_longest(fillvalue=fillvalue, *args)
