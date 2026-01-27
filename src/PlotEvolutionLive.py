@@ -485,11 +485,11 @@ def run():
     cols = 1
     has_wf_plot = False
     has_st_plot = False
-    if (config.get_simulation_mode() == 'FULLY_INTRINSIC' and not config.is_pulse_func()) or config.get_simulation_mode() == 'FULLY_SIM':
+    if (config.get_simulation_mode() in ['FULLY_INTRINSIC', 'REMOTE'] and not config.is_pulse_func()) or config.get_simulation_mode() == 'FULLY_SIM':
         rows = rows + 1
         has_wf_plot = True
 
-    if (config.get_simulation_mode() == 'FULLY_INTRINSIC' and config.get_fitness_func() == "TONE_DISCRIMINATOR"):
+    if (config.get_simulation_mode() in ['FULLY_INTRINSIC', 'REMOTE'] and config.get_fitness_func() == "TONE_DISCRIMINATOR"):
         rows = rows + 1
         has_st_plot = True
 
@@ -520,7 +520,7 @@ def run():
     ax7 = fig2.add_subplot(1, 1, 1)
     ani7 = plot(fig2, anim_violin_plots)
 
-    if config.get_simulation_mode() == 'FULLY_INTRINSIC':
+    if config.get_simulation_mode() in ['FULLY_INTRINSIC', 'REMOTE']:
         fig3 = plt.figure()
         ax8 = fig3.add_subplot(1,1,1)
         ani8 = plot(fig3, anim_heatmap)

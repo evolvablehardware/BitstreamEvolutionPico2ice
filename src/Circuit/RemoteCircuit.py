@@ -24,15 +24,23 @@ class RemoteCircuit(FileBasedCircuit):
         # makes abc happy
 
     def upload(self):
+        self._extra_data = {}
         self.clear_data()
         self._compile()
         self._client.evaluate(self._serials, self)
 
     def _calculate_fitness(self):
         if not self._data:
-            self._data = list(self._client.get_result(self).values())
+            self._data = [int(point) for point in self._client.get_result(self).values()]
+            self._extra_data["pulses"] = self._data
 
         return self._fitnessfunc.calculate_fitness(self._data)
+
+    def get_extra_data(self, key):
+        return self._extra_data[key]
+
+    def _get_all_live_reported_value(self):
+        return self._extra_data["pulses"]
 
 class EvolutionClient:
     """

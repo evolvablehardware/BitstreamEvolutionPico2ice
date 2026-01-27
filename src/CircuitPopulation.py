@@ -665,7 +665,7 @@ class CircuitPopulation:
                     fits.append(str(ckt.get_fitness()))
                 live_file.write(("{}:{}\n").format(self.__current_epoch, ",".join(fits)))
 
-            if self.__config.get_simulation_mode() == "FULLY_INTRINSIC":
+            if self.__config.get_simulation_mode() in ["FULLY_INTRINSIC", "REMOTE"]:
                 if not self.__config.is_pulse_func():
                     with open("workspace/heatmaplivedata.log", "a") as live_file2:
                         best = self.__circuits[0]
