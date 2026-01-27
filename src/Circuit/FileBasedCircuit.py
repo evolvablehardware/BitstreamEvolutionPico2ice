@@ -3,11 +3,12 @@ from pathlib import Path
 from shutil import copyfile
 from subprocess import run
 import os
-from Circuit.Circuit import Circuit
-import Config
-from Logger import EvolutionLogger
 
 from ascutil import mutate
+
+from Circuit.Circuit import Circuit
+from Config import Config
+from Logger import EvolutionLogger
 
 COMPILE_CMD = "icepack"
 

@@ -1,11 +1,12 @@
 from pathlib import Path
-from Circuit.FileBasedCircuit import FileBasedCircuit
-from Circuit.FitnessFunction import FitnessFunction
 from time import sleep
 from subprocess import run
 import Config
 import Microcontroller
+
 from Logger import EvolutionLogger
+from Circuit.FileBasedCircuit import FileBasedCircuit
+from Circuit.FitnessFunction import FitnessFunction
 
 RUN_CMD = "iceprog"
 COMPILE_CMD = "icepack"

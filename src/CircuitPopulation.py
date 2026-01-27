@@ -7,7 +7,6 @@ This class was reviewed, and should be fully documented at a basic level.
 """
 import os
 import numpy as np
-from typing import NamedTuple
 from shutil import copyfile
 from sortedcontainers import SortedKeyList
 from numpy.random import default_rng
@@ -25,6 +24,7 @@ from Circuit.PulseCountFitnessFunction import PulseCountFitnessFunction
 from Circuit.SimHardwareCircuit import SimHardwareCircuit
 from Circuit.ToneDiscriminatorFitnessFunction import ToneDiscriminatorFitnessFunction
 from Circuit.VarMaxFitnessFunction import VarMaxFitnessFunction
+from Circuit.RemoteCircuit import RemoteCircuit, EvolutionClient
 from Selection.utils import selection_fac
 from Config import Config
 from ascTemplateBuilder import ascTemplateBuilder
@@ -100,30 +100,18 @@ class CircuitPopulation:
         self.__config = config
         self.__microcontroller = mcu
 
-        # TODO make these config values
-        if not (URL := os.environ.get("USBIPICE_CONTROL")):
-            raise Exception("USBIPICE_CONTROL not configured")
-
-        if (DEVICES := os.environ.get("USBIPICE_DEVICES")):
-            DEVICES = int(DEVICES)
+        if config.get_simulation_mode() == "REMOTE":
+            url = config.get_icefarm_url()
+            # TODO generate unique client name / stop procrastinating on auth
+            self._client = PulseCountClient(url, "bitstream evolution", logger)
+            logger.info(f"Reserving devices...")
+            self._client.reserve(int(config.get_icefarm_devices()))
+            logger.info(f"Reserved devices: {self._client.getSerials()}")
+            self._evo_client = EvolutionClient(self._client, logger)
+            atexit.register(self._client.endAll)
         else:
-            DEVICES = 1
+            self._client = None
 
-        # quick/all
-        if (MODE := os.environ.get("USBIPICE_MODE")):
-            self.mode = MODE
-        else:
-            self.mode = "quick"
-
-
-        self.client = PulseCountClient(URL, "bitstream evolution", logger, log_events=True)
-        atexit.register(self.client.endAll)
-
-        serials = self.client.reserve(DEVICES)
-        if len(serials) != DEVICES:
-            raise Exception("Failed to reserve requested amount of devices")
-
-        logger.info(f"Reserved device: {serials[0]}")
 
         # A list of Circuits that's sorted by fitness decreasing order
         # (to get it to sort in decreasing order I had to multiply the
@@ -246,6 +234,14 @@ class CircuitPopulation:
             elif self.__config.get_fitness_func() == 'TONE_DISCRIMINATOR':
                 fit_func = ToneDiscriminatorFitnessFunction()
 
+            if self.__config.get_simulation_mode() == 'REMOTE':
+                if self.__config.get_icefarm_mode() == "ALL":
+                    serials = self._client.getSerials()
+                else:
+                    serials = None
+
+                return RemoteCircuit(self._evo_client, serials, index, file_name, self.__config, seed_arg, self.__rand, self.__logger, fit_func)
+
             return IntrinsicCircuit(index, file_name, self.__config, seed_arg, self.__rand, self.__logger, self.__microcontroller, fit_func)
 
     def populate(self):
@@ -329,24 +325,25 @@ class CircuitPopulation:
             self.__logger.event(3, "Created circuit: {0}".format(ckt))
 
         # If map-elites selection method selected, then randomly generate until we fill up 25% of the map
-        '''if self.__config.get_selection_type() == 'MAP_ELITES':
-            self.__logger.event(1, 'Randomizing until map is 25% full...')
-            elites = list(filter(lambda x: x != 0, [j for sub in self.__generate_map() for j in sub]))
-            elite_count = len(elites)
-            while elite_count < 0.1 * (21 * 21 / 2):
-                self.__logger.event(3, "Got %s%% (%s)" % (elite_count / (21*21/2) * 100, elite_count))
-                # Need to mutate non-elites
-                for ckt in self.__circuits:
-                    if not ckt in elites:
-                        ckt.copy_sim(random.choice(elites))
-                        ckt.mutate()
-                        #ckt.randomize_bitstream()
-                        ckt.evaluate_sim(False)
 
-                elite_map = self.__generate_map()
-                elites = list(filter(lambda x: x != 0, [j for sub in elite_map for j in sub]))
-                elite_count = len(elites)
-                self.__output_map_file(elite_map)'''
+        # if self.__config.get_selection_type() == 'MAP_ELITES':
+        #     self.__logger.event(1, 'Randomizing until map is 25% full...')
+        #     elites = list(filter(lambda x: x != 0, [j for sub in self.__generate_map() for j in sub]))
+        #     elite_count = len(elites)
+        #     while elite_count < 0.1 * (21 * 21 / 2):
+        #         self.__logger.event(3, "Got %s%% (%s)" % (elite_count / (21*21/2) * 100, elite_count))
+        #         # Need to mutate non-elites
+        #         for ckt in self.__circuits:
+        #             if not ckt in elites:
+        #                 ckt.copy_sim(random.choice(elites))
+        #                 ckt.mutate()
+        #                 #ckt.randomize_bitstream()
+        #                 ckt.evaluate_sim(False)
+
+        #         elite_map = self.__generate_map()
+        #         elites = list(filter(lambda x: x != 0, [j for sub in elite_map for j in sub]))
+        #         elite_count = len(elites)
+        #         self.__output_map_file(elite_map)
 
         # Randomize initial circuits until waveform variance or
         # pulses are found
@@ -517,57 +514,14 @@ class CircuitPopulation:
             start = time()
 
             for circuit in self.__circuits:
-                circuit.clear_data()
-
-            for i in range(self.__config.get_num_passes()):
-                # Shuffle the circuits each time
-                circuits = np.random.permutation(self.__circuits)
-
-                # TODO make remote circuit
-                for c in circuits:
-                    c._compile()
-
-                queue = list(map(lambda c : c._bitstream_filepath, circuits))
-                file_to_circuit = dict(zip(queue, circuits))
-
-                t1 = time()
-
-                amount = len(self.client.getSerials())
-                if self.mode == "quick":
-                    batches = [[] for _ in range(amount)]
-                    for i, item in enumerate(queue):
-                        batches[i % amount].append(item)
-
-                    commands = []
-                    for serial, batches in zip(self.client.getSerials(), batches):
-                        for f in batches:
-                            commands.append(PulseCountEvaluation([serial], f))
-                elif self.mode == "all":
-                    commands = []
-                    serials = self.client.getSerials()
-
-                    for bitstream in queue:
-                        commands.append(PulseCountEvaluation(serials, bitstream))
-
-                else:
-                    raise Exception("Unknown USBIPICE_MODE. Valid values are quick, all")
-
-                for serial, evaluation, pulses in self.client.evaluateEvaluations(commands):
-                    fpath = evaluation.filepath
-                    circuit = file_to_circuit[fpath]
-                    circuit._data.append(int(pulses))
-                    self.__logger.info(f"{circuit} got data: {pulses}")
-
-            # TODO use this once remote circuit in place
-            #     for circuit in circuits:
-            #         if isinstance(circuit, FileBasedCircuit):
-            #             circuit.upload()
-            #         for i in range(self.__config.get_num_samples()):
-            #             circuit.collect_data_once()
+                if isinstance(circuit, FileBasedCircuit):
+                    circuit.upload()
+                for i in range(self.__config.get_num_samples()):
+                    circuit.collect_data_once()
 
             for circuit in self.__circuits:
-                self.__logger.info(f"{circuit} pulses: {circuit._data}")
                 circuit.calculate_fitness()
+                self.__logger.info(f"{circuit} pulses: {circuit._data}")
 
             self.__population_bistream_sum = np.zeros(self.__population_bistream_sum.size)
             for circuit in self.__circuits:
@@ -776,9 +730,6 @@ class CircuitPopulation:
                     live_file.write(("{}:{}\n").format(self.__current_epoch, ",".join(best.get_waveform_td())))
                 else:
                     live_file.write(("{}:{}\n").format(self.__current_epoch, ",".join(best.get_waveform())))
-
-
-
 
     # SECTION Getters.
     def get_current_best_circuit(self):

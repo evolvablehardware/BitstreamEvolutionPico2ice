@@ -253,13 +253,13 @@ class Config:
 		**FULLY_SIM**
 			Simulation mode. Operates on a small array of arbitrary bit values.
 
-        Returns
-        -------
-        str
-           The config's selected simulation mode from the list of possible modes.
+		Returns
+		-------
+		str
+			The config's selected simulation mode from the list of possible modes.
 		"""
 		input = self.get_top_parameters("SIMULATION_MODE")
-		valid_vals = ["FULLY_INTRINSIC", "FULLY_SIM", "SIM_HARDWARE", "INTRINSIC_SENSITIVITY"]
+		valid_vals = ["FULLY_INTRINSIC", "FULLY_SIM", "SIM_HARDWARE", "INTRINSIC_SENSITIVITY", "REMOTE"]
 		self.check_valid_value("simulation mode", input, valid_vals)
 		return input
 
@@ -288,10 +288,10 @@ class Config:
 			This randomly alternates between a 1kHz and 10kHz signal sent to the FPGA, and
 			reads in a high/low output from the FGPA to get the predicted frequency.
 
-        Returns
-        -------
-        str
-           The config's selected fitness function from the list of possible modes.
+		Returns
+		-------
+		str
+			The config's selected fitness function from the list of possible modes.
 		"""
 		input = self.get_fitness_parameters("FITNESS_FUNC")
 		# We're leaving "PULSE_COUNT" for backwards-compatibility
@@ -330,10 +330,10 @@ class Config:
 			Raises fitnesses to the power of their weights, then multiplies the
 			resulting terms to get overall fitness
 
-        Returns
-        -------
-        str
-           The config's selected combined mode from the list of possible modes.
+		Returns
+		-------
+		str
+			The config's selected combined mode from the list of possible modes.
 		"""
 		input = self.get_fitness_parameters("COMBINED_MODE")
 		valid_vals = ["ADD", "MULT"]
@@ -757,6 +757,22 @@ class Config:
 			", ".join(list(map(lambda x: str(x), allowed_values))))
 			exit()
 
+	# SECTION Getters for iCEFARM parameters
+	def get_icefarm_mode(self):
+		return self.__config_parser.get("ICEFARM PARAMETERS", "MODE")
+
+	def get_icefarm_devices(self):
+		return self.__config_parser.get("ICEFARM PARAMETERS", "DEVICES")
+
+	def get_icefarm_url(self):
+		return self.__config_parser.get("ICEFARM PARAMETERS", "URL")
+
+	def validate_icefarm_params(self):
+		self.get_icefarm_url()
+		int(self.get_icefarm_devices())
+		if self.get_icefarm_mode().upper() not in ["ALL", "QUICK"]:
+			raise Exception("Valid values for ICEFARM.MODE is ALL, QUICK.")
+
 	def validate_all(self):
 		self.get_simulation_mode()
 		self.validate_fitness_params()
@@ -791,7 +807,7 @@ class Config:
 	# True if the fitness function counts pulses
 	def is_pulse_func(self):
 		return (self.get_fitness_func() == 'PULSE_COUNT' or self.get_fitness_func() == 'TOLERANT_PULSE_COUNT'
-            	or self.get_fitness_func() == 'SENSITIVE_PULSE_COUNT' or self.get_fitness_func() == 'PULSE_CONSISTENCY')
+				or self.get_fitness_func() == 'SENSITIVE_PULSE_COUNT' or self.get_fitness_func() == 'PULSE_CONSISTENCY')
 
 	# Contrary to the above, this only returns true if the target is to count pulses for a target frequency
 	def is_pulse_count(self):

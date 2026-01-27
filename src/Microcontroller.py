@@ -44,22 +44,22 @@ class Microcontroller:
         """
         self.__logger = logger
         self.__config = config
-        # if config.get_simulation_mode() == "FULLY_INTRINSIC" or config.get_simulation_mode() == "INTRINSIC_SENSITIVITY":
-        #     self.__logger.event(1, "MCU SETTINGS ================================", config.get_usb_path(), config.get_serial_baud())
-        #     self.__serial =  Serial(
-        #         config.get_usb_path(),
-        #         config.get_serial_baud(),
-        #         timeout=config.get_mcu_read_timeout()
-        #     )
-        #     self.__serial.dtr = False
-        #     if(config.reading_temp_humidity()):
-        #         self.__env_serial =  Serial(
-        #             config.get_env_usb_path(),
-        #             config.get_serial_baud(),
-        #             timeout=config.get_mcu_read_timeout()
-        #         )
-        #         self.__env_serial.dtr = False
-        #     self.__fpga = config.get_fpga()
+        if config.get_simulation_mode() == "FULLY_INTRINSIC" or config.get_simulation_mode() == "INTRINSIC_SENSITIVITY":
+            self.__logger.event(1, "MCU SETTINGS ================================", config.get_usb_path(), config.get_serial_baud())
+            self.__serial =  Serial(
+                config.get_usb_path(),
+                config.get_serial_baud(),
+                timeout=config.get_mcu_read_timeout()
+            )
+            self.__serial.dtr = False
+            if(config.reading_temp_humidity()):
+                self.__env_serial =  Serial(
+                    config.get_env_usb_path(),
+                    config.get_serial_baud(),
+                    timeout=config.get_mcu_read_timeout()
+                )
+                self.__env_serial.dtr = False
+            self.__fpga = config.get_fpga()
 
     def switch_fpga(self):
         """

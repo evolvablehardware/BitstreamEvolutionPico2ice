@@ -21,12 +21,13 @@ class SingleEliteTournamentSelection(SelectionMethod):
         circuits = sorted(circuits, key=lambda c: c.get_fitness(), reverse=True)
 
         best = circuits[0]
-        self._protected_elites.append(best)
+        self.protected = set([best])
+
         for ckt in circuits:
             # Mutate the hardware of every circuit that is not the best
             if ckt is not best:
                 ckt.mutate()
             else:
-                self._logger.info(ckt, "is current BEST")
+                self._logger.info(f"{ckt} is current BEST")
 
         return circuits
