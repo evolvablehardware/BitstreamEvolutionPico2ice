@@ -1,10 +1,12 @@
 from logging import Logger
 from typing import TYPE_CHECKING
-from Selection.SelectionMethod import SelectionMethod
+
+from ga.selection.SelectionMethod import SelectionMethod
+from ga.crossover import Crossover
+from ga.mutation import Mutation
 
 if TYPE_CHECKING:
     import numpy as np
-    from Selection.utils import Crossover
 
 
 class FractionalEliteTournament(SelectionMethod):
@@ -12,10 +14,10 @@ class FractionalEliteTournament(SelectionMethod):
     Selection algorithm that compares every circuit in the population to a random elite. If circuit has a lower fitness, crossover or mutate the circuit
     """
 
-    def __init__(self, crossover: "Crossover", crossover_prob: float, n_elites: int, logger: Logger, rand: "np.random.Generator"):
+    def __init__(self, crossover: Crossover, mutation: Mutation, n_elites: int, logger: Logger, rand: "np.random.Generator"):
         super().__init__(logger, rand)
         self._crossover = crossover
-        self._crossover_prob = crossover_prob
+        self._mutation = mutation
         self._n_elites = n_elites
 
     def __call__(self, circuits):
@@ -43,11 +45,10 @@ class FractionalEliteTournament(SelectionMethod):
                 # else:
                 #     self.__single_point_crossover(rand_elite, ckt)
 
-                if self._rand.uniform(0, 1) <= self._crossover_prob:
-                    self._crossover(rand_elite, ckt)
-                else:
+                if not self._crossover(rand_elite, ckt):
                     self._logger.event(3, "Cloning:", rand_elite, " ---> ", ckt)
                     ckt.copy_from(rand_elite)
-                ckt.mutate()
+
+        self._mutation(circuits, set(circuits))
 
         return circuits

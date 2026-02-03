@@ -1,18 +1,20 @@
 from typing import TYPE_CHECKING
 from logging import Logger
 
-from Selection.SelectionMethod import SelectionMethod
+from ga.selection.SelectionMethod import SelectionMethod
+from ga.crossover import Crossover
+from ga.mutation import Mutation
 
 if TYPE_CHECKING:
     import numpy as np
-    from Selection.utils import Crossover
 
 class FitnessProportionalSelection(SelectionMethod):
-    def __init__(self, crossover: "Crossover", crossover_prob: float, n_elites: int, logger: Logger, rand: "np.random.Generator"):
+    def __init__(self, crossover: Crossover, mutation: Mutation, n_elites: int, logger: Logger, rand: "np.random.Generator"):
         super().__init__(logger, rand)
         self._crossover = crossover
-        self._crossover_prob = crossover_prob
+        self._mutation = mutation
         self._n_elites = n_elites
+        self._rand = rand
 
     def __call__(self, circuits):
         """
@@ -47,6 +49,8 @@ class FitnessProportionalSelection(SelectionMethod):
         # fitness than the elite, perform crossover (with the elite) and
         # mutation on it (or copy the elite's hardware if crossover is
         # disabled).
+        circuits_to_mutate = set()
+
         for ckt in circuits:
             if self._n_elites:
                 if total_fitness > 0:
@@ -70,11 +74,12 @@ class FitnessProportionalSelection(SelectionMethod):
                 # 	ckt.copy_from(rand_elite)
                 # else:
                 # 	self.__single_point_crossover(rand_elite, ckt)
-                if self._rand.uniform(0, 1) <= self._crossover_prob:
-                    self._crossover(rand_elite, ckt)
-                else:
+                if not self._crossover(rand_elite, ckt):
                     self._logger.event(4, "Cloning:", rand_elite, " ---> ", ckt)
                     ckt.copy_from(rand_elite)
-                ckt.mutate()
+
+                circuits_to_mutate.add(ckt)
+
+        self._mutation(circuits, circuits_to_mutate)
 
         return circuits

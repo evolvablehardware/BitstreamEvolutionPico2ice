@@ -31,7 +31,8 @@ class PulseCountFitnessFunction(FitnessFunction):
 
         target = self._config.get_desired_frequency()
 
-        mse = MSE(data, target)
+        return 1 / MSE(data, target) * sum(x != 0 for x in data)
+        # mse = MSE(data, target)
         var = tolorant_variance(data, target * TOLERANCE) / target
         return (1 / mse) / (var + 1)
 

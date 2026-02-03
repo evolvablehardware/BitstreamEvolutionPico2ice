@@ -29,6 +29,10 @@ class RemoteCircuit(FileBasedCircuit):
         self._compile()
         self._client.evaluate(self._serials, self)
 
+    # called by randomize until
+    def evaluate_once(self):
+        self.upload()
+
     def _calculate_fitness(self):
         if not self._data:
             self._data = [int(point) for point in self._client.get_result(self).values()]
@@ -80,7 +84,7 @@ class EvolutionClient:
                 for serial, fpath in zip(self._client.getSerials(), batch):
                     assigned_evaluations.append(PulseCountEvaluation([serial], fpath))
 
-            self._logger.info("Sending circuits for remove evaluation...")
+            self._logger.info("Sending circuits for remote evaluation...")
 
             for serial, evaluation, result in self._client.evaluateEvaluations(assigned_evaluations):
                 fpath = evaluation.filepath

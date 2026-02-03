@@ -4,7 +4,8 @@ from logging import Logger
 from typing import List, TYPE_CHECKING
 
 from Circuit.Circuit import Circuit
-from Selection.SelectionMethod import SelectionMethod
+from ga.selection.SelectionMethod import SelectionMethod
+from ga.mutation import Mutation
 
 if TYPE_CHECKING:
     import numpy as np
@@ -20,9 +21,10 @@ class MapElitesSelection(SelectionMethod):
     ELITE_MAP_SCALE_FACTOR = 50
     ELITE_MAP_SCALE_FACTOR = 50
     PULSE_ELITE_MAP_SCALE_FACTOR = 5000
-    def __init__(self, elites_dimension: int, logger: Logger, rand: "np.random.Generator"):
+    def __init__(self, elites_dimension: int, mutation: Mutation, logger: Logger, rand: "np.random.Generator"):
         super().__init__(logger, rand)
         self._elites_dimension = elites_dimension
+        self._mutation = mutation
 
     def _generate_map(self, circuits: List[Circuit]) -> List[List[Circuit]]:
         """
@@ -113,8 +115,8 @@ class MapElitesSelection(SelectionMethod):
             if ckt not in elites:
                 rand_elite = self._rand.choice(elites)
                 ckt.copy_from(rand_elite)
-                ckt.mutate()
 
+        self._mutation(circuits, set(circuits))
         self._output_map_file(elite_map)
 
         return circuits

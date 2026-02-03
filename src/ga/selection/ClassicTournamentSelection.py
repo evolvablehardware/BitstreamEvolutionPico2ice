@@ -3,11 +3,12 @@ from logging import Logger
 from itertools import zip_longest
 
 from Circuit.Circuit import Circuit
-from Selection.SelectionMethod import SelectionMethod
+from ga.selection.SelectionMethod import SelectionMethod
+from ga.mutation import Mutation
+from ga.crossover import Crossover
 
 if TYPE_CHECKING:
     import numpy as np
-    from Selection.utils import Crossover
 
 def group(iterable: Iterable, groups: int, fillvalue: Any = None):
     """
@@ -25,13 +26,14 @@ class ClassicTournamentSelection(SelectionMethod):
     """
 
     # TODO normally would use __annotations __s to solve this but not sure if we want to introduce future
-    def __init__(self, crossover: "Crossover", crossover_prob: float, logger: Logger, rand: "np.random.Generator"):
+    def __init__(self, crossover: Crossover, mutation: Mutation, logger: Logger, rand: "np.random.Generator"):
         super().__init__(logger, rand)
         self._crossover = crossover
-        self._crossover_prob = crossover_prob
+        self._mutation = mutation
 
     def __call__(self, circuits: List[Circuit]) -> List[Circuit]:
         population = self._rand.permutation(circuits)
+        circuits_to_mutate = set()
 
         # For all Circuits in the CircuitPopulation, take two random
         # circuits at a time from the population and compare them. Copy
@@ -52,12 +54,11 @@ class ClassicTournamentSelection(SelectionMethod):
                                 winner.get_fitness()
                             ))
 
-            if self._rand.uniform(0, 1) <= self._crossover_prob:
-                self._crossover(winner, loser)
-            else:
+            if not self._crossover(winner, loser):
                 self._logger.event(3, "Cloning:", winner, " ---> ", loser)
                 loser.copy_from(winner)
 
-            loser.mutate()
+            circuits_to_mutate.add(loser)
 
+        self._mutate(circuits, circuits_to_mutate)
         return circuits
