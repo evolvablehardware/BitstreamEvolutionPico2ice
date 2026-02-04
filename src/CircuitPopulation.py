@@ -807,6 +807,7 @@ class CircuitPopulation:
         # We now have all the bitstreams, we can do the faster hamming calculation by comparing each bit of them
         # Then we multiply the count of 1s for that bit by the count of 0s for that bit and add it to the running_total
         # Divide that by # of pairs at the end (calculation shown below)
+        # TODO do this with numpy
         running_total = 0
         n = len(self._circuits)
         num_pairs = n * (n-1) / 2

@@ -341,7 +341,8 @@ class FileBasedCircuit(Circuit):
     def get_bitstream(self):
         bitstream = []
         def add_bit(bit, *rest):
-            bitstream.append(bit)
+            # convert from ascii
+            bitstream.append(bit - 48)
         self._run_at_each_modifiable(add_bit)
         return bitstream
 
