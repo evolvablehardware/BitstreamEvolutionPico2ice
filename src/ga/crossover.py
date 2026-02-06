@@ -16,7 +16,7 @@ class SimpleCrossover(Crossover):
     def __init__(self, config: Config, rand: "np.random.Generator"):
         self._rand = rand
         self._prob = config.get_crossover_probability()
-        self._row_bounds = config.get_routing_rows()
+        self._row_bounds = config.get_routing_rows()[0], config.get_routing_rows()[-1]
 
     def __call__(self, source: Circuit, dest: Circuit) -> bool:
         if self._rand.uniform(0, 1) <= self._prob:
@@ -30,7 +30,7 @@ class EachCrossover(Crossover):
     def __init__(self, config: Config, rand: "np.random.Generator"):
         self._rand = rand
         self._prob = config.get_crossover_probability()
-        self._row_bounds = config.get_routing_rows()
+        self._row_bounds = config.get_routing_rows()[0], config.get_routing_rows()[-1]
 
     def __call__(self, source: Circuit, dest: Circuit) -> bool:
         if self._rand.uniform(0, 1) <= self._prob:
@@ -50,7 +50,7 @@ class ConvergenceProportionalCrossover(Crossover):
         self._prob = config.get_crossover_probability()
         # Paper uses 0.005, thats pretty high for us
         self._base_prob = config.get_crossover_probability() * 0.2
-        self._row_bounds = config.get_routing_rows()
+        self._row_bounds = config.get_routing_rows()[0], config.get_routing_rows()[-1]
 
 
     def __call__(self, source: Circuit, dest: Circuit):

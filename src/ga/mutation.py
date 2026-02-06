@@ -79,12 +79,19 @@ class ConvergenceProportionalMutation(Mutation):
             print("mutation: ", multiplier)
             circuit.mutate(chance=self._prob * multiplier + self._base_prob)
 
-
-
-# TODO
 def mutation_fac(config: Config, logger: Logger, rand: "np.random.Generator"):
     def build():
-        return SimpleMutation()
-        # return ConvergenceProportionalMutation(config)
+        match config.get_mutation_type():
+            case "SIMPLE":
+                return SimpleMutation()
+            case "RANK":
+                return FitnessRankMutation(config)
+            case "PROPORTIONAL":
+                return FitnessProportionalMutation(config)
+            case "CONVERGENCE":
+                return ConvergenceProportionalMutation(config)
+            case _:
+                logger.error("Invalid mutation type")
+                raise Exception("Invalid mutation type")
 
     return build

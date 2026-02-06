@@ -34,14 +34,14 @@ class MixinSelection(SelectionMethod):
     def __call__(self, circuits):
         circuits = sorted(circuits, key=lambda c : c.get_fitness(), reverse=True)
         for mixin in self._before:
-            mixin(circuits, self, self.protected)
+            mixin(circuits, self)
             circuits = sorted(circuits, key=lambda c : c.get_fitness(), reverse=True)
 
         self._selection(circuits)
         circuits = sorted(circuits, key=lambda c : c.get_fitness(), reverse=True)
 
         for mixin in self._after:
-            mixin(circuits, self, self.protected)
+            mixin(circuits, self)
             circuits = sorted(circuits, key=lambda c : c.get_fitness(), reverse=True)
 
         return circuits

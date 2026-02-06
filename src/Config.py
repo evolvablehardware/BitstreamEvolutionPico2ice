@@ -406,6 +406,12 @@ class Config:
 			exit()
 		return prob
 
+	def get_mutation_type(self) -> str:
+		strategy = self.get_ga_parameters("MUTATION_TYPE")
+		valid_vals = ["SIMPLE", "RANK", "PROPORTIONAL", "CONVERGENCE"]
+		self.check_valid_value("mutation type", strategy, valid_vals)
+		return strategy
+
 	def get_crossover_probability(self):
 		prob = float(self.get_ga_parameters("CROSSOVER_PROBABILITY"))
 		if prob < 0.0:

@@ -13,7 +13,7 @@ In addition to the usual python packages, two additional are required:
 - ascutil, provides significantly after circuit mutations
 
 See [```farmconfig.ini```](./farmconfig.ini) for an example config. This is the config used when running through Docker. Configuration values not present in this example config may produce unexpected behavior.
-All of the selection methods aside from MAP work. Notably, an addition option has been added to ROUTING - ```ALL``` - which removes all row restraints. Seed file is also now configurable, defaults to ```data/seed-hardware.asc```.
+All of the selection methods aside from MAP work. New parameters include annotations.
 
 ## Table of Contents
 - [BitstreamEvolution](#bitstreamevolution)
@@ -473,6 +473,7 @@ run, but should result in more stable circuits | 1+ | 1-5 |
 | Parameter | Description | Possible Values | Recommended Values |
 |-----------|-------------|-----------------|--------------------|
 | Population size | The number of circuits to evolve | 2 - 1000+ | 10 - 50 |
+| Mutation type | Mutation algorithm to use | Simple, Rank, Proportional, Convergence | Rank |
 | Mutation probability | The probability to flip a bit of the bitstream during mutation | 0.0 - 1.0 | (1 / genotypic length) = 0.0021 |
 | Crossover probability | The probability of replacing a bit in one bitstream from a bit from another during crossover | 0.0 - 1.0 | 0.1 - 0.5 |
 | Elitism fraction | The percentage of most fit circuits to protect from modification in a given generation | 0.0 - 1.0 | 0.1 |
