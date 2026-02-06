@@ -35,7 +35,9 @@ class RemoteCircuit(FileBasedCircuit):
 
     def _calculate_fitness(self):
         if not self._data:
-            self._data = [int(point) for point in self._client.get_result(self).values()]
+            results = self._client.get_result(self)
+            # TODO add an additional log file that maps serials to pulses
+            self._data = [int(results[serial]) for serial in self._serials]
             self._extra_data["pulses"] = self._data
 
         return self._fitnessfunc.calculate_fitness(self._data)
