@@ -479,6 +479,7 @@ run, but should result in more stable circuits | 1+ | 1-5 |
 | Selection | The type of selection to perform | SINGLE_ELITE, FRAC_ELITE, CLASSIC_TOURN, FIT_PROP_SEL, RANK_PROP_SEL | FIT_PROP_SEL |
 | Diversity measure | The method to use to measure diversity | NONE, UNIQUE, HAMMING_DIST | HAMMING_DIST |
 | Random injection | Thr probability of randomly injecting circuits into each generation | 0.0 - 1.0 | 0.0 - 0.15 |
+| Chaos injection | Randomly performs additional mutations on 10% of circuits after 5 generations without fitness increase. Mutations are done at mutation_chance * chaos_injection | 0.0+ | 5 |
 
 ##### Selection methods
 | Method | Description |

@@ -442,6 +442,13 @@ class Config:
 			exit()
 		return frac
 
+	def get_chaos_injection(self):
+		frac = float(self.get_ga_parameters("CHAOS_INJECTION"))
+		if frac < 0.0:
+			self.__logger.error("Invalid chaos injection rate " + str(frac) + "'. Must be greater than zero.")
+			exit()
+		return frac
+
 	def get_diversity_measure(self):
 		input = self.get_ga_parameters("DIVERSITY_MEASURE")
 		valid_vals = ["HAMMING_DIST", "UNIQUE", "NONE", "DIFFERING_BITS"]

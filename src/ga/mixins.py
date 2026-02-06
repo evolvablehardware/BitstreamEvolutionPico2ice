@@ -36,7 +36,7 @@ class ChaosInjection(Mixin):
 
         self._generation_threshold = 5
         self._amount_circuits = int(0.1 * config.get_population_size())
-        self._mutation_chance = 5 * config.get_mutation_probability()
+        self._mutation_chance = config.get_chaos_injection() * config.get_mutation_probability()
 
     def __call__(self, circuits, selection):
         if (fitness := circuits[0].get_fitness()) > self._top_fitness:
@@ -55,15 +55,16 @@ class ChaosInjection(Mixin):
         for circuit in self._rand.choice(non_protected, self._amount_circuits):
             circuit.mutate(chance=self._mutation_chance)
 
-#TODO
 def mixin_fac(config: Config, logger: Logger, rand: "np.random.Generator") -> Tuple[List[Mixin], List[Mixin]]:
     before = []
     after = []
 
     if config.get_random_injection() > 0:
-        before.append(RandomInjection(config))
+        after.append(RandomInjection(config))
+
+    if config.get_chaos_injection() > 0:
+        after.append(ChaosInjection(config, logger, rand))
 
     return before, after
-    return ([], [ChaosInjection(config, logger, rand)])
 
 
