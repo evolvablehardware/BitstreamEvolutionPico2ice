@@ -13,8 +13,7 @@ In addition to the usual python packages, two additional are required:
 - ascutil, provides significantly after circuit mutations
 
 See [```farmconfig.ini```](./farmconfig.ini) for an example config. This is the config used when running through Docker. Configuration values not present in this example config may produce unexpected behavior.
-All of the selection methods aside from MAP work. Notably, an addition option has been added to ROUTING - ```ALL``` - which removes all row restraints.
-
+All of the selection methods aside from MAP work. Notably, an addition option has been added to ROUTING - ```ALL``` - which removes all row restraints. Seed file is also now configurable, defaults to ```data/seed-hardware.asc```.
 
 ## Table of Contents
 - [BitstreamEvolution](#bitstreamevolution)
@@ -498,6 +497,7 @@ run, but should result in more stable circuits | 1+ | 1-5 |
 | Randomize until | The method used for randomizing the initial population | PULSE, VARIANCE, NO | NO |
 | Randomize threshold | The target fitness for initial random search before evolution begins| 3-8 | 4 |
 | Randomize mode | The method to use when "randomizing" each circuit | MUTATE, RANDOM | Depends on the situation. If a seed individual/population is used, then use MUTATE. Otherwise, use RANDOM |
+| Seed | Circuit path to use as seed | Any .asc filepath | data/seed-hardware.asc |
 
 ##### Initialization Modes
 | Mode | Description |

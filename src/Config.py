@@ -4,6 +4,7 @@ Config.py
 This class is instantiated to aquire values from the config file.
 """
 
+import os
 from pathlib import Path
 from configparser import ConfigParser
 from configparser import NoOptionError
@@ -473,6 +474,14 @@ class Config:
 		valid_vals = ["RANDOM", "MUTATE"]
 		self.check_valid_value("randomization mode", input, valid_vals)
 		return input
+
+	def get_seed_fpath(self) -> Path:
+		_input = self.get_init_parameters("SEED")
+		if not os.path.isfile(_input):
+			self.__logger.error(f"Seed file does not exist ({_input})")
+			raise Exception(f"Seed file does not exist ({_input})")
+
+		return Path(_input)
 
 	# SECTION Getters for stopping conditions parameters.
 	# Since you can use target fitness instead of gens, we'll need options to see which is turned on
