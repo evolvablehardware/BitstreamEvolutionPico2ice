@@ -26,6 +26,7 @@ from Circuit.ToneDiscriminatorFitnessFunction import ToneDiscriminatorFitnessFun
 from Circuit.VarMaxFitnessFunction import VarMaxFitnessFunction
 from Circuit.RemoteCircuit import RemoteCircuit, EvolutionClient
 from ga.selection.utils import selection_fac
+from ga.diversity import diversity_fac
 from Config import Config
 from ascTemplateBuilder import ascTemplateBuilder
 from utilities import wipe_folder
@@ -133,6 +134,7 @@ class CircuitPopulation:
         self.__population_bistream_sum = np.zeros(660*num_rows*num_cols)
 
         self.__run_selection = selection_fac(self, config, logger, self.__rand)
+        self.__run_diversity = diversity_fac(config, logger)
 
     def run_fitness_sensitity(self):
         """
@@ -601,15 +603,6 @@ class CircuitPopulation:
             self._circuits = SortedKeyList(new_circuits, key=lambda ckt: -1 * ckt.get_fitness())
             protected_elites = self.__run_selection.protected
 
-            # Remove bottom X% of population to replace with random circuits
-            # (just randomize bitstream of the bottom X%)
-            if self.__config.get_random_injection() > 0:
-                amt = int(self.__config.get_random_injection() * self.__config.get_population_size())
-                circuits_to_randomize = self._circuits[-amt:]
-                for ckt in circuits_to_randomize:
-                    if ckt not in protected_elites:
-                        ckt.randomize_bitstream()
-
             self.__write_to_livedata()
             self.__next_epoch()
 
@@ -634,17 +627,9 @@ class CircuitPopulation:
         fitness_sum = 0
         for c in self._circuits:
             fitness_sum = fitness_sum + c.get_fitness()
-        # Calculate the diversity measure
-        diversity = 0
-        if self.__config.get_diversity_measure() == "HAMMING_DIST":
-            diversity = self.avg_hamming_dist()
-        elif self.__config.get_diversity_measure() == "UNIQUE":
-            diversity = self.count_unique()
-        elif self.__config.get_diversity_measure() == "DIFFERING_BITS":
-            diversity = self.count_differing_bits()
-        elif self.__config.get_diversity_measure() == "NONE":
-            diversity = 0
-        # Providing any invalid measure of diversity will make it constantly 0
+
+        diversity = self.__run_diversity(self._circuits)
+
         # Write the generation data (avg/best/worst fitness, etc) to file
         if self.get_current_epoch() > 0:
             with open("workspace/bestlivedata.log", "a") as liveFile:
@@ -788,134 +773,6 @@ class CircuitPopulation:
 
     # SECTION Miscellaneous helper functions.
 
-    def avg_hamming_dist(self):
-        """
-        Calculates and returns the average Hamming distance for the population
-
-        Returns
-        -------
-        float
-            Returns Hamming distance in the population.
-        """
-        running_total = 0
-        n = len(self._circuits)
-        num_pairs = n * (n-1) / 2
-
-        self.__logger.event(4, "Starting Hamming Distance Calculation")
-        bitstreams = list(map(lambda c: c.get_bitstream(), self._circuits))
-
-        # We now have all the bitstreams, we can do the faster hamming calculation by comparing each bit of them
-        # Then we multiply the count of 1s for that bit by the count of 0s for that bit and add it to the running_total
-        # Divide that by # of pairs at the end (calculation shown below)
-        # TODO do this with numpy
-        running_total = 0
-        n = len(self._circuits)
-        num_pairs = n * (n-1) / 2
-        self.__logger.event(4, "HDIST - Entering loop")
-        for i in range(len(bitstreams[0])):
-            ones_count = 0
-            zero_count = 0
-            for j in range(n):
-                if bitstreams[j][i] == 0:
-                    zero_count = zero_count + 1
-                else:
-                    ones_count = ones_count + 1
-            running_total = running_total + ones_count * zero_count
-
-        running_total = running_total / num_pairs
-        self.__logger.event(4, "HDIST - Final value", running_total)
-        return running_total
-
-    def count_unique(self):
-        """
-        Returns the number of unique files in the population
-
-        Returns
-        -------
-        int
-            Number of unique circuits in the population
-
-        """
-        if self.__config.get_simulation_mode() == "FULLY_SIM":
-            bitstreams = []
-            for ckt in self._circuits:
-                bitstreams.append(ckt.get_sim_bitstream())
-            bitstreams = self.__unique(bitstreams)
-            self.__logger.event(
-                2, "Number of Unique Individuals:", len(bitstreams))
-            return len(bitstreams)
-
-        # If not FULLY_SIM, then run this
-        # TODO: Optimize
-        bin_dir = self.__config.get_bin_directory()
-        dir_list = os.listdir(bin_dir)
-        files = [f for f in dir_list if os.path.isfile(
-            str(bin_dir)+'/'+f)]  # Filter out non-files
-        unique_file_paths = []
-        for file in files:
-            full_path = str(bin_dir) + '/' + file
-            not_unique = False
-            for u in unique_file_paths:
-                if self.__files_eq(full_path, u):
-                    not_unique = True
-                    break
-            if not not_unique:
-                unique_file_paths.append(full_path)
-        self.__logger.event(2, "Number of Unique Individuals:",
-                         len(unique_file_paths))
-        return len(unique_file_paths)
-
-    def __unique(self, arrays):
-        """
-        Returns an array of unique arrays from the input
-
-        Parameters
-        ----------
-        arrays : list[list[T]]
-            An array containing arrays
-
-        Returns
-        -------
-        list[T]
-            Returns a list of all of the unique lists contained in the arrays variable
-        """
-        soln = []
-        for a in arrays:
-            # Check if its in soln; if not, then add it
-            shouldAdd = True
-            for b in soln:
-                if self.__arr_eq(a, b):
-                    shouldAdd = False
-                    break
-            if shouldAdd:
-                soln.append(a)
-        return soln
-
-    def count_differing_bits(self):
-        """
-        Returns the number of bits in the bitstream where 2 circuits have different values
-
-        Returns
-        -------
-        int
-            Number of bits in the bitstream where 2 circuits have different values
-
-        """
-        if self.__config.get_simulation_mode() == "FULLY_SIM":
-            bitstream_sums = np.zeros[len(self._circuits[0].get_sim_bitstream())]
-            for ckt in self._circuits:
-                bitstream_sums += np.array(ckt.get_sim_bitstream())
-        else:
-            bitstream_sums = self.__population_bistream_sum
-
-        count = 0
-        for bit_sum in bitstream_sums:
-            if bit_sum != 0 and bit_sum != len(self._circuits):
-                count += 1
-        self.__logger.event(
-                2, "Number of differing bits:", count)
-        return count
-
     def get_differing_bits_str(self):
         """
         Returns an ASCII string that represents the number of circuits with a 1 at each bit in the bitstream
@@ -929,51 +786,3 @@ class CircuitPopulation:
         for bit in self.__population_bistream_sum:
             s += chr(int(bit)+32)
         return s
-
-    def __arr_eq(self, ar1, ar2):
-        """
-        Returns True if the arrays or equal or False otherwise
-        Compares each element of ar1 and ar2
-
-        Parameters
-        ----------
-        ar1 : list
-            an array
-        ar2 : list
-            an array
-
-        Returns
-        -------
-        bool
-            True if the arrays are equivalent in content and order, False otherwise.
-        """
-        if len(ar1) != len(ar2):
-            return False
-        for i in range(0, len(ar1)):
-            if ar1[i] != ar2[i]:
-                return False
-        return True
-
-    def __files_eq(self, fp1, fp2):
-        """
-        Returns true if the files are equal (have the same content)
-
-        Parameters
-        ----------
-        fp1 : str
-            Path to file 1
-        fp2 : str
-            Path to file 2
-
-        Returns
-        -------
-        bool
-            True if both files contain the same content, False otherwise.
-        """
-        content1 = []
-        content2 = []
-        with open(fp1, 'rb') as content:
-            content1 = content.read()
-        with open(fp2, 'rb') as content:
-            content2 = content.read()
-        return list(content1) == list(content2)
