@@ -122,12 +122,8 @@ class CircuitPopulation:
         self.__rand = default_rng()
         self.__current_epoch = 0
         self.__best_epoch = 0
-        num_rows = 3
-        if config.get_routing_type() == "NEWSE":
-            num_rows = 2
-        elif config.get_routing_type() == "ALL":
-            num_rows = 16
 
+        num_rows = len(config.get_routing_rows())
         num_cols = len(config.get_accessed_columns())
         # 660 logic tiles - no tiles for x=6 or x=19
         self.__population_bistream_sum = np.zeros(660*num_rows*num_cols)

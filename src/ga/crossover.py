@@ -8,30 +8,15 @@ if TYPE_CHECKING:
     import numpy as np
     from CircuitPopulation import CircuitPopulation
 
-def get_routing_bounds(config: Config, logger: Logger) -> Tuple[int, int]:
-    match config.get_routing_type():
-        case "MOORE":
-            return (1, 3)
-        case "NWSE":
-            return (13, 15)
-        case "ALL":
-            return (0, 16)
-        case _:
-            logger.error(
-                1, "Invalid routing type specified in config.ini. Exiting...")
-            exit()
-
 class Crossover(Protocol):
     def __call__(self, source: Circuit, dest: Circuit) -> bool:
         """Returns whether a crossover was performed."""
 
 class SimpleCrossover(Crossover):
-    def __init__(self, config: Config, logger: Logger, rand: "np.random.Generator"):
+    def __init__(self, config: Config, rand: "np.random.Generator"):
         self._rand = rand
         self._prob = config.get_crossover_probability()
-
-        self._row_bounds = get_routing_bounds(config, logger)
-
+        self._row_bounds = config.get_routing_rows()
 
     def __call__(self, source: Circuit, dest: Circuit) -> bool:
         if self._rand.uniform(0, 1) <= self._prob:
@@ -42,11 +27,10 @@ class SimpleCrossover(Crossover):
         return False
 
 class EachCrossover(Crossover):
-    def __init__(self, config: Config, logger: Logger, rand: "np.random.Generator"):
+    def __init__(self, config: Config, rand: "np.random.Generator"):
         self._rand = rand
         self._prob = config.get_crossover_probability()
-
-        self._row_bounds = get_routing_bounds(config, logger)
+        self._row_bounds = config.get_routing_rows()
 
     def __call__(self, source: Circuit, dest: Circuit) -> bool:
         if self._rand.uniform(0, 1) <= self._prob:
@@ -66,7 +50,7 @@ class ConvergenceProportionalCrossover(Crossover):
         self._prob = config.get_crossover_probability()
         # Paper uses 0.005, thats pretty high for us
         self._base_prob = config.get_crossover_probability() * 0.2
-        self._row_bounds = get_routing_bounds(config, logger)
+        self._row_bounds = config.get_routing_rows()
 
 
     def __call__(self, source: Circuit, dest: Circuit):
@@ -90,6 +74,6 @@ class ConvergenceProportionalCrossover(Crossover):
 def crossover_fac(population: "CircuitPopulation", config: Config, logger: Logger, rand: "np.random.Generator"):
     def build():
         # return ConvergenceProportionalCrossover(population, config, logger, rand)
-        return SimpleCrossover(config, logger, rand)
+        return SimpleCrossover(config, rand)
 
     return build

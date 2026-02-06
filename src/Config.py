@@ -10,6 +10,7 @@ from configparser import ConfigParser
 from configparser import NoOptionError
 from xml.dom import NotFoundErr
 from datetime import datetime
+from typing import List
 
 # TODO Add handling for missing values
 # NOTE Fails ungracefully at missing values currently
@@ -476,6 +477,7 @@ class Config:
 		return input
 
 	def get_seed_fpath(self) -> Path:
+		"""Returns path to seed file."""
 		_input = self.get_init_parameters("SEED")
 		if not os.path.isfile(_input):
 			self.__logger.error(f"Seed file does not exist ({_input})")
@@ -725,6 +727,19 @@ class Config:
 		valid_vals = ["MOORE", "NEWSE", "ALL"]
 		self.check_valid_value("routing type", input, valid_vals)
 		return input
+
+	def get_routing_rows(self) -> List[int]:
+		"""
+		Returns rows available for mutation based on routing
+		type.
+		"""
+		match self.get_routing_type():
+			case "MOORE":
+				return [1, 2, 13]
+			case "NEWSE":
+				return [1, 2]
+			case "ALL":
+				return list(range(1, 17))
 
 	def get_serial_baud(self):
 		return int(self.get_hardware_parameters("SERIAL_BAUD"))
