@@ -53,14 +53,14 @@ class FitnessProportionalSelection(SelectionMethod):
 
         for ckt in circuits:
             if self._n_elites:
-                if total_fitness > 0:
+                if total_fitness >= 0:
                     rand_elite = self._rand.choice(
                         list(elite_chances.keys()),
                         self._n_elites,
                         p=list(elite_chances.values())
                     )[0]
                 else:  # If fitness isn't negative, this should never happen
-                    rand_elite = self._rand.choice(elites)[0]
+                    rand_elite = self._rand.choice(elites)
 
             else:
                 rand_elite = self._rand.choice(circuits)
