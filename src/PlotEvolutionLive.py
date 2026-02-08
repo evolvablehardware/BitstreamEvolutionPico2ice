@@ -20,6 +20,7 @@ from utilities import determine_color
 from os.path import exists
 from os import mkdir
 import argparse
+import json
 
 """
 Static parameters can be found and changed in the config.ini file in the root project folder
@@ -144,7 +145,8 @@ def run():
         for line in lines:
             if len(line) > 1:
                 t, d = line.split(':')
-                d = list(map(lambda x: int(x), d.split(',')))
+                # TODO only uses first
+                d = list(map(lambda x: int(json.loads(x)[0]), d.split(',')))
                 xs.append(d[0])
                 ys.append(np.average(d))
                 zs.append(min(d))
@@ -368,7 +370,8 @@ def run():
                 gen = int(vals[0])
                 gens.append(gen)
                 pts = vals[1].split(',')
-                collections.append(list(map(lambda x: float(x), pts)))
+                # TODO only uses first
+                collections.append(list(map(lambda x: float(json.loads(x)[0]), pts)))
 
         for i in range(0, len(collections)):
             widths.append(interval * 0.5)
@@ -384,13 +387,14 @@ def run():
             ax10.set(xlabel='Generation', ylabel='Pulses', title='Pulse Violin Plots')
             ax10.set(xlabel='Generation', ylabel='Pulses')
 
+    bar = None
     def anim_heatmap(i):
         global max_pulses
+        nonlocal bar
         if config.is_pulse_func():
             data = open('workspace/pulselivedata.log','r').read()
         else:
             data = open('workspace/heatmaplivedata.log','r').read()
-
 
         lines = data.split('\n')
         collections = []
@@ -403,7 +407,8 @@ def run():
                 for pt in pts:
                     gens.append(int(vals[0]))
                     if config.is_pulse_func():
-                        collections.append(float(pt))
+                        # TODO only using first datapoint
+                        collections.append(json.loads(pt)[0])
                     else:
                         collections.append(float(pt)*3.3/715)
 
@@ -411,8 +416,11 @@ def run():
         hist = ax8.hist2d(gens,collections,bins=HEATMAP_BINS,cmap=heatmap_color)
 
         if config.is_pulse_func():
+            if not bar:
+                bar = fig3.colorbar(hist[3])
+
             ax8.set(xlabel='Generation', ylabel='Pulses', title='Pulse Count Histogram')
-            fig3.colorbar(hist[3])
+            bar.update_normal(hist[3])
         else:
             ax8.set(xlabel='Generation', ylabel='Voltage (V)', title='Voltage Heatmap')
 
