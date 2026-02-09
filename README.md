@@ -394,7 +394,8 @@ Update [farmconfig.ini](farmconfig.ini) to the desired configuration. Values not
 ```
 docker build -t bitstreamevolution .
 ```
-Note that after changing configuration values, the image will have to be rebuilt. The same is true for the ```seed-hardware``` file.
+Note that after changing configuration values, the image will have to be rebuilt. The same is true for the ```seed-hardware``` file. Currently, only ```data/seed-hardware.asc``` is copied into the container,
+so this must be the seed file configuration parameter (you may replace the file with another).
 Next, start the container:
 ```
 docker run -it --network=host bitstreamevolution .venv/bin/python3 src/evolve.py -c farmconfig.ini -d desc
