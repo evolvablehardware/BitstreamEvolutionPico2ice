@@ -15,6 +15,8 @@ In addition to the usual python packages, two additional are required:
 See [```farmconfig.ini```](./farmconfig.ini) for an example config. This is the config used when running through Docker. Configuration values not present in this example config may produce unexpected behavior.
 All of the selection methods aside from MAP work. New parameters include annotations.
 
+```ice27_only.asc``` contains only a connection from the ice27 pin. All clocks from dsp/io/ipcon are in theory disabled.
+
 ## Table of Contents
 - [BitstreamEvolution](#bitstreamevolution)
   - [Table of Contents](#table-of-contents)
