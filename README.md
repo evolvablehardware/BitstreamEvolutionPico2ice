@@ -6,6 +6,8 @@ iCEFARM will need to be setup and running before this.
 BitstreamEvolution can be run through docker, see [setup](#docker).
 ```1kz_ice27_generated.asc``` is a clocked 1kHz pulse generator created with verilog and included for use as a seed. This will need to be moved to ```data/seed-hardware``` before running. Alternatively, you can create your own seed. The pulse count firmware listens on pin ICE_27/RPI_GPIO_20. The RANDOM initialization mode should now be working.
 The pulse count fitness function is currently overridden regardless of whether you use tolerant or sensitive:
+$$\frac{sum(pulses \neq 0)} {MSE(expected, actual)}$$
+I've messed around with this one a bit too. It seems to work better for clocked seeds but worse for non clocked seeds:
 $$\frac{ \frac {1} {MSE(expected, actual)}} {1 + \sum max(|p-mean(P)| - 0.03*expected, 0)^2}$$
 The use of variance promotes circuits to rely on less undefined behavior, which seems to work while when evaluating across multiple devices. This may not be the case after the clock is disabled though.
 In addition to the usual python packages, two additional are required:
