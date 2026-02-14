@@ -16,9 +16,9 @@ See [```farmconfig.ini```](./farmconfig.ini) for an example config. This is the 
 All of the selection methods aside from MAP work. New parameters include annotations.
 
 ### Seed file descriptions
-```1kz_ice27_generated.asc``` is a 1k pulse generator synthesized from verilog with no modifications. No attempt to disable clocks has been made.
-```ice27_only.asc``` contains routing from pin 27 using io tile 18,31 to logic 18 29. All other tiles are empty and all clocks are in theory unaccessible so long as column restraint notes in ```farmconfig.ini``` is followed.
-```ice27_only_no_logic.asc``` is the same as previous but with logic tile removed. Requires col 52 (1 index) access to remake connection present in previous. Probably best just to use previous seed but this is included as a minimal working seed.
+- ```1kz_ice27_generated.asc``` is a 1k pulse generator synthesized from verilog with no modifications. No attempt to disable clocks has been made.
+- ```ice27_only.asc``` contains routing from pin 27 using io tile 18,31 to logic 18 29. All other tiles are empty and all clocks are in theory unaccessible so long as column restraint notes in ```farmconfig.ini``` is followed.
+- ```ice27_only_no_logic.asc``` is the same as previous but with logic tile removed. Requires col 52 (1 index) access to remake connection present in previous. Probably best just to use previous seed but this is included as a minimal working seed.
 
 ## Table of Contents
 - [BitstreamEvolution](#bitstreamevolution)
