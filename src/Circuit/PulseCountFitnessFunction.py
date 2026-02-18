@@ -14,7 +14,7 @@ def tolorant_variance(data: list[float], tolerance) -> float:
     return sum(max(abs(point - u) - tolerance, 0) ** 2 for point in data) / len(data)
 
 def MSE(data: list[float], target: int) -> float:
-    return sum((point - target) ** 2 for point in data)
+    return sum(abs((point - target) ** 3) for point in data)
 
 
 class PulseCountFitnessFunction(FitnessFunction):

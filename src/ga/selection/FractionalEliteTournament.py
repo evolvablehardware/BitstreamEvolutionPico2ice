@@ -29,6 +29,7 @@ class FractionalEliteTournament(SelectionMethod):
         # Generate a group of elite Circuits from the
         # n = <self.__n_elites> best performing Circuits.
         elite_group = list(circuits[:self._n_elites])
+        self.protected = set(elite_group)
         self._logger.info("Elite Group:", elite_group)
 
         # For all the Circuits in the CircuitPopulation compare the

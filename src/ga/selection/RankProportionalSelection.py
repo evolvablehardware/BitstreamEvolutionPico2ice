@@ -35,6 +35,8 @@ class RankProportionalSelection(SelectionMethod):
             # Using (self.__n_elites - i) since highest ranked individual is at self.__circuits[0]
             elites[circuits[i]] = (self._n_elites - i) / rank_sum
 
+        self.protected = set(elites.keys())
+
         self._logger.event(3, "Elite Group:", elites.keys())
         self._logger.event(3, "Elite Probabilities:", elites.values())
 

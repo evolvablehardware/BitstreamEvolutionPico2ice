@@ -29,6 +29,7 @@ class FitnessProportionalSelection(SelectionMethod):
         # a probability value (used later for crossover/copying/mutation).
         circuits = sorted(circuits, key=lambda c: c.get_fitness(), reverse=True)
         elites = circuits[:self._n_elites]
+        self.protected = set(elites)
         total_fitness = sum(c.get_fitness() for c in elites)
 
         if total_fitness:
