@@ -14,6 +14,9 @@ def tolorant_variance(data: list[float], tolerance) -> float:
     return sum(max(abs(point - u) - tolerance, 0) ** 2 for point in data) / len(data)
 
 def MSE(data: list[float], target: int) -> float:
+    return sum((point - target) ** 2 for point in data)
+
+def MCE(data: list[float], target: int) -> float:
     return sum(abs((point - target) ** 3) for point in data)
 
 
@@ -30,9 +33,10 @@ class PulseCountFitnessFunction(FitnessFunction):
         TOLERANCE = 0.03
 
         target = self._config.get_desired_frequency()
-
-        return 1 / MSE(data, target) * sum(x != 0 for x in data)
-        # mse = MSE(data, target)
+        error = MCE(data, target)
+        fitness = 1 if not error else 1 / error
+        return fitness * sum(x != 0 for x in data)
+        # mse = MSE(data, target
         var = tolorant_variance(data, target * TOLERANCE) / target
         return (1 / mse) / (var + 1)
 
