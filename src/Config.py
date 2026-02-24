@@ -788,6 +788,20 @@ class Config:
 	def get_frame_interval(self):
 		return int(self.get_plotting_parameters("frame_interval"))
 
+	def get_log_scale_pulses(self):
+		try:
+			value = self.get_plotting_parameters("log_scale_pulses")
+			return value == "true" or value == "True"
+		except NoOptionError:
+			return False
+
+	def get_log_scale_fitness(self):
+		try:
+			value = self.get_plotting_parameters("log_scale_fitness")
+			return value == "true" or value == "True"
+		except NoOptionError:
+			return False
+
 	def check_valid_value(self, param_name, user_input, allowed_values):
 		if not user_input in allowed_values:
 			self.__logger.error("Invalid " + param_name + " '" + str(user_input) + "'. Valid parameters are: " +

@@ -21,6 +21,7 @@ from os.path import exists
 from os import mkdir
 import argparse
 import json
+import signal
 
 """
 Static parameters can be found and changed in the config.ini file in the root project folder
@@ -34,8 +35,15 @@ config = Config("workspace/builtconfig.ini")
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument("-f", "--frame-interval", required=False, default=10000)
+arg_parser.add_argument("-l", "--log-scale-pulses", required=False, action="store_true", default=None,
+                        help="Use log scale for pulse count y-axes. Overrides config file setting.")
+arg_parser.add_argument("-L", "--log-scale-fitness", required=False, action="store_true", default=None,
+                        help="Use log scale for fitness y-axis with a reference line at 1.0. Overrides config file setting.")
 args = arg_parser.parse_args()
 FRAME_INTERVAL = int(args.frame_interval)
+# CLI flags override config; if not provided, fall back to config
+LOG_SCALE_PULSES = args.log_scale_pulses if args.log_scale_pulses is not None else config.get_log_scale_pulses()
+LOG_SCALE_FITNESS = args.log_scale_fitness if args.log_scale_fitness is not None else config.get_log_scale_fitness()
 
 def run():
     """Temporary function to run all of Plot Evolution Live."""
@@ -70,7 +78,10 @@ def run():
             # Add a line for desired frequency
             if config.is_pulse_count():
                 ax1.hlines(y=config.get_desired_frequency(), xmin=1, xmax=config.get_population_size(), color="red", linestyles="dotted")
-            ax1.set_ylim([0, None])
+            if LOG_SCALE_PULSES:
+                ax1.set_yscale('symlog')
+            else:
+                ax1.set_ylim([0, None])
         else:
             title = 'Circuit Fitness this Generation'
             ylabel = 'Fitness'
@@ -99,7 +110,6 @@ def run():
                 ts.append(float(t))
                 ds.append(float(d))
         ax2.clear()
-        # ax2.set_yscale('symlog')
         if config.using_transfer_interval():
             for i in range(0,len(lines),config.get_transfer_interval()):
                 ax2.axvline(x=i, color=accent_color, linestyle="dashed")
@@ -127,6 +137,9 @@ def run():
             ax3.yaxis.set_label_position("right")
 
         ax2.set(xlabel='Generation', ylabel='Fitness', title='Circuit Fitness per Generation')
+        if LOG_SCALE_FITNESS and ys and any(v > 0 for v in ys):
+            ax2.set_yscale('log')
+            ax2.hlines(y=1.0, xmin=min(xs), xmax=max(xs), color="violet", linestyles="dashed", linewidth=0.75)
 
         if formal:
             ax2.legend(plots, labels, bbox_to_anchor=(1.15, 0.5), loc="center left", borderaxespad=0)
@@ -145,8 +158,9 @@ def run():
         for line in lines:
             if len(line) > 1:
                 t, d = line.split(':')
-                # TODO only uses first
-                d = list(map(lambda x: int(json.loads(x)[0]), d.split(',')))
+                # parse as array of arrays; each circuit has [dev1, dev2, ...] pulse counts
+                arrays = json.loads('[' + d + ']')
+                d = [int(arr[0]) for arr in arrays]
                 xs.append(d[0])
                 ys.append(np.average(d))
                 zs.append(min(d))
@@ -166,6 +180,8 @@ def run():
             ax9.hlines(y=config.get_desired_frequency(), xmin=1, xmax=len(lines), color="violet", linestyles="dotted")
             # labels.append("Desired Frequency")
         ax9.set(xlabel='Generation', ylabel='Pulses', title='Circuit Pulse Count per Generation')
+        if LOG_SCALE_PULSES:
+            ax9.set_yscale('symlog')
 
         if config.using_transfer_interval():
             for i in range(0,len(lines),config.get_transfer_interval()):
@@ -369,9 +385,9 @@ def run():
                 vals = line.split(':')
                 gen = int(vals[0])
                 gens.append(gen)
-                pts = vals[1].split(',')
-                # TODO only uses first
-                collections.append(list(map(lambda x: float(json.loads(x)[0]), pts)))
+                # parse as array of arrays; each circuit has [dev1, dev2, ...] pulse counts
+                arrays = json.loads('[' + vals[1] + ']')
+                collections.append([float(arr[0]) for arr in arrays])
 
         for i in range(0, len(collections)):
             widths.append(interval * 0.5)
@@ -386,6 +402,8 @@ def run():
                 ax10.hlines(y=config.get_desired_frequency(), xmin=1, xmax=len(lines), color="violet", linestyles="dotted")
             ax10.set(xlabel='Generation', ylabel='Pulses', title='Pulse Violin Plots')
             ax10.set(xlabel='Generation', ylabel='Pulses')
+            if LOG_SCALE_PULSES:
+                ax10.set_yscale('symlog')
 
     bar = None
     def anim_heatmap(i):
@@ -403,17 +421,28 @@ def run():
         for line in lines:
             if len(line) > 1:
                 vals = line.split(':')
-                pts = vals[1].split(',')
-                for pt in pts:
-                    gens.append(int(vals[0]))
-                    if config.is_pulse_func():
-                        # TODO only using first datapoint
-                        collections.append(json.loads(pt)[0])
-                    else:
+                if config.is_pulse_func():
+                    # parse as array of arrays; each circuit has [dev1, dev2, ...] pulse counts
+                    arrays = json.loads('[' + vals[1] + ']')
+                    for arr in arrays:
+                        gens.append(int(vals[0]))
+                        collections.append(arr[0])
+                else:
+                    pts = vals[1].split(',')
+                    for pt in pts:
+                        gens.append(int(vals[0]))
                         collections.append(float(pt)*3.3/715)
 
         ax8.clear()
-        hist = ax8.hist2d(gens,collections,bins=HEATMAP_BINS,cmap=heatmap_color)
+        num_gens = max(gens) - min(gens) + 1 if gens else HEATMAP_BINS
+        if LOG_SCALE_PULSES and config.is_pulse_func() and len(collections) > 0:
+            # use log-spaced bins so detail is visible across orders of magnitude
+            max_val = max(max(collections), 1)
+            y_bins = np.concatenate(([0], np.logspace(0, np.log10(max_val), HEATMAP_BINS)))
+            hist = ax8.hist2d(gens, collections, bins=[num_gens, y_bins], cmap=heatmap_color)
+            ax8.set_yscale('symlog')
+        else:
+            hist = ax8.hist2d(gens,collections,bins=[num_gens, HEATMAP_BINS],cmap=heatmap_color)
 
         if config.is_pulse_func():
             if not bar:
@@ -550,8 +579,34 @@ def run():
 
     plt.subplots_adjust(hspace=0.50)
     fig.tight_layout(pad=5.0)
+
+    # tile all open figures in an even grid filling the screen
+    try:
+        all_figs = [plt.figure(n) for n in plt.get_fignums()]
+        n = len(all_figs)
+        if n > 0:
+            root = all_figs[0].canvas.manager.window.winfo_toplevel()
+            screen_w = root.winfo_screenwidth()
+            screen_h = root.winfo_screenheight()
+            # choose grid: pick cols so rows x cols >= n with minimal empty cells
+            cols = math.ceil(math.sqrt(n))
+            rows = math.ceil(n / cols)
+            cell_w = screen_w // cols
+            cell_h = screen_h // rows
+            for i, f in enumerate(all_figs):
+                row = i // cols
+                col = i % cols
+                f.canvas.manager.window.wm_geometry(f'{cell_w}x{cell_h}+{col * cell_w}+{row * cell_h}')
+    except Exception:
+        pass  # non-TkAgg backends or other issues — fall back to default placement
+
+    def _shutdown(sig, frame):
+        plt.close('all')
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, _shutdown)
+
     plt.show(block=(not formal))
-    #plt.show(block=True)
 
 # only run if this is the main method.
 if (__name__ == "__main__"):
