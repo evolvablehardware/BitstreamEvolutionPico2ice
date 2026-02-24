@@ -31,6 +31,7 @@ from Config import Config
 from ascTemplateBuilder import ascTemplateBuilder
 from utilities import wipe_folder
 from datetime import datetime
+import random
 
 from icefarm.client.drivers import PulseCountClient
 
@@ -102,7 +103,8 @@ class CircuitPopulation:
         if config.get_simulation_mode() == "REMOTE":
             url = config.get_icefarm_url()
             # TODO generate unique client name / stop procrastinating on auth
-            self._client = PulseCountClient(url, "bitstream evolution", logger)
+            name = f"bitstream-evolution-{random.random()}"
+            self._client = PulseCountClient(url, name, logger)
             logger.info(f"Reserving devices...")
             self._client.reserve(int(config.get_icefarm_devices()))
             logger.info(f"Reserved devices: {self._client.getSerials()}")
