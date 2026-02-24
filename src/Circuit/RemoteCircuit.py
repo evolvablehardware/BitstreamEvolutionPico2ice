@@ -18,29 +18,34 @@ class RemoteCircuit(FileBasedCircuit):
     def collect_data_once(self):
         # data is appended during fitness calculation
         # this allows all the circuits to be sent at once
-        return
+        self._client.evaluate(self._serials, self)
 
     def _get_measurement(self): ...
         # makes abc happy
 
-    def upload(self):
+    def clear_data(self):
+        super().clear_data()
         self._extra_data = {}
-        self.clear_data()
+
+    def upload(self):
         self._compile()
-        self._client.evaluate(self._serials, self)
 
     # called by randomize until
     def evaluate_once(self):
         self.upload()
+        self.collect_data_once()
 
     def _calculate_fitness(self):
         if not self._data:
+            self._data = []
             results = self._client.get_result(self)
             # TODO add an additional log file that maps serials to pulses
             if self._serials:
-                self._data = [int(results[serial]) for serial in self._serials]
+                for serial in self._serials:
+                    self._data.extend(int(point) for point in results[serial])
             else:
-                self._data = [int(result) for result in results.values()]
+                for serial in results.keys():
+                    self._data.extend(int(point) for point in results[serial])
 
             self._extra_data["pulses"] = self._data
 
@@ -97,7 +102,10 @@ class EvolutionClient:
                 if fpath not in self._result_map:
                     self._result_map[fpath] = {}
 
-                self._result_map[fpath][serial] = float(result)
+                if serial not in self._result_map[fpath]:
+                    self._result_map[fpath][serial] = []
+
+                self._result_map[fpath][serial].append(float(result))
                 self._logger.debug(f"Received value for file {fpath}: {result}")
 
             self._logger.info("Remote evaluation complete.")

@@ -520,10 +520,17 @@ class CircuitPopulation:
             start = time()
 
             for circuit in self._circuits:
-                if isinstance(circuit, FileBasedCircuit):
-                    circuit.upload()
-                for i in range(self.__config.get_num_samples()):
-                    circuit.collect_data_once()
+                circuit.clear_data()
+
+            for _ in range(self.__config.get_num_passes()):
+                for circuit in self._circuits:
+                    if isinstance(circuit, FileBasedCircuit):
+                        circuit.upload()
+
+                    # TODO imo we can remove this now that we're using picos since the
+                    # upload happens essentially instantly compared to the evaluation time
+                    for i in range(self.__config.get_num_samples()):
+                        circuit.collect_data_once()
 
             for circuit in self._circuits:
                 circuit.calculate_fitness()
@@ -596,7 +603,6 @@ class CircuitPopulation:
 
             new_circuits = self.__run_selection(self._circuits)
             self._circuits = SortedKeyList(new_circuits, key=lambda ckt: -1 * ckt.get_fitness())
-            protected_elites = self.__run_selection.protected
 
             self.__write_to_livedata()
             self.__next_epoch()

@@ -62,7 +62,7 @@ class PulseCountFitnessFunction(FitnessFunction):
 
         # might be best to go back to original method but cap effectiveness at % of distance from target
 
-        self._extra_data['pulses'] = data[0]
+        self._extra_data['pulses'] = data
         # return reduce(mul, (Decimal(self.__calculate_pulse_fitness(float(point))) for point in data), 1) * multiplier
 
         # av = sum(data) / len(data)
