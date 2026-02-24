@@ -396,6 +396,9 @@ class Config:
 			exit()
 		return popSize
 
+	def get_fitness_calculation(self):
+		return self.get_ga_parameters("FITNESS_METRIC")
+
 	def get_mutation_probability(self):
 		prob = float(self.get_ga_parameters("MUTATION_PROBABILITY"))
 		if prob < 0.0:
