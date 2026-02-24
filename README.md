@@ -178,12 +178,11 @@ sudo usermod -aG docker $USERNAME
 #new shell or log out and then login
 newgrp docker
 ```
-Update [farmconfig.ini](farmconfig.ini) to the desired configuration. Values not provided will be set to the default. Create the image by running in the project directory:
+Update [farmconfig.ini](farmconfig.ini) to the desired configuration. This is the configuration that will be used. Values not provided will be set to the default. Create the image by running in the project directory:
 ```
 docker build -t bitstreamevolution .
 ```
-Note that after changing configuration values, the image will have to be rebuilt. The same is true for the ```seed-hardware``` file. Currently, only ```data/seed-hardware.asc``` is copied into the container,
-so this must be the seed file configuration parameter (you may replace the file with another).
+Note that after changing configuration values, the image will have to be rebuilt. The same is true for the provided seed file. file.
 Next, start the container:
 ```
 docker run -it --network=host bitstreamevolution .venv/bin/python3 src/evolve.py -c farmconfig.ini -d desc
