@@ -163,7 +163,7 @@ targets are used to get rid of other automatically generated files such
 as the workspace defaults and the tools. In particular, cleaning the
 latter is not recommended as this makes it more difficult to uninstall
 the project Icestorm tools. So far, the primary use of these targets has
-been for testing and maintainence of the project.
+been for testing and maintenance of the project.
 
 |Target|Actions|
 |------|-------|
@@ -199,14 +199,6 @@ installation and how to address them. If the following steps do not
 address your issue or you encounter other problems, please file an issue
 [here](https://github.com/evolvablehardware/BitstreamEvolution/issues) so that
 we can look into it.
-
-#### USB Permission denied
-If you get permission denied related to a USB and you have updated
-the rules, try:
-  * log out of your current session or reboot as the added rules may not have taken effect
-  * run `ls -l /dev` and look at `ttyUSB0` and `ttyUSB1`. Ensure that
-    the user you are running the program with is a member of the group
-    that can access these devices (do not run the program as root!)
 
 ## Usage
 This section describes how to run the configure and run
@@ -364,14 +356,6 @@ BitstreamEvolution will continue to run until one of the following happens:
   * It has run through the specified number of generations
   * It has met the specified conditions
   * It is terminated in some other form (e.g. ctrl-c, shutdown, etc.)
-
-### Troubleshooting
-#### Program hangs during FPGA programming
-BitstreamEvolution may hang indefinitely while attempting to program the
-FPGA with `iceprog`. This often happens if the circuit upload process was
-quit or interrupted for any reason.
-
-A simple fix for this is to disconnect and reconnect the FPGA.
 
 ### Running Test Cases
 Test case files are simple to run using the pytest framework.
