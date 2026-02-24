@@ -409,8 +409,49 @@ docker run -it --network=host bitstreamevolution .venv/bin/python3 src/evolve.py
 ```
 You may replace desc with an accurate experiment description. Note that changing the farmconfig.ini parameter will only work if that file has been included in the docker image. The ```-it``` flag streams output to the terminal, but closing it will end the experiment. This flag can be omitted if desired. If you choose to omit this flag, you can obtain the container logs by first getting the name of the container with ```docker container ls``` and then running ```docker logs <container name>```.
 
-Since BitstreamEvolution is running in a container, the live plots will not be available. In order to view a snapshot of the graphs, start by obtaining the container name with ```docker container ls```. Then, run ```docker container <container name>:/usr/local/app/workspace workspace``` in the project directory. This will copy the containers workspace into that of the local repository, **overwriting the existing one**. The plots can then be started manually:
-```python3 src/PlotEvolutionLive.py```
+#### Viewing live plots from a container
+
+Since the container has no display server, matplotlib cannot open windows directly. There are two ways to view plots while an experiment is running: a **live volume mount** (recommended) or a **manual snapshot copy**.
+
+##### Live volume mount (recommended)
+
+This approach mounts the container's `workspace/` directory to your host so that log files appear in real time, allowing `PlotEvolutionLive.py` to update continuously on your machine.
+
+**1. Install the plotting dependencies on your host.** Only `matplotlib` and `numpy` are required (the other project dependencies are not needed):
+```bash
+pip install matplotlib numpy
+```
+
+**2. Start the container with a volume mount from the project directory.** Add `-v ./workspace:/usr/local/app/workspace` to your `docker run` command. The left side (`./workspace`) is a path on your host relative to where you run the command, and the right side (`/usr/local/app/workspace`) is the path inside the container. The `--user` flag ensures files are created with your host user's ownership (without it, Docker runs as root and the plotting script will get permission errors writing to `workspace/plots/`). Run this from the project root so that the log files appear in your local `workspace/` folder:
+```bash
+docker run -it --network=host --user $(id -u):$(id -g) \
+  -v ./workspace:/usr/local/app/workspace \
+  -v ./farmconfig.ini:/usr/local/app/farmconfig.ini \
+  bitstreamevolution .venv/bin/python3 src/evolve.py -c farmconfig.ini -d desc
+```
+The first `-v` flag mounts the workspace so log files appear on your host in real time. The second `-v` flag mounts your local `farmconfig.ini` into the container, so configuration changes take effect immediately without rebuilding the Docker image. As the experiment runs, the `workspace/*.log` files will appear and update on your host filesystem.
+
+**3. In a separate terminal, start the plotting script on your host:**
+```bash
+python3 src/PlotEvolutionLive.py
+```
+The plots will read from `workspace/` and auto-refresh every few seconds as new generations complete. You can leave this running for the duration of the experiment.
+
+##### Manual snapshot copy (fallback)
+
+If you cannot install Python dependencies on the host, you can copy the workspace out of a running container for a one-time snapshot. First, find the container name:
+```bash
+docker container ls
+```
+Then copy the workspace directory. **This will overwrite any existing local `workspace/` folder:**
+```bash
+docker cp <container name>:/usr/local/app/workspace workspace
+```
+Start the plotting script to view the snapshot:
+```bash
+python3 src/PlotEvolutionLive.py
+```
+Re-run the `docker cp` command whenever you want an updated snapshot.
 
 ### Issues with setup:
 This section describes some issues that can be encountered during
@@ -531,6 +572,8 @@ run, but should result in more stable circuits | 1+ | 1-5 |
 | Log Level | The amount of logs to show; higher log level means more detailed logs are shown | 1-4 | 2 |
 | Save Log | Wether or not to save the logging output in a file | true, false | true |
 | Save Plots | Wether or not to save the plots as images throughout evolution | true, false | true |
+| Log Scale Pulses | Use symmetric log scale for pulse count y-axes | true, false | false |
+| Log Scale Fitness | Use symmetric log scale for the fitness y-axis, with a reference line at fitness=1.0 | true, false | false |
 | Backup Workspace | Wether or not to save the workspace directory in a backup folder after evolution | true, false | true |
 | Log File | The file to save log output in | Any file path | ./workspace/log |
 | Plots Directory | The directory to put the plots in | Any directory | ./workspace/plots |
