@@ -1,6 +1,12 @@
 # BitstreamEvolution
 An Open Source Toolchain for the artificial evolution of FPGA bitstreams using genetic algorithms.
 
+# Overview
+- Obtain [pico2ice](https://pico2-ice.tinyvision.ai/) development boards
+- Set up [iCEFARM](https://github.com/evolvablehardware/iCEFARM/tree/docs?tab=readme-ov-file#icefarm-setup) or obtain access to an existing server
+- Set up [BitstreamEvolution](#setup)
+- Run [BitstreamEvolution](#usage)
+
 ## Temporary iCEFARM Notes
 iCEFARM will need to be setup and running before this.
 BitstreamEvolution can be run through docker, see [setup](#docker).
