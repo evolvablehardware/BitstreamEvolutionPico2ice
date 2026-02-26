@@ -84,7 +84,7 @@ class CircuitPopulation:
     updating and recording information about the population throughout evolution,
     and deciding when to stop evolution"""
     # SECTION Initialization functions
-    def __init__(self, mcu, config: Config, logger):
+    def __init__(self, mcu, config: Config, logger, clear_workers=False):
         """
         Generates the initial population of circuits with the following arguments
 
@@ -96,6 +96,8 @@ class CircuitPopulation:
             Object containing an instance of Config class
         logger : Logger
             Object containing an instance of Logger class
+        clear_workers : bool
+            If True, clear stale worker records from iCEFARM before reserving
         """
         self.__config = config
         self.__microcontroller = mcu
@@ -105,8 +107,13 @@ class CircuitPopulation:
             # TODO generate unique client name / stop procrastinating on auth
             name = f"bitstream-evolution-{random.random()}"
             self._client = PulseCountClient(url, name, logger)
+            if clear_workers:
+                logger.info("Clearing stale workers...")
+                self._client.clearWorkers()
+                logger.info("Cleared. Waiting for workers to re-register...")
             logger.info(f"Reserving devices...")
-            self._client.reserve(int(config.get_icefarm_devices()))
+            kind = "variance" if config.get_fitness_func() == "VARIANCE" else "pulsecount"
+            self._client.reserve(int(config.get_icefarm_devices()), kind=kind, wait_for_available=clear_workers)
             logger.info(f"Reserved devices: {self._client.getSerials()}")
             self._evo_client = EvolutionClient(self._client, logger)
             atexit.register(self._client.endAll)

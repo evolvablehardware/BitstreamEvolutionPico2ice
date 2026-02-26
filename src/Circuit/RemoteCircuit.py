@@ -42,10 +42,10 @@ class RemoteCircuit(FileBasedCircuit):
             # TODO add an additional log file that maps serials to pulses
             if self._serials:
                 for serial in self._serials:
-                    self._data.extend(int(point) for point in results[serial])
+                    self._data.extend(float(point) for point in results[serial])
             else:
                 for serial in results.keys():
-                    self._data.extend(int(point) for point in results[serial])
+                    self._data.extend(float(point) for point in results[serial])
 
             self._extra_data["pulses"] = self._data
 
@@ -53,6 +53,12 @@ class RemoteCircuit(FileBasedCircuit):
 
     def get_extra_data(self, key):
         return self._extra_data[key]
+
+    def get_waveform(self):
+        return [str(x) for x in self._data] if self._data else []
+
+    def get_waveform_td(self):
+        return [str(x) for x in self._data] if self._data else []
 
     def _get_all_live_reported_value(self):
         return self._extra_data["pulses"]

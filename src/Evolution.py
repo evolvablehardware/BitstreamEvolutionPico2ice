@@ -21,7 +21,8 @@ class Evolution:
             base_config_path:str,
             built_config_path:str,
             output_directory:str=None,
-            print_action_only:bool=False) -> None:
+            print_action_only:bool=False,
+            clear_workers:bool=False) -> None:
 
         if (print_action_only):
             print('Running evolve.py in print only mode:')
@@ -65,7 +66,7 @@ class Evolution:
         config.validate_all()
         self.validate_arguments(output_directory)
         mcu = Microcontroller(config, logger)
-        population = CircuitPopulation(mcu, config, logger)
+        population = CircuitPopulation(mcu, config, logger, clear_workers=clear_workers)
 
         self.output_directory = output_directory
         self.config = config
