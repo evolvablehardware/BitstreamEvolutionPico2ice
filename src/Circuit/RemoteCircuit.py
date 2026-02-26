@@ -1,8 +1,9 @@
 import itertools
 from logging import Logger
 from typing import List, Dict, Any
-from icefarm.client.drivers import PulseCountClient
+from icefarm.client.drivers import PulseCountClient, VarMaxClient
 from icefarm.client.lib.pulsecount import PulseCountEvaluation
+from icefarm.client.lib.varmax import VarMaxEvaluation
 from Circuit.FileBasedCircuit import FileBasedCircuit
 from Circuit import FitnessFunction
 
@@ -65,9 +66,9 @@ class RemoteCircuit(FileBasedCircuit):
 
 class EvolutionClient:
     """
-    Wrapper around icefarm PulseCountClient to allow RemoteCircuit api to be the same as other circuits.
+    Wrapper around icefarm client (PulseCountClient or VarMaxClient) to allow RemoteCircuit api to be the same as other circuits.
     """
-    def __init__(self, client: PulseCountClient, logger: Logger):
+    def __init__(self, client: PulseCountClient | VarMaxClient, logger: Logger):
         self._client = client
         self._command_queue = []
         self._result_map = {}
@@ -87,7 +88,9 @@ class EvolutionClient:
         The first time this is called, evaluations are sent to iCEFARM.
         """
         if not self._result_map:
-            assigned_evaluations = [PulseCountEvaluation(serials, filepath) for serials, filepath in self._command_queue if serials]
+            EvalClass = VarMaxEvaluation if isinstance(self._client, VarMaxClient) else PulseCountEvaluation
+
+            assigned_evaluations = [EvalClass(serials, filepath) for serials, filepath in self._command_queue if serials]
             unassigned_evaluations = (filepath for serials, filepath in self._command_queue if not serials)
 
             # TODO
@@ -99,7 +102,7 @@ class EvolutionClient:
 
             for batch in batches:
                 for serial, fpath in zip(self._client.getSerials(), batch):
-                    assigned_evaluations.append(PulseCountEvaluation([serial], fpath))
+                    assigned_evaluations.append(EvalClass([serial], fpath))
 
             self._logger.info("Sending circuits for remote evaluation...")
 

@@ -33,7 +33,7 @@ from utilities import wipe_folder
 from datetime import datetime
 import random
 
-from icefarm.client.drivers import PulseCountClient
+from icefarm.client.drivers import PulseCountClient, VarMaxClient
 
 RANDOMIZE_UNTIL_NOT_SET_ERR_MSG = '''\
 RANDOMIZE_UNTIL not set in config.ini, continuing without randomization'''
@@ -106,14 +106,16 @@ class CircuitPopulation:
             url = config.get_icefarm_url()
             # TODO generate unique client name / stop procrastinating on auth
             name = f"bitstream-evolution-{random.random()}"
-            self._client = PulseCountClient(url, name, logger)
+            if config.get_fitness_func() == "VARIANCE":
+                self._client = VarMaxClient(url, name, logger)
+            else:
+                self._client = PulseCountClient(url, name, logger)
             if clear_workers:
                 logger.info("Clearing stale workers...")
                 self._client.clearWorkers()
                 logger.info("Cleared. Waiting for workers to re-register...")
             logger.info(f"Reserving devices...")
-            kind = "variance" if config.get_fitness_func() == "VARIANCE" else "pulsecount"
-            self._client.reserve(int(config.get_icefarm_devices()), kind=kind, wait_for_available=clear_workers)
+            self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers)
             logger.info(f"Reserved devices: {self._client.getSerials()}")
             self._evo_client = EvolutionClient(self._client, logger)
             atexit.register(self._client.endAll)
