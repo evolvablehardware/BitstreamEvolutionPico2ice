@@ -436,28 +436,39 @@ class CircuitPopulation:
         called by populate(self)
         Should only be used with variance maximization fitness function
         """
-        # Variance threshold is the desired variance
         bestVariance = 0
         variance = 0
         while bestVariance < self.__config.get_randomize_threshold():
             self.__logger.event(3, "Randomizing to generate variance")
+
+            # Phase 1: Randomize and compile all circuits
             for circuit in self._circuits:
+                circuit.clear_data()
                 circuit.randomize_bitstream()
+
+            # Phase 2: Queue all evaluations (batched across devices)
+            for circuit in self._circuits:
                 circuit.evaluate_once()
+
+            # Phase 3: Calculate fitness (first call triggers batch send to all devices)
+            for circuit in self._circuits:
+                circuit.calculate_fitness()
+
+            # Phase 4: Check results
+            for circuit in self._circuits:
                 variance = circuit.get_fitness()
-                self.__logger.info("Variance generated:", variance)
+                self.__logger.info(f"Variance generated: {variance}")
 
                 with open("workspace/randomizationdata.log", "a") as liveFile:
                     liveFile.write(str(variance) + "\n")
 
                 if variance > bestVariance:
-                    self.__logger.info("New best variance: ", variance)
+                    self.__logger.info(f"New best variance: {variance}")
                     bestVariance = variance
                     self.__overall_best_circuit_info = CircuitInfo(str(circuit), variance)
                     copyfile(circuit.get_hardware_file_path(), self.__config.get_best_file())
-                    break
 
-        self.__logger.info("Variance generated! Exiting randomization. Fitness:", variance)
+        self.__logger.info(f"Variance generated! Exiting randomization. Fitness: {bestVariance}")
 
     def __next_epoch(self):
         """
