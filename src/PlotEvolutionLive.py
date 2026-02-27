@@ -197,33 +197,39 @@ def run():
     def animate_waveform(i):
         graph_data = open('workspace/waveformlivedata.log','r').read()
         lines = graph_data.split('\n')
-        pulse_trigger = [341*3.3/715]*500
+        # 12-bit ADC on pico2-ice RP2350 (0-4095 maps to 0-3.3V)
+        ADC_MAX = 4095
         xs = []
         ys = []
         for line in lines:
             if len(line) > 1:
                 x, y = line.split(',')
                 xs.append(int(x))
-                ys.append(float(y) * 3.3/715)
+                ys.append(float(y) * 3.3 / ADC_MAX)
         ax4.clear()
         if config.get_fitness_func() == "TONE_DISCRIMINATOR":
             ax4.set_xlim([0, 1000])
         else:
             ax4.set_xlim([0, 500])
-        #ax4.set_ylim([0, 750])
         ax4.set_ylim([-0.2, 3.5])
-        ax4.plot(pulse_trigger, "r--")
+        # pulse trigger line only relevant for pulse-based fitness functions
+        if config.is_pulse_func():
+            pulse_trigger = [341 * 3.3 / ADC_MAX] * 500
+            ax4.plot(pulse_trigger, "r--")
         ax4.plot(xs, ys, color="blue")
 
         if formal:
-            ax4.legend(['Trigger Voltage', 'Circuit Voltage'], bbox_to_anchor=(1.15, 0.5), loc="lower center", borderaxespad=0)
+            if config.is_pulse_func():
+                ax4.legend(['Trigger Voltage', 'Circuit Voltage'], bbox_to_anchor=(1.15, 0.5), loc="lower center", borderaxespad=0)
+            else:
+                ax4.legend(['Circuit Voltage'], bbox_to_anchor=(1.15, 0.5), loc="lower center", borderaxespad=0)
 
         ax4.set(xlabel='Time (μs)', ylabel='Voltage (V)', title='Current Hardware Waveform')
 
     def animate_state(i):
         graph_data = open('workspace/statelivedata.log','r').read()
         lines = graph_data.split('\n')
-        pulse_trigger = [341*3.3/715]*500
+        ADC_MAX = 4095
         xs = []
         ys = []
         for line in lines:
@@ -233,13 +239,17 @@ def run():
                 ys.append(float(y))
         ax5.clear()
         ax5.set_xlim([0, 1000])
-        #ax4.set_ylim([0, 750])
         ax5.set_ylim([-0.1, 1.1])
-        ax5.plot(pulse_trigger, "r--")
+        if config.is_pulse_func():
+            pulse_trigger = [341 * 3.3 / ADC_MAX] * 500
+            ax5.plot(pulse_trigger, "r--")
         ax5.plot(xs, ys, color="blue")
 
         if formal:
-            ax5.legend(['Trigger Voltage', 'Circuit Voltage'], bbox_to_anchor=(1.15, 0.5), loc="lower center", borderaxespad=0)
+            if config.is_pulse_func():
+                ax5.legend(['Trigger Voltage', 'Circuit Voltage'], bbox_to_anchor=(1.15, 0.5), loc="lower center", borderaxespad=0)
+            else:
+                ax5.legend(['Circuit Voltage'], bbox_to_anchor=(1.15, 0.5), loc="lower center", borderaxespad=0)
 
         ax5.set(xlabel='Time (μs)', ylabel='Voltage (V)', title='Current State')
 

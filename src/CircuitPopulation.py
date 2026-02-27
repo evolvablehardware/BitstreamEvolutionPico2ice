@@ -84,7 +84,7 @@ class CircuitPopulation:
     updating and recording information about the population throughout evolution,
     and deciding when to stop evolution"""
     # SECTION Initialization functions
-    def __init__(self, mcu, config: Config, logger, clear_workers=False):
+    def __init__(self, mcu, config: Config, logger, clear_workers=False, speedtest=False):
         """
         Generates the initial population of circuits with the following arguments
 
@@ -98,9 +98,12 @@ class CircuitPopulation:
             Object containing an instance of Logger class
         clear_workers : bool
             If True, clear stale worker records from iCEFARM before reserving
+        speedtest : bool
+            If True, record per-generation timing data to workspace/speedtest.csv
         """
         self.__config = config
         self.__microcontroller = mcu
+        self.__speedtest = speedtest
 
         if config.get_simulation_mode() == "REMOTE":
             url = config.get_icefarm_url()
@@ -114,8 +117,12 @@ class CircuitPopulation:
                 logger.info("Clearing stale workers...")
                 self._client.clearWorkers()
                 logger.info("Cleared. Waiting for workers to re-register...")
+            reserve_args = {}
+            if config.get_icefarm_send_waveform():
+                reserve_args["send_waveform"] = True
+                logger.info("Waveform data transfer enabled")
             logger.info(f"Reserving devices...")
-            self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers)
+            self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers, args=reserve_args)
             logger.info(f"Reserved devices: {self._client.getSerials()}")
             self._evo_client = EvolutionClient(self._client, logger)
             atexit.register(self._client.endAll)
@@ -525,6 +532,12 @@ class CircuitPopulation:
         self.__best_epoch = 0
         self.__next_epoch()
 
+        if self.__speedtest:
+            send_wf = self.__config.get_icefarm_send_waveform() if self.__config.get_simulation_mode() == "REMOTE" else False
+            with open("workspace/speedtest.csv", "w") as f:
+                f.write(f"# send_waveform={send_wf}, population={self.__config.get_population_size()}, devices={self.__config.get_icefarm_devices() if self.__config.get_simulation_mode() == 'REMOTE' else 'local'}\n")
+                f.write("generation,epoch_time_s,best_fitness,avg_fitness\n")
+
         while(self.__should_continue_evo()): #self.get_current_epoch() < self.__config.get_n_generations()):
 
             #self.__logger.event(3, "Starting evo cycle", self.get_current_epoch(
@@ -586,6 +599,12 @@ class CircuitPopulation:
             epoch_time = time() - start
             self._circuits = reevaulated_circuits
 
+            if self.__speedtest:
+                fitness_sum = sum(c.get_fitness() for c in self._circuits)
+                avg_fitness = fitness_sum / len(self._circuits)
+                with open("workspace/speedtest.csv", "a") as f:
+                    f.write(f"{self.get_current_epoch()},{epoch_time:.4f},{self._circuits[0].get_fitness():.6f},{avg_fitness:.6f}\n")
+
             # If one of the new Circuits has a higher fitness than our
             # recorded best, make it the recorded best.
             best_circuit_info = self.get_overall_best_circuit_info()
@@ -618,6 +637,13 @@ class CircuitPopulation:
                         for points in self._circuits[0].get_state_td():
                             stateLive.write(str(i) + ", " + str(points) + "\n")
                             i += 1
+
+                # Write waveform data for variance experiments (used by live waveform plot)
+                waveform = self._circuits[0].get_waveform()
+                if waveform and self.__config.get_fitness_func() == "VARIANCE":
+                    with open("workspace/waveformlivedata.log", "w+") as waveLive:
+                        for i, point in enumerate(waveform, 1):
+                            waveLive.write(f"{i}, {point}\n")
                 self.__logger.event(2, "New best found")
 
             self.__logger.log_generation(self, epoch_time)

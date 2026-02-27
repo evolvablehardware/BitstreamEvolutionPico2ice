@@ -14,6 +14,7 @@ class RemoteCircuit(FileBasedCircuit):
         self._serials = serials
         self._fitnessfunc = fitnessfunc
         self._extra_data = {}
+        self._waveform_samples = None
         self._fitnessfunc.attach(filename, None, config, self._extra_data)
 
     def collect_data_once(self):
@@ -27,6 +28,7 @@ class RemoteCircuit(FileBasedCircuit):
     def clear_data(self):
         super().clear_data()
         self._extra_data = {}
+        self._waveform_samples = None
 
     def upload(self):
         self._compile()
@@ -40,6 +42,7 @@ class RemoteCircuit(FileBasedCircuit):
         if not self._data:
             self._data = []
             results = self._client.get_result(self)
+            waveform = self._client.get_waveform(self)
             # TODO add an additional log file that maps serials to pulses
             if self._serials:
                 for serial in self._serials:
@@ -50,12 +53,17 @@ class RemoteCircuit(FileBasedCircuit):
 
             self._extra_data["pulses"] = self._data
 
+            if waveform:
+                self._waveform_samples = waveform
+
         return self._fitnessfunc.calculate_fitness(self._data)
 
     def get_extra_data(self, key):
         return self._extra_data[key]
 
     def get_waveform(self):
+        if self._waveform_samples:
+            return [str(x) for x in self._waveform_samples]
         return [str(x) for x in self._data] if self._data else []
 
     def get_waveform_td(self):
@@ -72,6 +80,7 @@ class EvolutionClient:
         self._client = client
         self._command_queue = []
         self._result_map = {}
+        self._waveform_map = {}
         self._logger = logger
 
     def evaluate(self, serials: List[str] | None, circuit: FileBasedCircuit):
@@ -80,6 +89,7 @@ class EvolutionClient:
         If no serial is given, one is assigned based on the optimal evaluation speed.
         """
         self._result_map = {}
+        self._waveform_map = {}
         self._command_queue.append((serials, circuit._bitstream_filepath))
 
     def get_result(self, circuit: FileBasedCircuit) -> Dict[str, Any]:
@@ -114,10 +124,21 @@ class EvolutionClient:
                 if serial not in self._result_map[fpath]:
                     self._result_map[fpath][serial] = []
 
-                self._result_map[fpath][serial].append(float(result))
+                if isinstance(result, tuple):
+                    fitness, samples = result
+                    self._result_map[fpath][serial].append(float(fitness))
+                    if samples:
+                        self._waveform_map[fpath] = samples
+                else:
+                    self._result_map[fpath][serial].append(float(result))
+
                 self._logger.debug(f"Received value for file {fpath}: {result}")
 
             self._logger.info("Remote evaluation complete.")
             self._command_queue = []
 
         return self._result_map[circuit._bitstream_filepath]
+
+    def get_waveform(self, circuit: FileBasedCircuit) -> list | None:
+        """Returns raw ADC waveform samples for a circuit, or None if not available."""
+        return self._waveform_map.get(circuit._bitstream_filepath)
