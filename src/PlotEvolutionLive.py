@@ -211,7 +211,8 @@ def run():
             ax4.set_xlim([0, 1000])
         else:
             ax4.set_xlim([0, 500])
-        ax4.set_ylim([-0.2, 3.5])
+        if not config.get_autoscale_waveform():
+            ax4.set_ylim([-0.2, 3.5])
         # pulse trigger line only relevant for pulse-based fitness functions
         if config.is_pulse_func():
             pulse_trigger = [341 * 3.3 / ADC_MAX] * 500

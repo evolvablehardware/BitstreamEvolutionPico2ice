@@ -805,6 +805,13 @@ class Config:
 		except NoOptionError:
 			return False
 
+	def get_autoscale_waveform(self):
+		try:
+			value = self.get_plotting_parameters("autoscale_waveform")
+			return value == "true" or value == "True"
+		except NoOptionError:
+			return False
+
 	def check_valid_value(self, param_name, user_input, allowed_values):
 		if not user_input in allowed_values:
 			self.__logger.error("Invalid " + param_name + " '" + str(user_input) + "'. Valid parameters are: " +

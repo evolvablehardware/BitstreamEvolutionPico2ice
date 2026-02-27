@@ -638,13 +638,15 @@ class CircuitPopulation:
                             stateLive.write(str(i) + ", " + str(points) + "\n")
                             i += 1
 
-                # Write waveform data for variance experiments (used by live waveform plot)
-                waveform = self._circuits[0].get_waveform()
-                if waveform and self.__config.get_fitness_func() == "VARIANCE":
-                    with open("workspace/waveformlivedata.log", "w+") as waveLive:
-                        for i, point in enumerate(waveform, 1):
-                            waveLive.write(f"{i}, {point}\n")
                 self.__logger.event(2, "New best found")
+
+            # Write waveform data for variance experiments (used by live waveform plot)
+            # Written every generation so the plot always shows the current best's waveform
+            waveform = self._circuits[0].get_waveform()
+            if waveform and self.__config.get_fitness_func() == "VARIANCE":
+                with open("workspace/waveformlivedata.log", "w+") as waveLive:
+                    for i, point in enumerate(waveform, 1):
+                        waveLive.write(f"{i}, {point}\n")
 
             self.__logger.log_generation(self, epoch_time)
             # The circuits that are protected from randomization
