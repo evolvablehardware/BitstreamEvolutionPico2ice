@@ -828,6 +828,9 @@ class Config:
 	def get_icefarm_url(self):
 		return self.__config_parser.get("ICEFARM PARAMETERS", "URL")
 
+	def get_icefarm_buffer_amount(self) -> int:
+		return int(self.__config_parser.get("ICEFARM PARAMETERS", "BUFFER_CIRCUIT_AMOUNT"))
+
 	def get_icefarm_send_waveform(self):
 		try:
 			input = self.__config_parser.get("ICEFARM PARAMETERS", "SEND_WAVEFORM")

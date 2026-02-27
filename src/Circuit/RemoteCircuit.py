@@ -76,12 +76,13 @@ class EvolutionClient:
     """
     Wrapper around icefarm client (PulseCountClient or VarMaxClient) to allow RemoteCircuit api to be the same as other circuits.
     """
-    def __init__(self, client: PulseCountClient | VarMaxClient, logger: Logger):
+    def __init__(self, client: PulseCountClient | VarMaxClient, logger: Logger, batch_size: int):
         self._client = client
         self._command_queue = []
         self._result_map = {}
         self._waveform_map = {}
         self._logger = logger
+        self.batch_size = batch_size
 
     def evaluate(self, serials: List[str] | None, circuit: FileBasedCircuit):
         """
@@ -116,7 +117,7 @@ class EvolutionClient:
 
             self._logger.info("Sending circuits for remote evaluation...")
 
-            for serial, evaluation, result in self._client.evaluateEvaluations(assigned_evaluations):
+            for serial, evaluation, result in self._client.evaluateEvaluations(assigned_evaluations, batch_size=self.batch_size):
                 fpath = evaluation.filepath
                 if fpath not in self._result_map:
                     self._result_map[fpath] = {}

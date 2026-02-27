@@ -124,7 +124,7 @@ class CircuitPopulation:
             logger.info(f"Reserving devices...")
             self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers, args=reserve_args)
             logger.info(f"Reserved devices: {self._client.getSerials()}")
-            self._evo_client = EvolutionClient(self._client, logger)
+            self._evo_client = EvolutionClient(self._client, logger, config.get_icefarm_buffer_amount())
             atexit.register(self._client.endAll)
         else:
             self._client = None
