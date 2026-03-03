@@ -125,7 +125,7 @@ class EvolutionClient:
                 if serial not in self._result_map[fpath]:
                     self._result_map[fpath][serial] = []
 
-                if isinstance(result, tuple):
+                if isinstance(result, list) or isinstance(result, tuple):
                     fitness, samples = result
                     self._result_map[fpath][serial].append(float(fitness))
                     if samples:

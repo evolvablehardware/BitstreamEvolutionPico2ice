@@ -110,7 +110,9 @@ class CircuitPopulation:
             # TODO generate unique client name / stop procrastinating on auth
             name = f"bitstream-evolution-{random.random()}"
             if config.get_fitness_func() == "VARIANCE":
-                self._client = VarMaxClient(url, name, logger)
+                if config.get_icefarm_send_waveform():
+                    logger.info("Waveform data transfer enabled")
+                self._client = VarMaxClient(url, name, logger, send_waveform=config.get_icefarm_send_waveform())
             else:
                 self._client = PulseCountClient(url, name, logger)
             if clear_workers:
@@ -118,11 +120,8 @@ class CircuitPopulation:
                 self._client.clearWorkers()
                 logger.info("Cleared. Waiting for workers to re-register...")
             reserve_args = {}
-            if config.get_icefarm_send_waveform():
-                reserve_args["send_waveform"] = True
-                logger.info("Waveform data transfer enabled")
             logger.info(f"Reserving devices...")
-            self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers, args=reserve_args)
+            self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers)
             logger.info(f"Reserved devices: {self._client.getSerials()}")
             self._evo_client = EvolutionClient(self._client, logger, config.get_icefarm_buffer_amount())
             atexit.register(self._client.endAll)
