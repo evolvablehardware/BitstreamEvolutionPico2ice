@@ -119,11 +119,10 @@ class CircuitPopulation:
                 logger.info("Clearing stale workers...")
                 self._client.clearWorkers()
                 logger.info("Cleared. Waiting for workers to re-register...")
-            reserve_args = {}
             logger.info(f"Reserving devices...")
-            self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers)
+            self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers, flush_interval_seconds=config.get_icefarm_results_flush_interval_seconds(), flush_at_bitstreams_remaining=config.get_icefarm_buffer_batch_amount() * config.get_icefarm_client_batch_amount_circuits() - 1)
             logger.info(f"Reserved devices: {self._client.getSerials()}")
-            self._evo_client = EvolutionClient(self._client, logger, config.get_icefarm_buffer_amount())
+            self._evo_client = EvolutionClient(self._client, logger, config.get_icefarm_client_batch_amount_circuits(), config.get_icefarm_buffer_batch_amount())
             atexit.register(self._client.endAll)
         else:
             self._client = None

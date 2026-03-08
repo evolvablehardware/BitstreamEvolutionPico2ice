@@ -828,8 +828,14 @@ class Config:
 	def get_icefarm_url(self):
 		return self.__config_parser.get("ICEFARM PARAMETERS", "URL")
 
-	def get_icefarm_buffer_amount(self) -> int:
-		return int(self.__config_parser.get("ICEFARM PARAMETERS", "BUFFER_CIRCUIT_AMOUNT"))
+	def get_icefarm_client_batch_amount_circuits(self) -> int:
+		return int(self.__config_parser.get("ICEFARM PARAMETERS", "CLIENT_BATCH_AMOUNT_CIRCUITS"))
+
+	def get_icefarm_buffer_batch_amount(self) -> int:
+		return int(self.__config_parser.get("ICEFARM PARAMETERS", "BUFFER_BATCH_AMOUNT"))
+
+	def get_icefarm_results_flush_interval_seconds(self) -> int:
+		return int(self.__config_parser.get("ICEFARM PARAMETERS", "RESULTS_FLUSH_INTERVAL_SECONDS"))
 
 	def get_icefarm_send_waveform(self):
 		try:
