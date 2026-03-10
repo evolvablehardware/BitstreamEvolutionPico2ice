@@ -1,13 +1,14 @@
 # BitstreamEvolution
 An Open Source Toolchain for the artificial evolution of FPGA bitstreams using genetic algorithms.
 
-# Overview
-- Obtain [pico2ice](https://pico2-ice.tinyvision.ai/) development boards
-- Set up [iCEFARM](https://github.com/evolvablehardware/iCEFARM/tree/docs?tab=readme-ov-file#icefarm-setup) or obtain access to an existing server
-- Set up [BitstreamEvolution](#setup)
-- Run [BitstreamEvolution](#usage)
+# Setup Overview
+- Obtain [pico2ice](https://pico2-ice.tinyvision.ai/) development boards.
+- Follow the [iCEFARM](https://github.com/evolvablehardware/iCEFARM?tab=readme-ov-file#icefarm-setup) setup steps included in the iCEFARM repository. The Client Usage section can be ignored. Alternately, obtain access to an existing setup.
+- Follow the [BitstreamEvolution docker steps](#docker).
+- Run the [live plots](#viewing-live-plots-from-a-container)
 
 ## Temporary iCEFARM Notes
+Follow the setup overview.
 iCEFARM will need to be setup and running before this.
 BitstreamEvolution can be run through docker, see [setup](#docker).
 ```1kz_ice27_generated.asc``` is a clocked 1kHz pulse generator created with verilog and included for use as a seed. This will need to be moved to ```data/seed-hardware``` before running. Alternatively, you can create your own seed. The pulse count firmware listens on pin ICE_27/RPI_GPIO_20. The RANDOM initialization mode should now be working.
@@ -178,60 +179,44 @@ sudo usermod -aG docker $USERNAME
 #new shell or log out and then login
 newgrp docker
 ```
-Update [farmconfig.ini](farmconfig.ini) to the desired configuration. This is the configuration that will be used. Values not provided will be set to the default. Create the image by running in the project directory:
-```
-docker build -t bitstreamevolution .
-```
-Note that after changing configuration values, the image will have to be rebuilt. The same is true for the provided seed file. file.
-Next, start the container:
-```
-docker run -it --network=host bitstreamevolution .venv/bin/python3 src/evolve.py -c farmconfig.ini -d desc
-```
-You may replace desc with an accurate experiment description. Note that changing the farmconfig.ini parameter will only work if that file has been included in the docker image. The ```-it``` flag streams output to the terminal, but closing it will end the experiment. This flag can be omitted if desired. If you choose to omit this flag, you can obtain the container logs by first getting the name of the container with ```docker container ls``` and then running ```docker logs <container name>```.
+Create a configuration file for the experiment. It is recommended to just use ```data/farmconfig.ini```. Only parameters that present in ```data/farmconfig.ini``` are currently modifiable. Note that the configuration files need to be located in the ```data``` directory or they will not sync with the container properly. Afterwards, export the config location:
+```export CONFIG_PATH=data/farmconfig.ini```
+Note that this will have to be performed again after restarting the terminal session.
+
+**Before running, be aware that the container mounts to ```./workspace``` on the host, this directory will be overwritten.**
+
+BitstreamEvolution can now be run:
+```docker compose -f docker/bitstream.yml up --force-recreate```
+
+Pressing `d` will detach from the output and the container will continue to run in the background. You can first get the name of the container with `docker container ls` and then run `docker logs <container name>` to view logs after detaching.
+
+If you make a modification (not including config or seed file changes), you must add the ```--build``` flag to rebuild the image and apply changes.
+
+Stopping the container:
+```docker compose -f docker/bitstream.yml down```
+
+If you wish to use a local version of the iCEFARM client instead of the one located in pypi, you can use the ```docker/bitstream_local.yml``` compose file instead. This requires an iCEFARM repository located at `/usr/local/lib/iCEFARM`.
 
 #### Viewing live plots from a container
 
 Since the container has no display server, matplotlib cannot open windows directly. There are two ways to view plots while an experiment is running: a **live volume mount** (recommended) or a **manual snapshot copy**.
 
-##### Live volume mount (recommended)
-
-This approach mounts the container's `workspace/` directory to your host so that log files appear in real time, allowing `PlotEvolutionLive.py` to update continuously on your machine.
+The compose file automatically mounts the container's `workspace/` directory to your host so that log files appear in real time, allowing `PlotEvolutionLive.py` to update continuously on your machine.
 
 **1. Install the plotting dependencies on your host.** Only `matplotlib` and `numpy` are required (the other project dependencies are not needed):
 ```bash
 pip install matplotlib numpy
 ```
 
-**2. Start the container with a volume mount from the project directory.** Add `-v ./workspace:/usr/local/app/workspace` to your `docker run` command. The left side (`./workspace`) is a path on your host relative to where you run the command, and the right side (`/usr/local/app/workspace`) is the path inside the container. The `--user` flag ensures files are created with your host user's ownership (without it, Docker runs as root and the plotting script will get permission errors writing to `workspace/plots/`). Run this from the project root so that the log files appear in your local `workspace/` folder:
-```bash
-docker run -it --network=host --user $(id -u):$(id -g) \
-  -v ./workspace:/usr/local/app/workspace \
-  -v ./farmconfig.ini:/usr/local/app/farmconfig.ini \
-  bitstreamevolution .venv/bin/python3 src/evolve.py -c farmconfig.ini -d desc
-```
-The first `-v` flag mounts the workspace so log files appear on your host in real time. The second `-v` flag mounts your local `farmconfig.ini` into the container, so configuration changes take effect immediately without rebuilding the Docker image. As the experiment runs, the `workspace/*.log` files will appear and update on your host filesystem.
-
-**3. In a separate terminal, start the plotting script on your host:**
+**2. In a separate terminal, start the plotting script on your host:**
 ```bash
 python3 src/PlotEvolutionLive.py
 ```
+
 The plots will read from `workspace/` and auto-refresh every few seconds as new generations complete. You can leave this running for the duration of the experiment.
 
-##### Manual snapshot copy (fallback)
-
-If you cannot install Python dependencies on the host, you can copy the workspace out of a running container for a one-time snapshot. First, find the container name:
-```bash
-docker container ls
-```
-Then copy the workspace directory. **This will overwrite any existing local `workspace/` folder:**
-```bash
-docker cp <container name>:/usr/local/app/workspace workspace
-```
-Start the plotting script to view the snapshot:
-```bash
-python3 src/PlotEvolutionLive.py
-```
-Re-run the `docker cp` command whenever you want an updated snapshot.
+In some cases the file permissions may get messed up. If `PlotEvolutionLive` encounters an permission error for `workspace/plots`, you can fix it with the following:
+`sudo chown $USER workspace/plots`
 
 ### Issues with setup:
 This section describes some issues that can be encountered during

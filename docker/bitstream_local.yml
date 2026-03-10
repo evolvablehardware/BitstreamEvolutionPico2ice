@@ -1,0 +1,20 @@
+services:
+  bitstreamevolution:
+    build:
+      context: ..
+      dockerfile: docker/local_icefarm.Dockerfile
+
+    network_mode: host
+    environment:
+      CONFIG_PATH: ${CONFIG_PATH}
+
+    volumes:
+      - ../data:/usr/local/app/data:ro
+      - ../workspace:/usr/local/app/workspace
+
+    command: [".venv/bin/python3", "src/evolve.py", "-c", "${CONFIG_PATH}", "-d", "experiment description"]
+
+    # give time for ending device reservations, atexit.atexit not run on sigterm
+    stop_signal: SIGINT
+    stop_grace_period: 30s
+
