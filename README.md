@@ -199,7 +199,7 @@ If you wish to use a local version of the iCEFARM client instead of the one loca
 
 #### Viewing live plots from a container
 
-Since the container has no display server, matplotlib cannot open windows directly. There are two ways to view plots while an experiment is running: a **live volume mount** (recommended) or a **manual snapshot copy**.
+Since the container has no display server, matplotlib cannot open windows directly.
 
 The compose file automatically mounts the container's `workspace/` directory to your host so that log files appear in real time, allowing `PlotEvolutionLive.py` to update continuously on your machine.
 
