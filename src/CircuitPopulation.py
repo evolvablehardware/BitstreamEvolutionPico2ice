@@ -120,7 +120,15 @@ class CircuitPopulation:
                 self._client.clearWorkers()
                 logger.info("Cleared. Waiting for workers to re-register...")
             logger.info(f"Reserving devices...")
-            self._client.reserve(int(config.get_icefarm_devices()), wait_for_available=clear_workers, flush_interval_seconds=config.get_icefarm_results_flush_interval_seconds(), flush_at_bitstreams_remaining=config.get_icefarm_buffer_batch_amount() * config.get_icefarm_client_batch_amount_circuits() - 1)
+
+            # TODO might want to unify reserve and reservespecific to one method in icefarm
+            serials = config.get_icefarm_devices()
+            if isinstance(serials, int):
+                self._client.reserve(serials, wait_for_available=clear_workers, flush_interval_seconds=config.get_icefarm_results_flush_interval_seconds(), flush_at_bitstreams_remaining=config.get_icefarm_buffer_batch_amount() * config.get_icefarm_client_batch_amount_circuits() - 1)
+            else:
+                self._client.reserveSpecific(serials, flush_interval_seconds=config.get_icefarm_results_flush_interval_seconds(), flush_at_bitstreams_remaining=config.get_icefarm_buffer_batch_amount() * config.get_icefarm_client_batch_amount_circuits() - 1)
+
+
             logger.info(f"Reserved devices: {self._client.getSerials()}")
             self._evo_client = EvolutionClient(self._client, logger, config.get_icefarm_client_batch_amount_circuits(), config.get_icefarm_buffer_batch_amount())
             atexit.register(self._client.endAll)

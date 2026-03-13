@@ -11,6 +11,7 @@ from configparser import NoOptionError
 from xml.dom import NotFoundErr
 from datetime import datetime
 from typing import List
+import json
 
 # TODO Add handling for missing values
 # NOTE Fails ungracefully at missing values currently
@@ -822,8 +823,20 @@ class Config:
 	def get_icefarm_mode(self):
 		return self.__config_parser.get("ICEFARM PARAMETERS", "MODE")
 
-	def get_icefarm_devices(self):
-		return self.__config_parser.get("ICEFARM PARAMETERS", "DEVICES")
+	def get_icefarm_devices(self) -> list | int:
+		param = self.__config_parser.get("ICEFARM PARAMETERS", "DEVICES")
+
+		try:
+			return int(param)
+		except Exception:
+			pass
+
+		serials = json.loads(param)
+
+		if not all(isinstance(serial, str) for serial in serials):
+			raise Exception("Invalid icefarm.devices config parameter. Set to integer or list of device serials")
+
+		return serials
 
 	def get_icefarm_url(self):
 		return self.__config_parser.get("ICEFARM PARAMETERS", "URL")
