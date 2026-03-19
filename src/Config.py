@@ -888,7 +888,7 @@ class Config:
 		self.validate_fitness_params()
 		self.validate_icefarm_params()
 
-		if self.get_simulation_mode == 'INTRINSIC_SENSITIVITY':
+		if self.get_simulation_mode() == 'INTRINSIC_SENSITIVITY':
 			self.validate_sensitivity_params()
 		else:
 			self.validate_ga_params()
@@ -897,7 +897,7 @@ class Config:
 
 		self.validate_logging_params()
 
-		if self.get_simulation_mode != 'FULLY_SIM' and self.get_simulation_mode != 'SIM_HARDWARE':
+		if self.get_simulation_mode() != 'FULLY_SIM' and self.get_simulation_mode() != 'SIM_HARDWARE':
 			self.validate_system_params()
 			self.validate_hardware_params()
 
@@ -914,6 +914,14 @@ class Config:
 				self.__logger.error("MAP_ELITES selection can only be used with the following fitness functions: " +
 				"VARIANCE, COMBINED, PULSE_CONSISTENCY")
 				exit()
+
+		randomization_type = self.get_randomization_type()
+		if randomization_type == "PULSE" and not self.is_pulse_count():
+			self.__logger.error("PULSE randomization can only be used with pulse-count fitness functions.")
+			exit()
+		if randomization_type == "VARIANCE" and self.get_fitness_func() not in ["VARIANCE", "COMBINED"]:
+			self.__logger.error("VARIANCE randomization can only be used with VARIANCE or COMBINED fitness functions.")
+			exit()
 
 	# True if the fitness function counts pulses
 	def is_pulse_func(self):
