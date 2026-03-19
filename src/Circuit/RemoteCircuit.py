@@ -4,8 +4,12 @@ from typing import List, Dict, Any
 from icefarm.client.drivers import PulseCountClient, VarMaxClient
 from icefarm.client.lib.pulsecount import PulseCountEvaluation
 from icefarm.client.lib.varmax import VarMaxEvaluation
+from icefarm.client.lib.BatchClient import EvaluationFailed
 from Circuit.FileBasedCircuit import FileBasedCircuit
 from Circuit import FitnessFunction
+from Config import Config
+
+class DeviceTimeoutException(Exception): ...
 
 class RemoteCircuit(FileBasedCircuit):
     def __init__(self, client: "EvolutionClient", serials: List[str], index, filename, config, template, rand, logger, fitnessfunc: FitnessFunction):
@@ -20,7 +24,7 @@ class RemoteCircuit(FileBasedCircuit):
     def collect_data_once(self):
         # data is appended during fitness calculation
         # this allows all the circuits to be sent at once
-        self._client.evaluate(self._serials, self)
+        self._client.evaluate(self)
 
     def _get_measurement(self): ...
         # makes abc happy
@@ -46,10 +50,18 @@ class RemoteCircuit(FileBasedCircuit):
             # TODO add an additional log file that maps serials to pulses
             if self._serials:
                 for serial in self._serials:
-                    self._data.extend(float(point) for point in results[serial])
+                    for point in results[serial]:
+                        if point is EvaluationFailed:
+                            raise DeviceTimeoutException()
+
+                        self._data.append(float(point))
             else:
                 for serial in results.keys():
-                    self._data.extend(float(point) for point in results[serial])
+                    for point in results[serial]:
+                        if point is EvaluationFailed:
+                            raise DeviceTimeoutException()
+
+                        self._data.append(float(point))
 
             self._extra_data["pulses"] = self._data
 
@@ -76,23 +88,29 @@ class EvolutionClient:
     """
     Wrapper around icefarm client (PulseCountClient or VarMaxClient) to allow RemoteCircuit api to be the same as other circuits.
     """
-    def __init__(self, client: PulseCountClient | VarMaxClient, logger: Logger, batch_size: int, buffer_batches: int):
+    def __init__(self, client: PulseCountClient | VarMaxClient, config: Config, logger: Logger):
         self._client = client
         self._command_queue = []
         self._result_map = {}
         self._waveform_map = {}
         self._logger = logger
-        self.batch_size = batch_size
-        self.buffer_batches = buffer_batches
+        self.batch_size = config.get_icefarm_client_batch_amount_circuits()
+        self.buffer_batches = config.get_icefarm_buffer_batch_amount()
+        self.evaluation_mode_all = config.get_icefarm_mode().lower() == "all"
 
-    def evaluate(self, serials: List[str] | None, circuit: FileBasedCircuit):
+    def evaluate(self, circuit: FileBasedCircuit):
         """
         Queues circuit to be evaluated on picos with identification of serials.
         If no serial is given, one is assigned based on the optimal evaluation speed.
         """
         self._result_map = {}
         self._waveform_map = {}
-        self._command_queue.append((serials, circuit._bitstream_filepath))
+        if self.evaluation_mode_all:
+            self._command_queue.append((self._client.getSerials(), circuit._bitstream_filepath))
+            # this is horrible, awful
+            circuit._serials = self._client.getSerials()
+        else:
+            self._command_queue.append((None, circuit._bitstream_filepath))
 
     def get_result(self, circuit: FileBasedCircuit) -> Dict[str, Any]:
         """
@@ -128,11 +146,15 @@ class EvolutionClient:
 
                 if isinstance(result, list) or isinstance(result, tuple):
                     fitness, samples = result
-                    self._result_map[fpath][serial].append(float(fitness))
+                    if isinstance(fitness, str):
+                        fitness = float(fitness)
+                    self._result_map[fpath][serial].append(fitness)
                     if samples:
                         self._waveform_map[fpath] = samples
                 else:
-                    self._result_map[fpath][serial].append(float(result))
+                    if isinstance(result, str):
+                        result = float(result)
+                    self._result_map[fpath][serial].append(result)
 
                 self._logger.debug(f"Received value for file {fpath}: {result}")
 

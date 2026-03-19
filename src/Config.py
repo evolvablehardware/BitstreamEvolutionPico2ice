@@ -858,10 +858,10 @@ class Config:
 			return False
 
 	def get_icefarm_exit_at_devices_remaining(self):
-		return int(self.__config_parser.get("ICEFARM_PARAMETERS", "EXIT_AT_DEVICES_REMAINING"))
+		return int(self.__config_parser.get("ICEFARM PARAMETERS", "EXIT_AT_DEVICES_REMAINING"))
 
 	def get_icefarm_reserve_on_device_failure(self) -> bool | int:
-		value = self.__config_parser.get("ICEFARM_PARAMETERS", "RESERVE_ON_DEVICE_FAILURE_LIMIT")
+		value = self.__config_parser.get("ICEFARM PARAMETERS", "RESERVE_ON_DEVICE_FAILURE_LIMIT")
 		if value.upper() == "NO":
 			return False
 
@@ -886,6 +886,7 @@ class Config:
 	def validate_all(self):
 		self.get_simulation_mode()
 		self.validate_fitness_params()
+		self.validate_icefarm_params()
 
 		if self.get_simulation_mode == 'INTRINSIC_SENSITIVITY':
 			self.validate_sensitivity_params()

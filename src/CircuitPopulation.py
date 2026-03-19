@@ -24,7 +24,7 @@ from Circuit.PulseCountFitnessFunction import PulseCountFitnessFunction
 from Circuit.SimHardwareCircuit import SimHardwareCircuit
 from Circuit.ToneDiscriminatorFitnessFunction import ToneDiscriminatorFitnessFunction
 from Circuit.VarMaxFitnessFunction import VarMaxFitnessFunction
-from Circuit.RemoteCircuit import RemoteCircuit, EvolutionClient
+from Circuit.RemoteCircuit import RemoteCircuit, EvolutionClient, DeviceTimeoutException
 from ga.selection.utils import selection_fac
 from ga.diversity import diversity_fac
 from Config import Config
@@ -130,7 +130,7 @@ class CircuitPopulation:
 
 
             logger.info(f"Reserved devices: {self._client.getSerials()}")
-            self._evo_client = EvolutionClient(self._client, logger, config.get_icefarm_client_batch_amount_circuits(), config.get_icefarm_buffer_batch_amount())
+            self._evo_client = EvolutionClient(self._client, config, logger)
             atexit.register(self._client.endAll)
         else:
             self._client = None
@@ -544,6 +544,8 @@ class CircuitPopulation:
                 f.write(f"# send_waveform={send_wf}, population={self.__config.get_population_size()}, devices={self.__config.get_icefarm_devices() if self.__config.get_simulation_mode() == 'REMOTE' else 'local'}\n")
                 f.write("generation,epoch_time_s,best_fitness,avg_fitness\n")
 
+        extra_devices_reserved = 0
+
         while(self.__should_continue_evo()): #self.get_current_epoch() < self.__config.get_n_generations()):
 
             #self.__logger.event(3, "Starting evo cycle", self.get_current_epoch(
@@ -553,6 +555,23 @@ class CircuitPopulation:
             # which an item is sorted gets updated, we have to add the
             # Circuits to a new list after we evaluate them and then
             # make the new list the working Circuit list.
+
+            diff = self.__config.get_icefarm_devices() - len(self._client.getSerials())
+            if diff:
+                self.__logger.warning(f"Operating on low devices, devices remaining: {self._client.getSerials()}")
+                if self.__config.get_icefarm_reserve_on_device_failure() is True or self.__config.get_icefarm_reserve_on_device_failure() > extra_devices_reserved:
+                    available_devices = self._client.available()
+                    if available_devices:
+                        additional_devices = self._client.reserve(min(available_devices, diff), flush_interval_seconds=self.__config.get_icefarm_results_flush_interval_seconds(), flush_at_bitstreams_remaining=self.__config.get_icefarm_buffer_batch_amount() * self.__config.get_icefarm_client_batch_amount_circuits() - 1)
+                        extra_devices_reserved += len(additional_devices)
+                        self.__logger.info(f"Reserved additional devices: {additional_devices}")
+
+            if len(self._client.getSerials()) <= self.__config.get_icefarm_exit_at_devices_remaining():
+                self.__logger.critical("Reached critical level of devices, ending experiment.")
+                self._client.endAll()
+                raise Exception("Reached exit_at_devices_remaining")
+
+
             reevaulated_circuits = SortedKeyList(
                 key=lambda ckt: -ckt.get_fitness()
             )
@@ -573,16 +592,19 @@ class CircuitPopulation:
                     for i in range(self.__config.get_num_samples()):
                         circuit.collect_data_once()
 
-            for circuit in self._circuits:
-                circuit.calculate_fitness()
-                self.__logger.info(f"{circuit} pulses: {circuit._data}")
+            try:
+                for circuit in self._circuits:
+                    circuit.calculate_fitness()
+                    self.__logger.info(f"{circuit} pulses: {circuit._data}")
+            except DeviceTimeoutException:
+                self.__logger.error("Device failed during evaluation stage. Restarting epoch.")
+                continue
 
             self.__population_bistream_sum = np.zeros(self.__population_bistream_sum.size)
             for circuit in self._circuits:
                 # If evaluate returns true, then a circuit has surpassed
                 # the threshold and we are done.
 
-                # fitness = circuit.get_fitness()
                 fitness = circuit.get_fitness()
 
                 # Save off various circuit metrics
