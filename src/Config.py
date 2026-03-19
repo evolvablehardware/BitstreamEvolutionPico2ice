@@ -857,11 +857,31 @@ class Config:
 		except:
 			return False
 
+	def get_icefarm_exit_at_devices_remaining(self):
+		return int(self.__config_parser.get("ICEFARM_PARAMETERS", "EXIT_AT_DEVICES_REMAINING"))
+
+	def get_icefarm_reserve_on_device_failure(self) -> bool | int:
+		value = self.__config_parser.get("ICEFARM_PARAMETERS", "RESERVE_ON_DEVICE_FAILURE_LIMIT")
+		if value.upper() == "NO":
+			return False
+
+		if value.upper() == "ALWAYS":
+			return True
+
+		return int(value)
+
 	def validate_icefarm_params(self):
 		self.get_icefarm_url()
 		int(self.get_icefarm_devices())
 		if self.get_icefarm_mode().upper() not in ["ALL", "QUICK"]:
 			raise Exception("Valid values for ICEFARM.MODE is ALL, QUICK.")
+
+		self.get_icefarm_buffer_batch_amount()
+		self.get_icefarm_client_batch_amount_circuits()
+		self.get_icefarm_devices()
+		self.get_icefarm_exit_at_devices_remaining()
+		self.get_icefarm_reserve_on_device_failure()
+		self.get_icefarm_results_flush_interval_seconds()
 
 	def validate_all(self):
 		self.get_simulation_mode()
