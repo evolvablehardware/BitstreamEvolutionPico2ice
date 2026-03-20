@@ -541,7 +541,7 @@ class CircuitPopulation:
         if self.__speedtest:
             send_wf = self.__config.get_icefarm_send_waveform() if self.__config.get_simulation_mode() == "REMOTE" else False
             with open("workspace/speedtest.csv", "w") as f:
-                f.write(f"# send_waveform={send_wf}, population={self.__config.get_population_size()}, devices={self.__config.get_icefarm_devices() if self.__config.get_simulation_mode() == 'REMOTE' else 'local'}\n")
+                f.write(f"# send_waveform={send_wf}, population={self.__config.get_population_size()}, devices={self.__config.get_icefarm_device_count() if self.__config.get_simulation_mode() == 'REMOTE' else 'local'}\n")
                 f.write("generation,epoch_time_s,best_fitness,avg_fitness\n")
 
         extra_devices_reserved = 0
@@ -556,7 +556,7 @@ class CircuitPopulation:
             # Circuits to a new list after we evaluate them and then
             # make the new list the working Circuit list.
 
-            diff = self.__config.get_icefarm_devices() - len(self._client.getSerials())
+            diff = self.__config.get_icefarm_device_count() - len(self._client.getSerials())
             if diff:
                 self.__logger.warning(f"Operating on low devices, devices remaining: {self._client.getSerials()}")
                 if self.__config.get_icefarm_reserve_on_device_failure() is True or self.__config.get_icefarm_reserve_on_device_failure() > extra_devices_reserved:

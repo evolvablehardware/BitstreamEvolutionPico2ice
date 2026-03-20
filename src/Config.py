@@ -838,6 +838,13 @@ class Config:
 
 		return serials
 
+	def get_icefarm_device_count(self) -> int:
+		devices = self.get_icefarm_devices()
+		if isinstance(devices, int):
+			return devices
+
+		return len(devices)
+
 	def get_icefarm_url(self):
 		return self.__config_parser.get("ICEFARM PARAMETERS", "URL")
 
@@ -872,7 +879,12 @@ class Config:
 
 	def validate_icefarm_params(self):
 		self.get_icefarm_url()
-		int(self.get_icefarm_devices())
+		devices = self.get_icefarm_devices()
+		if isinstance(devices, int):
+			if devices < 1:
+				raise Exception("ICEFARM.DEVICES must be at least 1.")
+		elif not devices:
+			raise Exception("ICEFARM.DEVICES serial list must not be empty.")
 		if self.get_icefarm_mode().upper() not in ["ALL", "QUICK"]:
 			raise Exception("Valid values for ICEFARM.MODE is ALL, QUICK.")
 

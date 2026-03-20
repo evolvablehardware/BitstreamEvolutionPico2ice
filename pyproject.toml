@@ -46,9 +46,11 @@ markers = [
     "short:     For tests that are relatively short, i.e. run < 60 sec        Group: test_length",
     "long:      For tests that run over a long time, i.e. run > 1 min         Group: test_length",
     "all:       Automatically applied to all tests                            Group: all_tests (default)",
+    "hardware_e2e: End-to-end hardware-backed tests that exercise BitstreamEvolution against real devices",
+    "manual:    Tests intended to be run only in explicitly prepared environments",
 ]
 
-[tool.pytest.marker_groups]
+[tests.pytest_marker_groups]
 # These are the test groups that all tests must be a part of, so if one test is not marked, the default mark will be applied.
 # Here the name of the marker group is the variable assigned, and the markers in it are the members of the group
 # The marker at index 0 is the default

@@ -11,6 +11,15 @@ from Config import Config
 
 class DeviceTimeoutException(Exception): ...
 
+
+def _batched(iterable, size):
+    if size < 1:
+        raise ValueError("batch size must be at least 1")
+
+    iterator = iter(iterable)
+    while batch := tuple(itertools.islice(iterator, size)):
+        yield batch
+
 class RemoteCircuit(FileBasedCircuit):
     def __init__(self, client: "EvolutionClient", serials: List[str], index, filename, config, template, rand, logger, fitnessfunc: FitnessFunction):
         super().__init__(index, filename, config, template, rand, logger)
@@ -128,7 +137,7 @@ class EvolutionClient:
             # among devices. This is not optimal if using a mix of assigned and
             # unassigned evaluations, but doing so is complicated and I
             # am going to add to icefarm instead of here
-            batches = itertools.batched(unassigned_evaluations, len(self._client.getSerials()))
+            batches = _batched(unassigned_evaluations, len(self._client.getSerials()))
 
             for batch in batches:
                 for serial, fpath in zip(self._client.getSerials(), batch):

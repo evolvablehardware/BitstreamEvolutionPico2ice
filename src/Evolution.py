@@ -83,15 +83,16 @@ class Evolution:
 
         logger.event(0, "Evolution has completed successfully")
 
-        logger.event(1, "Launching the Live Plot window...")
-        args = ["python3", "src/PlotEvolutionLive.py", "formal"]
-        try:
-            run(args, check=True, capture_output=True)
-        except OSError as e:
-            self.logger.error(1, "An error occured while launching PlotEvolutionLive.py")
-        except CalledProcessError as e:
-            self.logger.error(1, "An error occured in PlotEvolutionLive.py")
-            self.logger.error(1, e)
+        if config.get_launch_plots():
+            logger.event(1, "Launching the Live Plot window...")
+            args = ["python3", "src/PlotEvolutionLive.py", "formal"]
+            try:
+                run(args, check=True, capture_output=True)
+            except OSError:
+                self.logger.error("An error occured while launching PlotEvolutionLive.py")
+            except CalledProcessError as e:
+                self.logger.error("An error occured in PlotEvolutionLive.py")
+                self.logger.error(str(e))
 
         # SECTION Clean up resources
 
