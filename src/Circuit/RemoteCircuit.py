@@ -106,6 +106,7 @@ class EvolutionClient:
         self.batch_size = config.get_icefarm_client_batch_amount_circuits()
         self.buffer_batches = config.get_icefarm_buffer_batch_amount()
         self.evaluation_mode_all = config.get_icefarm_mode().lower() == "all"
+        self.result_timeout = config.get_icefarm_results_flush_interval_seconds() * 4
 
     def evaluate(self, circuit: FileBasedCircuit):
         """
@@ -145,7 +146,7 @@ class EvolutionClient:
 
             self._logger.info("Sending circuits for remote evaluation...")
 
-            for serial, evaluation, result in self._client.evaluateEvaluations(assigned_evaluations, batch_size=self.batch_size, target_batches=self.buffer_batches):
+            for serial, evaluation, result in self._client.evaluateEvaluations(assigned_evaluations, batch_size=self.batch_size, target_batches=self.buffer_batches, result_timeout=self.result_timeout):
                 fpath = evaluation.filepath
                 if fpath not in self._result_map:
                     self._result_map[fpath] = {}
