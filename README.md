@@ -91,7 +91,7 @@ BistreamEvolution requires the following libraries and packages:
   * cmake
   * make
 
-BitstreamEvolution alse requires the following Python libraries:
+BitstreamEvolution also requires the following Python libraries:
   * pyserial
   * matplotlib
   * numpy
@@ -115,7 +115,7 @@ The Python libraries can be installed in one command in any Linux
 distribution as follows:
 
 ```bash
-python3 -m pip install pyserial numpy matplotlib sortedcontainers pytest
+python3 -m pip install pyserial numpy matplotlib sortedcontainers pytest ascutil
 ```
 ### Configuring the BitstreamEvolution core
 Although BitstreamEvolution doesn't require any building or

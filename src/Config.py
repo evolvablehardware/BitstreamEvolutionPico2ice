@@ -857,6 +857,9 @@ class Config:
 	def get_icefarm_results_flush_interval_seconds(self) -> int:
 		return int(self.__config_parser.get("ICEFARM PARAMETERS", "RESULTS_FLUSH_INTERVAL_SECONDS"))
 
+	def get_icefarm_results_timeout_duration_seconds(self) -> int:
+		return int(self.__config_parser.get("ICEFARM PARAMETERS", "RESULTS_TIMEOUT_DURATION_SECONDS"))
+
 	def get_icefarm_send_waveform(self):
 		try:
 			input = self.__config_parser.get("ICEFARM PARAMETERS", "SEND_WAVEFORM")
@@ -894,6 +897,7 @@ class Config:
 		self.get_icefarm_exit_at_devices_remaining()
 		self.get_icefarm_reserve_on_device_failure()
 		self.get_icefarm_results_flush_interval_seconds()
+		self.get_icefarm_results_timeout_duration_seconds()
 
 	def validate_all(self):
 		self.get_simulation_mode()
