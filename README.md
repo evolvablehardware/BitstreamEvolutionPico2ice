@@ -41,12 +41,12 @@ All of the selection methods aside from MAP work. New parameters include annotat
       - [Primary Targets](#primary-targets)
       - [Targets for building Project Icestorm tools](#targets-for-building-project-icestorm-tools)
 	  - [Clean targets](#clean-targets)
-    - [Docker](#docker)
     - [Issues with setup](#issues-with-setup)
       - [USB permission denied](#usb-permission-denied)
   - [Usage](#usage)
     - [Configuration](#configuration)
-    - [Running](#running)
+    - [Running With Docker](#running-with-docker)
+    - [Running Without Docker](#running-with-docker)
     - [Troubleshooting](#troubleshooting)
   - [Contributing](#contributing)
   - [License](#license)
@@ -109,7 +109,9 @@ The Python libraries can be installed in one command in any Linux
 distribution as follows:
 
 ```bash
-python3 -m pip install pyserial numpy matplotlib sortedcontainers pytest icefarm ascutil
+python3 -m venv .venv
+source .venv/bin/activate
+pip install pyserial numpy matplotlib sortedcontainers pytest icefarm ascutil
 ```
 ### Configuring the BitstreamEvolution core
 Although BitstreamEvolution doesn't require any building or
@@ -169,7 +171,33 @@ been for testing and maintenance of the project.
 ### Setup and Start iCEFARM
 Follow the setup instructions in the [iCEFARM repository](https://github.com/evolvablehardware/iCEFARM). You may skip the `Client Usage` section. If something goes wrong, you should restart the iCEFARM system in addition to BitstreamEvolution.
 
-### Docker
+
+### Issues with setup:
+This section describes some issues that can be encountered during
+installation and how to address them. If the following steps do not
+address your issue or you encounter other problems, please file an issue
+[here](https://github.com/evolvablehardware/BitstreamEvolution/issues) so that
+we can look into it.
+
+## Usage
+This section describes how to run the configure and run
+BitstreamEvolution. For the most part, BitstreamEvolution can be run
+as-is without configuration.
+
+<!--
+  TODO Configuration options that need to be changed should be
+  better highlighted and emphasized. Ideally, the program would ensure
+  that the user has set these before running (and they would be unset by
+  default
+-->
+### Configuration
+The project has various configuration options that can be specified in
+`data/farmconfig.ini`. The file`data/default_config.ini` contains the
+default options for the configuration and should not be modified.
+
+See [CONFIG.md](./CONFIG.md) for a list of configuration options and their possible values.
+
+### Running With Docker
 Note that the live plots will not function while using a container. If it is not yet installed, install [Docker Engine](https://docs.docker.com/engine/install/). You may follow the [post installation steps](https://docs.docker.com/engine/install/linux-postinstall/) so that you do not need to use sudo, but be aware this opens up privilege escalation from your user. Included below:
 ```
 sudo usermod -aG docker $USERNAME
@@ -188,7 +216,7 @@ BitstreamEvolution can now be run:
 
 Pressing `d` will detach from the output and the container will continue to run in the background. You can first get the name of the container with `docker container ls` and then run `docker logs <container name>` to view logs after detaching.
 
-If you make a modification (not including config or seed file changes), you must add the ```--build``` flag to rebuild the image and apply changes.
+If you make a modification **outside of the data directory**, you must add the ```--build``` flag to rebuild the image and apply the changes. If the modification is inside the data directory, such as a configuration or seed changes, you do not need to rebuild the image.
 
 Stopping the container:
 ```docker compose -f docker/bitstream.yml down```
@@ -216,32 +244,7 @@ The plots will read from `workspace/` and auto-refresh every few seconds as new 
 In some cases the file permissions may get messed up. If `PlotEvolutionLive` encounters an permission error for `workspace/plots`, you can fix it with the following:
 `sudo chown $USER workspace/plots`
 
-### Issues with setup:
-This section describes some issues that can be encountered during
-installation and how to address them. If the following steps do not
-address your issue or you encounter other problems, please file an issue
-[here](https://github.com/evolvablehardware/BitstreamEvolution/issues) so that
-we can look into it.
-
-## Usage
-This section describes how to run the configure and run
-BitstreamEvolution. For the most part, BitstreamEvolution can be run
-as-is without configuration.
-
-<!--
-  TODO Configuration options that need to be changed should be
-  better highlighted and emphasized. Ideally, the program would ensure
-  that the user has set these before running (and they would be unset by
-  default
--->
-### Configuration
-The project has various configuration options that can be specified in
-`data/farmconfig.ini`. The file`data/default_config.ini` contains the
-default options for the configuration and should not be modified.
-
-See [CONFIG.md](./CONFIG.md) for a list of configuration options and their possible values.
-
-### Running
+### Running Without Docker
 From the root directory of BitstreamEvolution run:
 
 ```bash
@@ -261,6 +264,7 @@ BitstreamEvolution will continue to run until one of the following happens:
   * It has run through the specified number of generations
   * It has met the specified conditions
   * It is terminated in some other form (e.g. ctrl-c, shutdown, etc.)
+
 
 ### Running Test Cases
 Test case files are simple to run using the pytest framework.
