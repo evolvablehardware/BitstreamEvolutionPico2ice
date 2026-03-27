@@ -9,9 +9,11 @@ An Open Source Toolchain for the artificial evolution of FPGA bitstreams using g
 
 ## Temporary iCEFARM Notes
 Follow the setup overview.
+iCEFARM needs to be running before bitstreamevolution.
+If you run into issues, restart the icefarm stack in addition to the bitstreamevolution components.
 iCEFARM will need to be setup and running before this.
 BitstreamEvolution can be run through docker, see [setup](#docker).
-```1kz_ice27_generated.asc``` is a clocked 1kHz pulse generator created with verilog and included for use as a seed. This will need to be moved to ```data/seed-hardware``` before running. Alternatively, you can create your own seed. The pulse count firmware listens on pin ICE_27/RPI_GPIO_20. The RANDOM initialization mode should now be working.
+The pulse count firmware listens on pin ICE_27/RPI_GPIO_20. The RANDOM initialization mode should now be working.
 The pulse count fitness function is currently overridden regardless of whether you use tolerant or sensitive:
 $$\frac{sum(pulses \neq 0)} {MCE(expected, actual)}$$
 I've messed around with this one a bit too. It seems to work better for clocked seeds but worse for non clocked seeds:
@@ -19,15 +21,15 @@ $$\frac{ \frac {1} {MSE(expected, actual)}} {1 + \sum max(|p-mean(P)| - 0.03*exp
 The use of variance promotes circuits to rely on less undefined behavior, which seems to work while when evaluating across multiple devices. This may not be the case after the clock is disabled though.
 In addition to the usual python packages, two additional are required:
 - icefarm, allows use of icefarm system
-- ascutil, provides significantly after circuit mutations
+- ascutil, provides significantly faster circuit mutations
 
-See [```farmconfig.ini```](./farmconfig.ini) for an example config. This is the config used when running through Docker. Configuration values not present in this example config may produce unexpected behavior.
+See [```data/farmconfig.ini```](.data/farmconfig.ini) for an example config. This is the config used when running through Docker. Configuration values not present in this example config may produce unexpected behavior.
 All of the selection methods aside from MAP work. New parameters include annotations.
 
 ### Seed file descriptions
-- ```1kz_ice27_generated.asc``` is a 1k pulse generator synthesized from verilog with no modifications. No attempt to disable clocks has been made.
-- ```ice27_only.asc``` contains routing from pin 27 using io tile 18,31 to logic 18 29. All other tiles are empty and all clocks are in theory unaccessible so long as column restraint notes in ```farmconfig.ini``` is followed.
-- ```ice27_only_no_logic.asc``` is the same as previous but with logic tile removed. Requires col 52 (1 index) access to remake connection present in previous. Probably best just to use previous seed but this is included as a minimal working seed.
+- ```data/1kz_ice27_generated.asc``` is a 1k pulse generator synthesized from verilog with no modifications. No attempt to disable clocks has been made.
+- ```data/ice27_only.asc``` contains routing from pin 27 using io tile 18,31 to logic 18 29. All other tiles are empty and all clocks are in theory unaccessible so long as column restraint notes in ```data/farmconfig.ini``` is followed.
+- ```data/ice27_only_no_logic.asc``` is the same as previous but with logic tile removed. Requires col 52 (1 index) access to remake connection present in previous. Probably best just to use previous seed but this is included as a minimal working seed.
 
 ## Table of Contents
 - [BitstreamEvolution](#bitstreamevolution)
@@ -39,20 +41,12 @@ All of the selection methods aside from MAP work. New parameters include annotat
       - [Primary Targets](#primary-targets)
       - [Targets for building Project Icestorm tools](#targets-for-building-project-icestorm-tools)
 	  - [Clean targets](#clean-targets)
-    - [Docker](#docker)
     - [Issues with setup](#issues-with-setup)
       - [USB permission denied](#usb-permission-denied)
   - [Usage](#usage)
     - [Configuration](#configuration)
-      - [Simulation Modes](#simulation-modes)
-      - [Fitness Function Parameters](#fitness-function-parameters)
-      - [GA parameters](#ga-parameters)
-      - [Initialization Parameters](#initialization-parameters)
-      - [Stopping Conditions Parameters](#stopping-conditions)
-      - [Logging parameters](#logging-parameters)
-      - [System parameters](#system-parameters)
-      - [Hardware parameters](#hardware-parameters)
-    - [Running](#running)
+    - [Running With Docker](#running-with-docker)
+    - [Running Without Docker](#running-with-docker)
     - [Troubleshooting](#troubleshooting)
   - [Contributing](#contributing)
   - [License](#license)
@@ -65,10 +59,10 @@ BitstreamEvolution core, the [Project Icestorm](http://www.clifford.at/icestorm/
 tools, and the Arduino components. While BitstreamEvolution should run
 on any Linux distribution and likely other Unix-based systems, the
 instructions assume you are running a Debian-based distrubtion such as
-Debian or Ubuntu. Alternatively, BitstreamEvolution can be run through [Docker](#docker).
+Debian or Ubuntu. It's recommended that BitstreamEvolution be run through [Docker](#docker).
 
 ### Requirements
-BitstreamEvolution requires Python version 3.7 or higher.
+BitstreamEvolution requires Python version 3.12 or higher.
 
 BistreamEvolution requires the following libraries and packages:
   * build-essential
@@ -115,7 +109,9 @@ The Python libraries can be installed in one command in any Linux
 distribution as follows:
 
 ```bash
-python3 -m pip install pyserial numpy matplotlib sortedcontainers pytest ascutil
+python3 -m venv .venv
+source .venv/bin/activate
+pip install pyserial numpy matplotlib sortedcontainers pytest icefarm ascutil
 ```
 ### Configuring the BitstreamEvolution core
 Although BitstreamEvolution doesn't require any building or
@@ -172,7 +168,36 @@ been for testing and maintenance of the project.
 |`clean-workspace`|Removes the default permanent data logging directories and their contents|
 |`clean-tools`|Removes all the build directories for the Project Icestorm tools (*but it does not uninstall them*)|
 
-### Docker
+### Setup and Start iCEFARM
+Follow the setup instructions in the [iCEFARM repository](https://github.com/evolvablehardware/iCEFARM). You may skip the `Client Usage` section. If something goes wrong, you should restart the iCEFARM system in addition to BitstreamEvolution.
+
+
+### Issues with setup:
+This section describes some issues that can be encountered during
+installation and how to address them. If the following steps do not
+address your issue or you encounter other problems, please file an issue
+[here](https://github.com/evolvablehardware/BitstreamEvolution/issues) so that
+we can look into it.
+
+## Usage
+This section describes how to run the configure and run
+BitstreamEvolution. For the most part, BitstreamEvolution can be run
+as-is without configuration.
+
+<!--
+  TODO Configuration options that need to be changed should be
+  better highlighted and emphasized. Ideally, the program would ensure
+  that the user has set these before running (and they would be unset by
+  default
+-->
+### Configuration
+The project has various configuration options that can be specified in
+`data/farmconfig.ini`. The file`data/default_config.ini` contains the
+default options for the configuration and should not be modified.
+
+See [CONFIG.md](./CONFIG.md) for a list of configuration options and their possible values.
+
+### Running With Docker
 Note that the live plots will not function while using a container. If it is not yet installed, install [Docker Engine](https://docs.docker.com/engine/install/). You may follow the [post installation steps](https://docs.docker.com/engine/install/linux-postinstall/) so that you do not need to use sudo, but be aware this opens up privilege escalation from your user. Included below:
 ```
 sudo usermod -aG docker $USERNAME
@@ -184,13 +209,14 @@ Create a configuration file for the experiment. It is recommended to just use ``
 Note that this will have to be performed again after restarting the terminal session.
 
 **Before running, be aware that the container mounts to ```./workspace``` on the host, this directory will be overwritten.**
+**Ensure that the iCEFARM system is already running - setup instructions [here](https://github.com/evolvablehardware/iCEFARM)**.
 
 BitstreamEvolution can now be run:
 ```docker compose -f docker/bitstream.yml up --force-recreate```
 
 Pressing `d` will detach from the output and the container will continue to run in the background. You can first get the name of the container with `docker container ls` and then run `docker logs <container name>` to view logs after detaching.
 
-If you make a modification (not including config or seed file changes), you must add the ```--build``` flag to rebuild the image and apply changes.
+If you make a modification **outside of the data directory**, you must add the ```--build``` flag to rebuild the image and apply the changes. If the modification is inside the data directory, such as a configuration or seed changes, you do not need to rebuild the image.
 
 Stopping the container:
 ```docker compose -f docker/bitstream.yml down```
@@ -218,156 +244,11 @@ The plots will read from `workspace/` and auto-refresh every few seconds as new 
 In some cases the file permissions may get messed up. If `PlotEvolutionLive` encounters an permission error for `workspace/plots`, you can fix it with the following:
 `sudo chown $USER workspace/plots`
 
-### Issues with setup:
-This section describes some issues that can be encountered during
-installation and how to address them. If the following steps do not
-address your issue or you encounter other problems, please file an issue
-[here](https://github.com/evolvablehardware/BitstreamEvolution/issues) so that
-we can look into it.
-
-## Usage
-This section describes how to run the configure and run
-BitstreamEvolution. For the most part, BitstreamEvolution can be run
-as-is without configuration; the only part of the configuration file
-that needs to be modified is the
-[Arduino device file path](#system-parameters).
-
-<!--
-  TODO Configuration options that need to be changed should be
-  better highlighted and emphasized. Ideally, the program would ensure
-  that the user has set these before running (and they would be unset by
-  default
--->
-### Configuration
-The project has various configuration options that can be specified in
-`data/config.ini`. The file`data/default_config.ini` contains the
-default options for the configuration and should not be modified.
-
-The `TOP-LEVEL PARAMETER` `base_config` can be modified to specify a base config file.
-In the event of a missing config parameter, it will be filled in with that from the base config file.
-These can be stacked into a line of configuration files.
-The configuration files will be combined and the resulting file to use for evolution will
-be output. All parameters still must be specified at some point in the final configuration.
-
-Below is a list of the options, their description, and their possible values:
-
-<!-- NOTE Right now this only lists the most important options-->
-
-#### Simulation Modes
-| Mode | Description |
-|--------|-------------|
-| FULLY_INTRINSIC | Compiles hardware files, then uploads to FPGA |
-| REMOTE | Same as FULLY_INTRINSIC, but evaluates circuits remotely using iCEFARM system after compilation |
-| SIM_HARDWARE | Compiles hardware files, but arbitrarily evaluates fitness all on the host computer. This option is useful for verifying that mutation and crossover are functional |
-| FULLY_SIM | Generates a bitstream that represents a sum of sine waves. This is treated as a waveform generated by a variance measure |
-
-
-*Note: FULLY_INTRINSIC or REMOTE should be used unless verification of some process is being done
-
-#### Fitness Function Parameters
-| Parameter | Description | Possible Values | Recommended Values |
-|-----------|-------------|-----------------|--------------------|
-| Fitness function | The fitness function to use | TOLERANT_PULSE_COUNT, SENSITIVE_PULSE_COUNT, VARIANCE, COMBINED |  |
-| Desired frequency | If using the pulse fitness function, the target frequency of the evolved oscillator | (In Hertz) 1 - 1000000 | 1000 |
-| COMBINED_MODE | If using the combined fitness function, how to combine the fitnesses | ADD, MULT | |
-| PULSE_WEIGHT | If using the combined fitness function, what weigthing to use for closeness to the trigger voltage in combined fitness| 0.0 - 1.0 | |
-| VAR_WEIGHT | If using the combined fitness function, what weigthing to use for variance in combined fitness | 0.0 - 1.0 | |
-| NUM_SAMPLES | Number of samples to record in pulse count fitness functions. The minimum number recorded will be used to determine the actual pulse fitness. Higher number of samples will take longer to
-run, but should result in more stable circuits | 1+ | 1-5 |
-
-#### GA parameters
-| Parameter | Description | Possible Values | Recommended Values |
-|-----------|-------------|-----------------|--------------------|
-| Population size | The number of circuits to evolve | 2 - 1000+ | 10 - 50 |
-| Mutation type | Mutation algorithm to use | Simple, Rank, Proportional, Convergence | Rank |
-| Mutation probability | The probability to flip a bit of the bitstream during mutation | 0.0 - 1.0 | (1 / genotypic length) = 0.0021 |
-| Crossover probability | The probability of replacing a bit in one bitstream from a bit from another during crossover | 0.0 - 1.0 | 0.1 - 0.5 |
-| Elitism fraction | The percentage of most fit circuits to protect from modification in a given generation | 0.0 - 1.0 | 0.1 |
-| Selection | The type of selection to perform | SINGLE_ELITE, FRAC_ELITE, CLASSIC_TOURN, FIT_PROP_SEL, RANK_PROP_SEL | FIT_PROP_SEL |
-| Diversity measure | The method to use to measure diversity | NONE, UNIQUE, HAMMING_DIST | HAMMING_DIST |
-| Random injection | Thr probability of randomly injecting circuits into each generation | 0.0 - 1.0 | 0.0 - 0.15 |
-| Chaos injection | Randomly performs additional mutations on 10% of circuits after 5 generations without fitness increase. Mutations are done at mutation_chance * chaos_injection | 0.0+ | 5 |
-
-##### Selection methods
-| Method | Description |
-|--------|-------------|
-| SINGLE_ELITE | Mutates the hardware of every circuit that is not the current best circuit |
-| FRAC_ELITE | Creates a group of elite circuits from the population whose size is based on the elitism percentage. Mutates the hardware of and performs crossover on every non-elite |
-| CLASSIC_TOURN | Randomly pairs together every circuit in the population and compares them. Keeps the winner the same and mutates and performs crossover on the loser |
-| FIT_PROP_SEL | Creates a group of elite circuits from the population whose size is based on the elitism percentage. Every non-elite is compared to a random elite chosen based on the elites' fitnesses and is mutated and crossed with the elite |
-| RANK_PROP_SEL | Same as above, but the elite is chosen randomly based on the elites' ranks |
-| MAP_ELITES | MAP Elites-inspired selection method, for variance experiments. Maps circuits based on min/max voltage into 50x50 cells. The top individuals in each cell are copied and mutated for the next generation. |
-
-#### Initialization Parameters
-| Parameter | Description | Possible Values | Recommended Values |
-|-----------|-------------|-----------------|--------------------|
-| Init mode | The method to generate the initial random circuits | CLONE_SEED, CLONE_SEED_MUTATE, RANDOM, EXISTING_POPULATION | RANDOM, CLONE_SEED_MUTATE |
-| Randomize until | The method used for randomizing the initial population | PULSE, VARIANCE, NO | NO |
-| Randomize threshold | The target fitness for initial random search before evolution begins| 3-8 | 4 |
-| Randomize mode | The method to use when "randomizing" each circuit | MUTATE, RANDOM | Depends on the situation. If a seed individual/population is used, then use MUTATE. Otherwise, use RANDOM |
-| Seed | Circuit path to use as seed | Any .asc filepath | data/seed-hardware.asc |
-
-##### Initialization Modes
-| Mode | Description |
-|--------|-------------|
-| CLONE_SEED | Clones the seed hardware to every individual in the population (i.e. all individuals are the same at the start) |
-| CLONE_SEED_MUTATE | Clones the seed hardware to every individual in the population, and mutates each individual |
-| RANDOM | Randomly assigns all (modifiable) bits of each individual |
-| EXISTING_POPULATION | Completely copies the existing population from the specified directory |
-
-*Note: The FULLY_SIM simulation mode will use the RANDOM initialization mode every time
-
-#### Stopping Conditions
-| Parameter | Description | Possible Values | Recommended Values |
-|-----------|-------------|-----------------|--------------------|
-| Generations | The maximum number of generations to iterate through | 2 - 1000+ or IGNORE | 50 - 500 |
-| Target Fitness | The goal fitness; evolution terminates once any individual reaches this | 1-1000+ or IGNORE | IGNORE |
-
-#### Logging parameters
-| Parameter | Description | Possible Values | Recommended Values |
-|-----------|-------------|-----------------|--------------------|
-| Log Level | The amount of logs to show; higher log level means more detailed logs are shown | 1-4 | 2 |
-| Save Log | Wether or not to save the logging output in a file | true, false | true |
-| Save Plots | Wether or not to save the plots as images throughout evolution | true, false | true |
-| Log Scale Pulses | Use symmetric log scale for pulse count y-axes | true, false | false |
-| Log Scale Fitness | Use symmetric log scale for the fitness y-axis, with a reference line at fitness=1.0 | true, false | false |
-| Backup Workspace | Wether or not to save the workspace directory in a backup folder after evolution | true, false | true |
-| Log File | The file to save log output in | Any file path | ./workspace/log |
-| Plots Directory | The directory to put the plots in | Any directory | ./workspace/plots |
-| Output Directory | The directory to store previous workspaces in | Any directory not in ./workspace | ./prev_workspaces |
-| ASC Directory | The directory to put the asc files (raw bitstreams) | Any directory | ./workspace/experiment_asc |
-| BIN Directory | The directory to put the bin files (compiled bitstreams) | Any directory | ./workspace/experiment_bin |
-| Data Directory | The directory to put the data files (MCU read data) | Any directory | ./workspace/experiment_data |
-| Analysis Directory | The directory to put the analysis files | Any directory | ./workspace/analysis || Best file | The path to put the asc file of the best performing circuit throughout evolution | Any file path | ./workspace/best.asc |
-| Source Populations Directory | The directory consisting of source populations to use in initialization | Any directory | ./workspace/source_populations |
-| Generations Directory | The directory to put generation files into, when populations are saved each generation. The reconstruct command pulls from this directory | Any directory | ./workspace/generations |
-| Use Overall Best | Whether or not to draw the overall best line in the plots | true or false | true |
-
-#### System parameters
-| Parameter | Description | Possible Values |
-|-----------|-------------|-----------------|
-| USB Path | The path to the USB device file | Any device file path (e.g. `/dev/ttyUSB0`) |
-
-#### Hardware parameters
-| Parameter | Description | Possible Values | Recommended Values |
-|-----------|-------------|-----------------|--------------------|
-| Routing | Specifies what surround tiles a logic tile can connect to | MOORE, NEWSE | MOORE |
-| MCU Read Timeout | How long to wait to read from the mcu | 1+ | 1.1|
-| Serial Buad | The baudrate to use for serial communication | 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 31250, 38400, 57600, and 115200 | 115200 |
-| Accessed Columns | The columns in each logic tile's bitstream to modify throughout evolution | List of comma seperated numbers from 0 to 53 | 14,15,24,25,40,41|
-
-#### iCEFARM parameters
-| Parameter | Description | Possible Values |
-|-----------|-------------|-----------------|
-| Url | Url to iCEFARM control server | Any Url |
-| Mode | How to distribute evaluations across remote devices | quick, all |
-| Devices | Amount of devices to reserve from iCEFARM | 1+ |
-
-### Running
+### Running Without Docker
 From the root directory of BitstreamEvolution run:
 
 ```bash
-python3 src/evolve.py
+python3 src/evolve.py -c data/farmconfig.ini
 ```
 
 | Options | Description |
@@ -383,6 +264,7 @@ BitstreamEvolution will continue to run until one of the following happens:
   * It has run through the specified number of generations
   * It has met the specified conditions
   * It is terminated in some other form (e.g. ctrl-c, shutdown, etc.)
+
 
 ### Running Test Cases
 Test case files are simple to run using the pytest framework.

@@ -107,6 +107,7 @@ class EvolutionClient:
         self.buffer_batches = config.get_icefarm_buffer_batch_amount()
         self.result_timeout = config.get_icefarm_results_timeout_duration_seconds()
         self.evaluation_mode_all = config.get_icefarm_mode().lower() == "all"
+        self.result_timeout = config.get_icefarm_results_flush_interval_seconds() * 4
 
     def evaluate(self, circuit: FileBasedCircuit):
         """
