@@ -291,6 +291,7 @@ def build_remote_config_text(
         buffer_batch_amount = 1
         results_flush_interval_seconds = 5
         send_waveform = {"true" if scenario.send_waveform else "false"}
+        results_timeout_duration_seconds = 30
         """
     )
 

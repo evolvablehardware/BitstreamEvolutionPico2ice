@@ -147,30 +147,32 @@ class EvolutionClient:
 
             self._logger.info("Sending circuits for remote evaluation...")
 
-            for serial, evaluation, result in self._client.evaluateEvaluations(
+            for result in self._client.evaluateEvaluations(
                 assigned_evaluations,
                 result_timeout=self.result_timeout,
                 batch_size=self.batch_size,
                 target_batches=self.buffer_batches,
             ):
-                fpath = evaluation.filepath
+                fpath = result.evaluation.filepath
                 if fpath not in self._result_map:
                     self._result_map[fpath] = {}
 
-                if serial not in self._result_map[fpath]:
-                    self._result_map[fpath][serial] = []
+                if result.serial not in self._result_map[fpath]:
+                    self._result_map[fpath][result.serial] = []
 
                 if isinstance(result, list) or isinstance(result, tuple):
-                    fitness, samples = result
+                    fitness, samples = result.value
                     if isinstance(fitness, str):
                         fitness = float(fitness)
-                    self._result_map[fpath][serial].append(fitness)
+                    self._result_map[fpath][result.serial].append(fitness)
                     if samples:
                         self._waveform_map[fpath] = samples
                 else:
                     if isinstance(result, str):
-                        result = float(result)
-                    self._result_map[fpath][serial].append(result)
+                        value = float(result.value)
+                    else:
+                        value = result.value
+                    self._result_map[fpath][result.serial].append(value)
 
                 self._logger.debug(f"Received value for file {fpath}: {result}")
 
