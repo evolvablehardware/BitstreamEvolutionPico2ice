@@ -5,6 +5,7 @@ services:
       dockerfile: docker/local_icefarm.Dockerfile
 
     network_mode: host
+    user: "1000:1000"
     environment:
       CONFIG_PATH: ${CONFIG_PATH}
 
