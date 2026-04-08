@@ -1,10 +1,10 @@
 # This image runs the icefarm client off a local installation, needs icefarm repo to be cloned in /usr/local/lib
-FROM noble-20251013 AS venv-builder
-RUN apt update && apt install -y python3 python3-pip python3-venv python3-pip && rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
+FROM ubuntu:noble-20251013 AS venv-builder
+RUN apt update && apt install -y python3 python3-pip python3-venv git && rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
 
 WORKDIR /usr/local/app
 RUN python3 -m venv .venv
-RUN .venv/bin
+RUN .venv/bin/pip install pyserial numpy matplotlib sortedcontainers pytest ascutil
 
 FROM ubuntu:noble-20251013
 WORKDIR /usr/local/lib
