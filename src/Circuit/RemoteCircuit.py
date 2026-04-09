@@ -8,6 +8,8 @@ from icefarm.client.lib.BatchClient import EvaluationFailed
 from Circuit.FileBasedCircuit import FileBasedCircuit
 from Circuit import FitnessFunction
 from Config import Config
+from repr import Genome, build_tiles, CF
+from icebox import iceconfig
 
 class DeviceTimeoutException(Exception): ...
 
@@ -29,6 +31,14 @@ class RemoteCircuit(FileBasedCircuit):
         self._extra_data = {}
         self._waveform_samples = None
         self._fitnessfunc.attach(filename, None, config, self._extra_data)
+        self._data = []
+
+        icebox = iceconfig()
+        icebox.setup_empty_5k()
+        all_tiles = [(x, y) for x in range(9, 25) for y in range(14, 26) if (x, y) in icebox.logic_tiles]
+        all_tiles.extend([(6, 25), (7, 25), (8, 25)]) # needed for span connectvion
+        bt = build_tiles(all_tiles, CF(all_tiles))
+        self.genome = Genome(bt)
 
     def collect_data_once(self):
         # data is appended during fitness calculation
@@ -37,6 +47,14 @@ class RemoteCircuit(FileBasedCircuit):
 
     def _get_measurement(self): ...
         # makes abc happy
+
+    def mutate(self, chance=None):
+        if not chance:
+            chance = 0.01
+        self.genome.mutate(chance)
+
+    def crossover(self, parent, crossover_point):
+        self.genome.crossover(parent.genome, 0.3)
 
     def clear_data(self):
         super().clear_data()

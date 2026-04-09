@@ -423,6 +423,8 @@ class CircuitPopulation:
                     self.__logger.info(f"Pulse generated! Exiting randomization. Pulses recorded: {pulses} circuit: {circuit}")
                     break
 
+                circuit.clear_data()
+
     def __randomize_until_voltage(self):
         """
         Randomizes population until a mean voltage is found near the desired value

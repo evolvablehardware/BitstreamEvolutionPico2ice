@@ -5,7 +5,7 @@ from subprocess import run
 import os
 from typing import TYPE_CHECKING, Tuple
 
-from ascutil import mutate
+from icebox import iceconfig
 
 from Circuit.Circuit import Circuit
 from Config import Config
@@ -59,29 +59,31 @@ class FileBasedCircuit(Circuit):
         copyfile(other._hardware_filepath, self._hardware_filepath)
 
     def mutate(self, chance=None):
-        if chance is None:
-            chance = self._config.get_mutation_probability()
+        self.genome.mutate(chance=chance)
+        # if chance is None:
+        #     chance = self._config.get_mutation_probability()
 
-        # ascutil uses 0 based indexing
-        rows = [row-1 for row in self._config.get_routing_rows()]
-        columns = [int(column)-1 for column in self._config.get_accessed_columns()]
-        mutate(self._hardware_filepath, rows, columns, chance)
+        # # ascutil uses 0 based indexing
+        # rows = [row-1 for row in self._config.get_routing_rows()]
+        # columns = [int(column)-1 for column in self._config.get_accessed_columns()]
+        # mutate(self._hardware_filepath, rows, columns, chance)
 
     def randomize_bitstream(self):
         # def randomize_bit(*rest):
         #     return self._rand.integers(48, 50)
         # self._run_at_each_modifiable(randomize_bit)
-        routing_type = self._config.get_routing_type()
-        if routing_type == "MOORE":
-            rows = [1, 2, 13]
-        elif routing_type == "NEWSE":
-            rows = [1, 2]
-        elif routing_type == "ALL":
-            rows = list(range(1, 17))
+        # routing_type = self._config.get_routing_type()
+        # if routing_type == "MOORE":
+        #     rows = [1, 2, 13]
+        # elif routing_type == "NEWSE":
+        #     rows = [1, 2]
+        # elif routing_type == "ALL":
+        #     rows = list(range(1, 17))
 
-        rows = [row-1 for row in rows]
-        columns = [int(column)-1 for column in self._config.get_accessed_columns()]
-        mutate(self._hardware_filepath, rows, columns, 0.5)
+        # rows = [row-1 for row in rows]
+        # columns = [int(column)-1 for column in self._config.get_accessed_columns()]
+        # mutate(self._hardware_filepath, rows, columns, 0.5)
+        self.genome.mutate(chance=0.1)
 
     def crossover(self, parent, crossover_point: int):
         """
@@ -252,7 +254,14 @@ class FileBasedCircuit(Circuit):
         Compile circuit ASC file to a BIN file for hardware upload.
         """
         self._logger.event(2, "Compiling", self, "with icepack...")
-
+        icebox = iceconfig()
+        icebox.read_file("test_seed.asc")
+        self.genome.write(icebox, 0, 0)
+        icebox.write_file(self._hardware_filepath)
+        with open(self._hardware_filepath, "r") as f:
+            contents = f.read()
+        with open(self._hardware_filepath, "w") as f:
+            f.write(".comment generated circuit\n" + contents)
         # Ensure the file backing the mmap is up to date with the latest
         # changes to the mmap.
         self._hardware_file.flush()
