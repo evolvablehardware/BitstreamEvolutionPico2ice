@@ -35,8 +35,8 @@ class RemoteCircuit(FileBasedCircuit):
 
         icebox = iceconfig()
         icebox.setup_empty_5k()
-        all_tiles = [(x, y) for x in range(9, 25) for y in range(14, 26) if (x, y) in icebox.logic_tiles]
-        all_tiles.extend([(6, 25), (7, 25), (8, 25)]) # needed for span connectvion
+        all_tiles = [(x, y) for x in range(4, 21) for y in range(8, 18)]
+        # all_tiles.extend([(6, 25), (7, 25), (8, 25)]) # needed for span connectvion
         bt = build_tiles(all_tiles, CF(all_tiles))
         self.genome = Genome(bt)
 
