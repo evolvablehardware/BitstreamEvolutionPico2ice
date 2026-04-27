@@ -109,7 +109,7 @@ class ConfigSetting:
         return list(self.options.values())
 
     def set(self, option: ConfigOption):
-        if option not in self.options:
+        if option is not None and option not in self.options:
             raise Exception
 
         self.current = option
@@ -240,6 +240,12 @@ class Genome:
         for location in self.tiles.keys():
             self.tiles[location].crossover(other.tiles[location], chance)
 
+    def clear(self):
+        for tile in self.tiles.values():
+            for setting in tile.settings.values():
+                setting.set(None)
+
+
     def write(self, icebox: iceconfig, x_offset: int, y_offset: int):
         for x, y in self.tiles:
             self.tiles[(x, y)].write(icebox.tile(x + x_offset, y + y_offset))
@@ -275,6 +281,7 @@ class CF:
                         return False
 
             return True
+
 
         elif isinstance(option, Routing):
             # I think this should probably be disabled in most cases?

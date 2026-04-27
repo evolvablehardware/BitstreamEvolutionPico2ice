@@ -83,7 +83,9 @@ class FileBasedCircuit(Circuit):
         # rows = [row-1 for row in rows]
         # columns = [int(column)-1 for column in self._config.get_accessed_columns()]
         # mutate(self._hardware_filepath, rows, columns, 0.5)
-        self.genome.mutate(chance=0.1)
+
+        self.genome.clear()
+        self.genome.mutate(chance=0.3)
 
     def crossover(self, parent, crossover_point: int):
         """
