@@ -33,7 +33,7 @@ from utilities import wipe_folder
 from datetime import datetime
 import random
 
-from icefarm.client.drivers import PulseCountClient, VarMaxClient
+from icefarm.client.drivers import PulseCountClient, VarMaxClient, MultiPulseCountClient
 
 RANDOMIZE_UNTIL_NOT_SET_ERR_MSG = '''\
 RANDOMIZE_UNTIL not set in config.ini, continuing without randomization'''
@@ -104,6 +104,25 @@ class CircuitPopulation:
         self.__config = config
         self.__microcontroller = mcu
         self.__speedtest = speedtest
+        from genome import Genome, CF, GenomeWriter, Tile
+        from route import configure, configure_seed, ic
+
+        # tiles that output will be located on, going from lutff_0/out -> outgoing span
+        target_tiles = [Tile(1, 26), Tile(7, 26), Tile(14, 26), Tile(20, 26)]
+        # pin io numbers
+        pins = [9, 11, 25, 27]
+
+        self.writer = GenomeWriter(dict(zip(target_tiles, pins)))
+
+        # x size 7, y size 20 of genome, sp4_v_b_0 used as outgoing span
+        configs = [configure(pin, tile, 7, 20, net="sp4_v_b_0") for pin, tile in zip(pins, target_tiles)]
+        used_nets, conflicts = configure_seed(configs, "test_seed.asc")
+
+        # tile group used to create mutation options, other genome locations need to be identical
+        # this should be based off of one of the target tiles and have the same size used in configure
+        all_tiles = [Tile(x, y) for x in range(1, 5) for y in range(6, 27) if Tile(x, y) in ic.logic_tiles]
+        self.starting_genome = Genome.from_cfilter(all_tiles, CF(all_tiles, target_tiles, target_tiles, ic, avoid_nets=used_nets, conflicts=conflicts), ic)
+
 
         if config.get_simulation_mode() == "REMOTE":
             url = config.get_icefarm_url()
@@ -114,7 +133,7 @@ class CircuitPopulation:
                     logger.info("Waveform data transfer enabled")
                 self._client = VarMaxClient(url, name, logger, send_waveform=config.get_icefarm_send_waveform())
             else:
-                self._client = PulseCountClient(url, name, logger)
+                self._client = MultiPulseCountClient(url, name, logger)
             if clear_workers:
                 logger.info("Clearing stale workers...")
                 self._client.clearWorkers()
@@ -130,10 +149,12 @@ class CircuitPopulation:
 
 
             logger.info(f"Reserved devices: {self._client.getSerials()}")
-            self._evo_client = EvolutionClient(self._client, config, logger)
+            self._evo_client = EvolutionClient(self._client, config, logger, self.writer)
             atexit.register(self._client.endAll)
         else:
             self._client = None
+
+
 
 
         # A list of Circuits that's sorted by fitness decreasing order
@@ -260,7 +281,7 @@ class CircuitPopulation:
                 else:
                     serials = None
 
-                return RemoteCircuit(self._evo_client, serials, index, file_name, self.__config, seed_arg, self.__rand, self.__logger, fit_func)
+                return RemoteCircuit(self._evo_client, serials, index, file_name, self.__config, seed_arg, self.__rand, self.__logger, fit_func, self.starting_genome.clone())
 
             return IntrinsicCircuit(index, file_name, self.__config, seed_arg, self.__rand, self.__logger, self.__microcontroller, fit_func)
 
