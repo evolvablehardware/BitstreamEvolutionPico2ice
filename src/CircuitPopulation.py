@@ -121,7 +121,7 @@ class CircuitPopulation:
         # tile group used to create mutation options, other genome locations need to be identical
         # this should be based off of one of the target tiles and have the same size used in configure
         all_tiles = [Tile(x, y) for x in range(1, 5) for y in range(6, 27) if Tile(x, y) in ic.logic_tiles]
-        self.starting_genome = Genome.from_cfilter(all_tiles, CF(all_tiles, target_tiles, target_tiles, ic, avoid_nets=used_nets, conflicts=conflicts), ic)
+        self.starting_genome = Genome.from_cfilter(all_tiles, CF(all_tiles, target_tiles, target_tiles[0], ic, avoid_nets=used_nets, conflicts=conflicts), ic)
 
 
         if config.get_simulation_mode() == "REMOTE":
