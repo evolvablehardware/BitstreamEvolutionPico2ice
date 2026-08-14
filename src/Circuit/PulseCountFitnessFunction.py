@@ -17,8 +17,15 @@ def MSE(data: list[float], target: int) -> float:
     return sum((point - target) ** 2 for point in data)
 
 def MCE(data: list[float], target: int) -> float:
-    return sum(abs((point - target) ** 3) for point in data)
+    error = [abs(point - target) for point in data]
+    return sum(point ** 3 for point in error)
 
+    # error = [abs(point - target) for point in data]
+    # # prevent overflow
+    # log_er = [math.log(point + 1) for point in error]
+    # norm_er = [point / target for point in log_er]
+    # exp_er = [math.exp(math.exp(point)) for point in norm_er]
+    # return sum(exp_er) / len(exp_er)
 
 class PulseCountFitnessFunction(FitnessFunction):
     def __init__(self):

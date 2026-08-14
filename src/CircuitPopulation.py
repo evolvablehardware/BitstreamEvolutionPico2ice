@@ -645,7 +645,9 @@ class CircuitPopulation:
 
                 #add the circuit's bistream to our population sum - for diversity calculation and visualization
                 if self.__config.get_simulation_mode() != 'FULLY_SIM':
-                    self.__population_bistream_sum += circuit.get_bitstream()
+                    pass
+                    # TODO not sure why this is different now
+                    # self.__population_bistream_sum += circuit.get_bitstream()
 
             epoch_time = time() - start
             self._circuits = reevaulated_circuits

@@ -7,9 +7,11 @@ from Circuit.FileBasedCircuit import FileBasedCircuit
 from Circuit import FitnessFunction
 from Config import Config
 from genome import Tile
+from genome import GenomeWriter
 import subprocess
 from icefarm.client.drivers import MultiPulseCountClient
 from icefarm.client.lib.multipulsecount import PulseCountEvaluation
+import random
 
 class DeviceTimeoutException(Exception): ...
 
@@ -87,7 +89,7 @@ class RemoteCircuit(FileBasedCircuit):
             #                 raise DeviceTimeoutException()
 
             #             self._data.append(float(point))
-            self._data = [float(results)]
+            self._data = [float(result) for result in results]
             self._extra_data["pulses"] = self._data
 
             # if waveform:
@@ -113,7 +115,7 @@ class EvolutionClient:
     """
     Wrapper around icefarm client (PulseCountClient or VarMaxClient) to allow RemoteCircuit api to be the same as other circuits.
     """
-    def __init__(self, client: PulseCountClient | VarMaxClient, config: Config, logger: Logger, writer):
+    def __init__(self, client: PulseCountClient | VarMaxClient, config: Config, logger: Logger, writer: GenomeWriter):
         self._client = client
         self._command_queue = []
         self._result_map = {}
@@ -143,16 +145,27 @@ class EvolutionClient:
         The first time this is called, evaluations are sent to iCEFARM.
         """
         if not self.circuit_result_map:
-            for i, circuits in enumerate(_batched(self._command_queue, 4)):
+            # for i, circuits in enumerate(_batched(self._command_queue, 4)):
+            #     fpath = f"circuits/{i}.asc"
+            #     binpath = f"bins/{i}.bin"
+
+            #     pins = self.writer.write("test_seed.asc", fpath, [ckt.genome for ckt in circuits], Tile(1, 26))
+            #     subprocess.run(["icepack", fpath, binpath])
+            #     self.result_f_pin_map[binpath] = dict(zip(pins.values(), pins.keys()))
+
+            commands = list(zip(*[random.sample(self._command_queue, len(self._command_queue)) for _ in range(len(self.writer.tile_to_pin))]))
+
+            for i, circuits in enumerate(commands):
                 fpath = f"circuits/{i}.asc"
                 binpath = f"bins/{i}.bin"
 
                 pins = self.writer.write("test_seed.asc", fpath, [ckt.genome for ckt in circuits], Tile(1, 26))
                 subprocess.run(["icepack", fpath, binpath])
-                self.result_f_pin_map[binpath] = dict(zip(pins.values(), pins.keys()))
+                self.result_f_pin_map[binpath] = pins
 
             serial = self._client.getSerials()[0]
             evals = [PulseCountEvaluation([serial], fpath) for fpath in self.result_f_pin_map]
+            random.shuffle(evals)
 
             self._logger.info("Sending circuits for remote evaluation...")
 
@@ -161,9 +174,16 @@ class EvolutionClient:
 
                 for pin, res in zip([9, 11, 25, 27], result):
                     ckt = self.result_f_pin_map[fpath].get(pin)
+
                     if ckt:
-                        self.circuit_result_map[ckt] = res
+                        if ckt not in self.circuit_result_map:
+                            self.circuit_result_map[ckt] = []
+
+                        self.circuit_result_map[ckt].append(res)
                         self._logger.debug(f"Received value for file {fpath} pin {pin}: {res}")
+                    else:
+                        # TODO remove
+                        raise Exception("result has no circuit")
 
         self._logger.info("Remote evaluation complete.")
         self._command_queue = []
